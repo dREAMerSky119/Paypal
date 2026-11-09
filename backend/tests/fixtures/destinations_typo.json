@@ -1,0 +1,8 @@
+{
+  "note": "Real typo found in frontend/src/data/destinations.js during the Phase 0 audit (fixed there). Kept as a labelled fixture for the anomaly detector (feature #9).",
+  "slug": "dolomites-italy",
+  "field": "highlights[1]",
+  "text": "Lad in and Tyrolean culture",
+  "expected_correction": "Ladin and Tyrolean culture",
+  "anomaly_label": "typo"
+}
