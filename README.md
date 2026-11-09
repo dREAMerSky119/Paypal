@@ -84,14 +84,6 @@ curl -X POST "localhost:8000/api/inventory/import?dry_run=true" -H "Content-Type
 
 Imported rows are held in memory and are lost on restart until a database is configured.
 
-## AI travel advisor (`/app/ai-studio`)
-
-Type a request ("3 nights in Kyoto for 2 under $1500, love food"). `POST /api/advisor/plan` parses destination, nights,
-travellers, budget, tier, interests and pace with plain rules, asks a follow-up question when the destination or nights are
-missing, and builds a stay + transfer + activities plan **only from inventory rows**, so every price traces to an item id.
-Price outliers (likely data errors) are excluded, budgets and a 2 h per-leg driving limit are respected, and 30 requests/min
-per client are allowed. No LLM or API key is used yet; an LLM can later phrase replies while still calling `services/advisor.py`
-for the numbers. Still to come from the plan: anomaly flags (#9), responsible scores (#8), "Open in package builder" (#3).
 
 ## Attribution
 
