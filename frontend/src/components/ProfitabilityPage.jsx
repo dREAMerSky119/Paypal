@@ -44,15 +44,16 @@ import { api } from "../lib/api.js";
 
 import "../profitability.css";
 
+// One restrained palette is shared by every chart so the page feels cohesive.
 const COLORS = [
-  "#6366F1",
-  "#8B5CF6",
-  "#06B6D4",
-  "#10B981",
-  "#F97316",
-  "#EC4899",
-  "#3B82F6",
-  "#14B8A6",
+  "#596D82", // slate indigo
+  "#75879A", // muted blue
+  "#657D7A", // deep teal
+  "#82968D", // sage
+  "#8C8983", // muted violet
+  "#9BA4AC", // blue grey
+  "#A9947A", // muted sand
+  "#596D82", // steel blue
 ];
 
 const GROUP_LABELS = {
@@ -104,21 +105,21 @@ function TreemapTile({
   if (width < 2 || height < 2) return null;
 
   const salesColors = [
-    "#4338CA", "#6366F1", "#7C3AED", "#8B5CF6",
-    "#2563EB", "#0891B2", "#0D9488", "#0F766E",
-    "#4F46E5", "#A855F7", "#0284C7", "#14B8A6",
+    "#596D82", "#667A8F", "#75879A", "#8796A6",
+    "#657D7A", "#718985", "#829994", "#91A59D",
+    "#596D82", "#718397", "#8795A4", "#9BA4AC",
   ];
 
   const profitColors = [
-    "#047857", "#059669", "#0D9488", "#0F766E",
-    "#0891B2", "#2563EB", "#4F46E5", "#6366F1",
-    "#7C3AED", "#8B5CF6", "#0E7490", "#10B981",
+    "#657D7A", "#718985", "#82968D", "#82968D",
+    "#596D82", "#667A8F", "#75879A", "#8796A6",
+    "#596D82", "#718397", "#8795A4", "#9BA4AC",
   ];
 
   const marginColors = [
-    "#B45309", "#D97706", "#CA8A04", "#0D9488",
-    "#0891B2", "#2563EB", "#4F46E5", "#7C3AED",
-    "#059669", "#0F766E", "#8B5CF6", "#4338CA",
+    "#596D82", "#596D82", "#75879A", "#8796A6",
+    "#657D7A", "#718985", "#82968D", "#91A59D",
+    "#8C8983", "#96918A", "#A9947A", "#B5A58F",
   ];
 
   const colorIndex = [...String(name || "")].reduce(
@@ -169,7 +170,7 @@ function TreemapTile({
           <text
             x={x + 13}
             y={y + 25}
-            fill="#FFFFFF"
+            fill="#F8F5EF"
             fontSize={Math.min(13, Math.max(9, width / 12))}
             fontWeight="700"
             style={{ pointerEvents: "none" }}
@@ -182,7 +183,7 @@ function TreemapTile({
           <text
             x={x + 13}
             y={y + 44}
-            fill="#FFFFFF"
+            fill="#F8F5EF"
             fontSize={11}
             fontWeight="600"
             style={{ pointerEvents: "none" }}
@@ -198,7 +199,7 @@ function TreemapTile({
             <text
               x={x + 13}
               y={y + 61}
-              fill="#FFFFFF"
+              fill="#F8F5EF"
               fillOpacity={0.9}
               fontSize={10}
               style={{ pointerEvents: "none" }}
@@ -222,7 +223,7 @@ function RadialGauge({
   value,
   size = 110,
   stroke = 9,
-  color = "#8B5CF6",
+  color = "#596D82",
   label,
   selected = false,
 }) {
@@ -249,7 +250,7 @@ function RadialGauge({
         cy={size / 2}
         r={radius}
         fill="none"
-        stroke="#EEF0F6"
+        stroke="#E4E1D9"
         strokeWidth={stroke}
       />
 
@@ -271,7 +272,7 @@ function RadialGauge({
         y="47%"
         dominantBaseline="middle"
         textAnchor="middle"
-        fill="#26324A"
+        fill="#344454"
         fontSize={size > 130 ? 22 : 16}
         fontWeight="800"
       >
@@ -306,35 +307,35 @@ function MonthlyTooltip({ active, payload, currency }) {
 
   return (
     <div style={{
-      background: "#FFFFFF",
-      color: "#172033",
+      background: "#344454",
+      color: "#F1ECE2",
       padding: "14px 16px",
       borderRadius: "12px",
-      boxShadow: "0 12px 35px rgba(0,0,0,0.15)",
-      border: "1px solid #E8EAF2",
+      boxShadow: "0 10px 28px rgba(52,68,84,0.14)",
+      border: "1px solid #536475",
       minWidth: "190px",
     }}>
       <strong style={{ fontSize: "13px" }}>
         {item.label}
       </strong>
 
-      <p style={{ color: "#0891B2", fontSize: "12px", margin: "10px 0 5px" }}>
+      <p style={{ color: "#657D7A", fontSize: "12px", margin: "10px 0 5px" }}>
         Gross profit: {formatMoney(item.gross_profit, currency)}
       </p>
 
-      <p style={{ color: "#D69B16", fontSize: "12px", margin: "5px 0" }}>
+      <p style={{ color: "#A9947A", fontSize: "12px", margin: "5px 0" }}>
         Gross margin: {Number(item.gross_margin).toFixed(2)}%
       </p>
 
-      <p style={{ color: "#64748B", fontSize: "11px", margin: "5px 0" }}>
+      <p style={{ color: "#64717C", fontSize: "11px", margin: "5px 0" }}>
         Sales: {formatMoney(item.gross_sales, currency)}
       </p>
 
-      <p style={{ color: "#64748B", fontSize: "11px", margin: "5px 0" }}>
+      <p style={{ color: "#64717C", fontSize: "11px", margin: "5px 0" }}>
         Cancellation leakage: {formatMoney(item.cancellation_leakage, currency)}
       </p>
 
-      <p style={{ color: "#64748B", fontSize: "11px", margin: "5px 0 0" }}>
+      <p style={{ color: "#64717C", fontSize: "11px", margin: "5px 0 0" }}>
         Bookings: {item.completed_bookings} completed · {item.cancelled_bookings} cancelled
       </p>
     </div>
@@ -670,19 +671,19 @@ export default function ProfitabilityPage() {
 
     return (
       <div style={{
-        background: "#172033",
-        color: "#FFFFFF",
+        background: "#344454",
+        color: "#F8F5EF",
         padding: "14px 17px",
         borderRadius: "12px",
-        boxShadow: "0 10px 30px rgba(15,23,42,0.2)",
+        boxShadow: "0 10px 30px rgba(52,68,84,0.14)",
       }}>
         <strong>{item.name}</strong>
 
-        <p style={{ color: "#6EE7B7", fontSize: "12px" }}>
+        <p style={{ color: "#A5B2A7", fontSize: "12px" }}>
           Profit: {formatMoney(item.gross_profit, currency)}
         </p>
 
-        <p style={{ color: "#D8B4FE", fontSize: "12px" }}>
+        <p style={{ color: "#B5A58F", fontSize: "12px" }}>
           Margin: {Number(item.gross_margin).toFixed(2)}%
         </p>
       </div>
@@ -690,17 +691,17 @@ export default function ProfitabilityPage() {
   };
 
   const panelStyle = {
-    background: "var(--surface, #FFFFFF)",
-    border: "1px solid var(--border, #E8EAF2)",
-    borderRadius: "20px",
+    background: "#F5F1E8",
+    border: "1px solid #D9D2C6",
+    borderRadius: "18px",
     padding: "25px",
-    boxShadow: "0 8px 30px rgba(30,41,59,0.035)",
+    boxShadow: "0 6px 22px rgba(52,68,84,0.055)",
   };
 
   const smallLabel = {
     fontSize: "11px",
     fontWeight: 750,
-    color: "#94A3B8",
+    color: "#89939B",
     letterSpacing: "0.8px",
     textTransform: "uppercase",
   };
@@ -859,8 +860,8 @@ export default function ProfitabilityPage() {
               display: "grid",
               placeItems: "center",
               borderRadius: "10px",
-              color: "#6366F1",
-              background: "#EEF2FF",
+              color: "#596D82",
+              background: "#E7E3DA",
             }}>
               <Layers3 size={18} />
             </div>
@@ -873,7 +874,7 @@ export default function ProfitabilityPage() {
           </h2>
 
           <p style={{
-            color: "#94A3B8",
+            color: "#89939B",
             fontSize: "13px",
             marginTop: "7px",
           }}>
@@ -903,9 +904,9 @@ export default function ProfitabilityPage() {
                   aria-pressed={treemapView === value}
                   style={{
                     border: "1px solid",
-                    borderColor: treemapView === value ? "#6366F1" : "#E2E8F0",
-                    background: treemapView === value ? "#EEF2FF" : "#FFFFFF",
-                    color: treemapView === value ? "#4F46E5" : "#64748B",
+                    borderColor: treemapView === value ? "#596D82" : "#D9DDE0",
+                    background: treemapView === value ? "#E7E3DA" : "#F1ECE2",
+                    color: treemapView === value ? "#596D82" : "#64717C",
                     borderRadius: "9px",
                     padding: "9px 15px",
                     fontSize: "12px",
@@ -919,7 +920,7 @@ export default function ProfitabilityPage() {
               ))}
             </div>
 
-            <span style={{ fontSize: "11px", color: "#94A3B8" }}>
+            <span style={{ fontSize: "11px", color: "#89939B" }}>
               Tile size represents gross sales
             </span>
           </div>
@@ -955,23 +956,23 @@ export default function ProfitabilityPage() {
 
                       return (
                         <div style={{
-                          background: "#172033",
-                          color: "#FFFFFF",
+                          background: "#344454",
+                          color: "#F8F5EF",
                           padding: "14px 17px",
                           borderRadius: "12px",
-                          boxShadow: "0 10px 30px rgba(15,23,42,0.2)",
+                          boxShadow: "0 10px 30px rgba(52,68,84,0.14)",
                         }}>
                           <strong>{item?.name}</strong>
 
-                          <p style={{ color: "#A5B4FC", fontSize: "12px" }}>
+                          <p style={{ color: "#C1C9D0", fontSize: "12px" }}>
                             Sales: {formatMoney(item?.gross_sales, currency)}
                           </p>
 
-                          <p style={{ color: "#6EE7B7", fontSize: "12px" }}>
+                          <p style={{ color: "#A5B2A7", fontSize: "12px" }}>
                             Profit: {formatMoney(item?.gross_profit, currency)}
                           </p>
 
-                          <p style={{ color: "#D8B4FE", fontSize: "12px" }}>
+                          <p style={{ color: "#B5A58F", fontSize: "12px" }}>
                             Margin: {Number(item?.gross_margin).toFixed(2)}%
                           </p>
                         </div>
@@ -988,8 +989,8 @@ export default function ProfitabilityPage() {
               marginTop: "20px",
               padding: "20px",
               borderRadius: "14px",
-              background: "linear-gradient(120deg, #EEF2FF, #F0FDFA)",
-              border: "1px solid #DCE4FF",
+              background: "linear-gradient(120deg, #E7E3DA, #E7E9E2)",
+              border: "1px solid #D9DDE0",
               position: "relative",
             }}>
               <button
@@ -1003,7 +1004,7 @@ export default function ProfitabilityPage() {
                   background: "transparent",
                   border: "none",
                   cursor: "pointer",
-                  color: "#64748B",
+                  color: "#64717C",
                 }}
               >
                 <X size={17} />
@@ -1011,7 +1012,7 @@ export default function ProfitabilityPage() {
 
               <p style={{
                 ...smallLabel,
-                color: "#6366F1",
+                color: "#596D82",
                 margin: "0 0 5px",
               }}>
                 SELECTED {groupBy.toUpperCase()}
@@ -1027,13 +1028,13 @@ export default function ProfitabilityPage() {
                 gap: "15px",
               }}>
                 {[
-                  ["Gross Sales", formatMoney(selectedTreemapData.gross_sales, currency), "#4F46E5"],
-                  ["Net Cost", formatMoney(selectedTreemapData.total_net_cost, currency), "#64748B"],
-                  ["Gross Profit", formatMoney(selectedTreemapData.gross_profit, currency), "#059669"],
-                  ["Gross Margin", `${Number(selectedTreemapData.gross_margin).toFixed(2)}%`, "#9333EA"],
+                  ["Gross Sales", formatMoney(selectedTreemapData.gross_sales, currency), "#596D82"],
+                  ["Net Cost", formatMoney(selectedTreemapData.total_net_cost, currency), "#64717C"],
+                  ["Gross Profit", formatMoney(selectedTreemapData.gross_profit, currency), "#657D7A"],
+                  ["Gross Margin", `${Number(selectedTreemapData.gross_margin).toFixed(2)}%`, "#75879A"],
                 ].map(([label, value, color]) => (
                   <div key={label}>
-                    <p style={{ fontSize: "11px", color: "#8490A5", margin: "0 0 5px" }}>
+                    <p style={{ fontSize: "11px", color: "#89939B", margin: "0 0 5px" }}>
                       {label}
                     </p>
                     <strong style={{ fontSize: "15px", color }}>
@@ -1050,7 +1051,7 @@ export default function ProfitabilityPage() {
             alignItems: "center",
             gap: "6px",
             fontSize: "11px",
-            color: "#A0A9B8",
+            color: "#92999F",
             margin: "17px 0 0",
           }}>
             <MousePointerClick size={13} />
@@ -1077,8 +1078,8 @@ export default function ProfitabilityPage() {
               display: "grid",
               placeItems: "center",
               borderRadius: "10px",
-              color: "#9333EA",
-              background: "#F3E8FF",
+              color: "#596D82",
+              background: "#EAE5DB",
             }}>
               <Target size={18} />
             </div>
@@ -1090,7 +1091,7 @@ export default function ProfitabilityPage() {
             Gross Margin Analysis
           </h2>
 
-          <p style={{ color: "#94A3B8", fontSize: "13px", marginTop: "7px" }}>
+          <p style={{ color: "#89939B", fontSize: "13px", marginTop: "7px" }}>
             See how efficiently your {groupLabel} convert revenue into profit.
           </p>
         </div>
@@ -1113,14 +1114,14 @@ export default function ProfitabilityPage() {
                   alignItems: "center",
                   padding: "18px",
                   borderRadius: "16px",
-                  background: "linear-gradient(135deg, #F5F3FF, #EFF6FF)",
+                  background: "linear-gradient(135deg, #EAE5DB, #EAE5DB)",
                   marginBottom: "28px",
                 }}
               >
                 <div style={{ textAlign: "center" }}>
                   <p style={{
                     ...smallLabel,
-                    color: "#8B5CF6",
+                    color: "#596D82",
                     margin: "0 0 14px",
                   }}>
                     WEIGHTED GROSS MARGIN
@@ -1130,12 +1131,12 @@ export default function ProfitabilityPage() {
                     value={summary ? summary.gross_margin : weightedMargin}
                     size={190}
                     stroke={13}
-                    color="#8B5CF6"
+                    color="#596D82"
                   />
 
                   <p style={{
                     fontSize: "11px",
-                    color: "#8B5CF6",
+                    color: "#596D82",
                     fontWeight: 650,
                     margin: "8px 0 0",
                   }}>
@@ -1149,33 +1150,33 @@ export default function ProfitabilityPage() {
                   gap: "17px",
                 }}>
                   <div>
-                    <p style={{ ...smallLabel, color: "#7C3AED", margin: "0 0 6px" }}>
+                    <p style={{ ...smallLabel, color: "#596D82", margin: "0 0 6px" }}>
                       HIGHEST MARGIN
                     </p>
 
-                    <strong style={{ fontSize: "20px", color: "#7C3AED" }}>
+                    <strong style={{ fontSize: "20px", color: "#596D82" }}>
                       {bestMargin?.name || "—"}
                     </strong>
 
-                    <p style={{ fontSize: "13px", color: "#64748B", margin: "4px 0 0" }}>
+                    <p style={{ fontSize: "13px", color: "#64717C", margin: "4px 0 0" }}>
                       {bestMargin
                         ? `${Number(bestMargin.gross_margin).toFixed(2)}% gross margin`
                         : "No data"}
                     </p>
                   </div>
 
-                  <div style={{ height: "1px", background: "#E5E7EB" }} />
+                  <div style={{ height: "1px", background: "#D9DDE0" }} />
 
                   <div>
-                    <p style={{ ...smallLabel, color: "#D97706", margin: "0 0 6px" }}>
+                    <p style={{ ...smallLabel, color: "#A9947A", margin: "0 0 6px" }}>
                       LOWEST MARGIN
                     </p>
 
-                    <strong style={{ fontSize: "20px", color: "#C2410C" }}>
+                    <strong style={{ fontSize: "20px", color: "#9B8468" }}>
                       {weakestMargin?.name || "—"}
                     </strong>
 
-                    <p style={{ fontSize: "13px", color: "#64748B", margin: "4px 0 0" }}>
+                    <p style={{ fontSize: "13px", color: "#64717C", margin: "4px 0 0" }}>
                       {weakestMargin
                         ? `${Number(weakestMargin.gross_margin).toFixed(2)}% gross margin`
                         : "No data"}
@@ -1197,10 +1198,10 @@ export default function ProfitabilityPage() {
                   const isWeakest = item.name === weakestMargin?.name;
 
                   const gaugeColor = isBest
-                    ? "#059669"
+                    ? "#657D7A"
                     : isWeakest
-                      ? "#D97706"
-                      : "#8B5CF6";
+                      ? "#A9947A"
+                      : "#596D82";
 
                   return (
                     <button
@@ -1213,8 +1214,8 @@ export default function ProfitabilityPage() {
                         minHeight: "195px",
                         padding: "16px 10px",
                         borderRadius: "15px",
-                        border: isSelected ? `2px solid ${gaugeColor}` : "1px solid #E8EAF2",
-                        background: isSelected ? "#F5F3FF" : "#FFFFFF",
+                        border: isSelected ? `2px solid ${gaugeColor}` : "1px solid #E2DDD3",
+                        background: isSelected ? "#E7E3DA" : "#F1ECE2",
                         display: "flex",
                         flexDirection: "column",
                         alignItems: "center",
@@ -1227,7 +1228,7 @@ export default function ProfitabilityPage() {
                     >
                       <span style={{
                         ...smallLabel,
-                        color: isBest ? "#059669" : isWeakest ? "#D97706" : "#94A3B8",
+                        color: isBest ? "#657D7A" : isWeakest ? "#A9947A" : "#89939B",
                       }}>
                         {isBest ? "TOP PERFORMER" : isWeakest ? "NEEDS REVIEW" : `RANK #${index + 1}`}
                       </span>
@@ -1242,14 +1243,14 @@ export default function ProfitabilityPage() {
 
                       <strong style={{
                         fontSize: "12px",
-                        color: "#334155",
+                        color: "#465563",
                         textAlign: "center",
                         overflowWrap: "anywhere",
                       }}>
                         {item.name}
                       </strong>
 
-                      <span style={{ fontSize: "10px", color: "#94A3B8" }}>
+                      <span style={{ fontSize: "10px", color: "#89939B" }}>
                         {formatShortMoney(item.gross_profit)} profit
                       </span>
                     </button>
@@ -1262,8 +1263,8 @@ export default function ProfitabilityPage() {
                   marginTop: "23px",
                   padding: "20px",
                   borderRadius: "14px",
-                  background: "linear-gradient(120deg, #F5F3FF, #EFF6FF)",
-                  border: "1px solid #DDD6FE",
+                  background: "linear-gradient(120deg, #EAE5DB, #EAE5DB)",
+                  border: "1px solid #D9D3C8",
                   position: "relative",
                 }}>
                   <button
@@ -1276,14 +1277,14 @@ export default function ProfitabilityPage() {
                       right: "12px",
                       border: "none",
                       background: "transparent",
-                      color: "#64748B",
+                      color: "#64717C",
                       cursor: "pointer",
                     }}
                   >
                     <X size={17} />
                   </button>
 
-                  <p style={{ ...smallLabel, color: "#9333EA", margin: "0 0 5px" }}>
+                  <p style={{ ...smallLabel, color: "#596D82", margin: "0 0 5px" }}>
                     SELECTED {groupBy.toUpperCase()}
                   </p>
 
@@ -1297,13 +1298,13 @@ export default function ProfitabilityPage() {
                     gap: "15px",
                   }}>
                     {[
-                      ["Gross Margin", `${Number(selectedMarginItem.gross_margin).toFixed(2)}%`, "#9333EA"],
-                      ["Gross Profit", formatMoney(selectedMarginItem.gross_profit, currency), "#059669"],
-                      ["Gross Sales", formatMoney(selectedMarginItem.gross_sales, currency), "#4F46E5"],
-                      ["Net Cost", formatMoney(selectedMarginItem.total_net_cost, currency), "#64748B"],
+                      ["Gross Margin", `${Number(selectedMarginItem.gross_margin).toFixed(2)}%`, "#75879A"],
+                      ["Gross Profit", formatMoney(selectedMarginItem.gross_profit, currency), "#657D7A"],
+                      ["Gross Sales", formatMoney(selectedMarginItem.gross_sales, currency), "#596D82"],
+                      ["Net Cost", formatMoney(selectedMarginItem.total_net_cost, currency), "#64717C"],
                     ].map(([label, value, color]) => (
                       <div key={label}>
-                        <p style={{ fontSize: "11px", color: "#8490A5", margin: "0 0 5px" }}>
+                        <p style={{ fontSize: "11px", color: "#89939B", margin: "0 0 5px" }}>
                           {label}
                         </p>
                         <strong style={{ fontSize: "15px", color }}>
@@ -1322,7 +1323,7 @@ export default function ProfitabilityPage() {
             alignItems: "center",
             gap: "6px",
             fontSize: "11px",
-            color: "#A0A9B8",
+            color: "#92999F",
             margin: "20px 0 0",
           }}>
             <MousePointerClick size={13} />
@@ -1349,8 +1350,8 @@ export default function ProfitabilityPage() {
               display: "grid",
               placeItems: "center",
               borderRadius: "10px",
-              color: "#0891B2",
-              background: "#CFFAFE",
+              color: "#657D7A",
+              background: "#E7E9E2",
             }}>
               <PieIcon size={18} />
             </div>
@@ -1362,7 +1363,7 @@ export default function ProfitabilityPage() {
             Profit Contribution
           </h2>
 
-          <p style={{ color: "#94A3B8", fontSize: "13px", marginTop: "7px" }}>
+          <p style={{ color: "#89939B", fontSize: "13px", marginTop: "7px" }}>
             Understand how each group contributes to total gross profit.
           </p>
         </div>
@@ -1415,7 +1416,7 @@ export default function ProfitabilityPage() {
                               ? 0.3
                               : 1
                           }
-                          stroke={selectedDonutItem?.name === item.name ? "#172033" : "none"}
+                          stroke={selectedDonutItem?.name === item.name ? "#344454" : "none"}
                           strokeWidth={2}
                         />
                       ))}
@@ -1435,14 +1436,14 @@ export default function ProfitabilityPage() {
                   pointerEvents: "none",
                   textAlign: "center",
                 }}>
-                  <span style={{ fontSize: "11px", color: "#94A3B8" }}>
+                  <span style={{ fontSize: "11px", color: "#89939B" }}>
                     {selectedDonutItem ? "SELECTED PROFIT" : "TOTAL GROUP PROFIT"}
                   </span>
 
                   <strong style={{
                     fontSize: "clamp(17px, 2vw, 24px)",
                     marginTop: "7px",
-                    color: "#26324A",
+                    color: "#344454",
                   }}>
                     {formatMoney(
                       selectedDonutItem ? selectedDonutItem.gross_profit : totalGroupProfit,
@@ -1451,7 +1452,7 @@ export default function ProfitabilityPage() {
                   </strong>
 
                   {selectedDonutItem && (
-                    <span style={{ fontSize: "11px", color: "#8B5CF6", marginTop: "5px" }}>
+                    <span style={{ fontSize: "11px", color: "#596D82", marginTop: "5px" }}>
                       {selectedDonutItem.name}
                     </span>
                   )}
@@ -1489,8 +1490,8 @@ export default function ProfitabilityPage() {
                         width: "100%",
                         padding: "11px",
                         borderRadius: "10px",
-                        border: active ? "1px solid #A78BFA" : "1px solid transparent",
-                        background: active ? "#F5F3FF" : "transparent",
+                        border: active ? "1px solid #8796A6" : "1px solid transparent",
+                        background: active ? "#EAE5DB" : "transparent",
                         cursor: "pointer",
                         textAlign: "left",
                       }}
@@ -1511,7 +1512,7 @@ export default function ProfitabilityPage() {
 
                         <span style={{
                           fontSize: "12px",
-                          color: "#475569",
+                          color: "#53616D",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
                           whiteSpace: "nowrap",
@@ -1522,7 +1523,7 @@ export default function ProfitabilityPage() {
 
                       <strong style={{
                         fontSize: "12px",
-                        color: active ? "#7C3AED" : "#64748B",
+                        color: active ? "#596D82" : "#64717C",
                       }}>
                         {contribution.toFixed(1)}%
                       </strong>
@@ -1538,8 +1539,8 @@ export default function ProfitabilityPage() {
               marginTop: "15px",
               padding: "17px",
               borderRadius: "12px",
-              background: "#F5F3FF",
-              border: "1px solid #DDD6FE",
+              background: "#EAE5DB",
+              border: "1px solid #D9D3C8",
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
@@ -1547,24 +1548,24 @@ export default function ProfitabilityPage() {
               gap: "15px",
             }}>
               <div>
-                <p style={{ ...smallLabel, color: "#8B5CF6", margin: "0 0 5px" }}>
+                <p style={{ ...smallLabel, color: "#596D82", margin: "0 0 5px" }}>
                   SELECTED {groupBy.toUpperCase()}
                 </p>
                 <strong>{selectedDonutItem.name}</strong>
               </div>
 
               <div>
-                <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>
+                <p style={{ fontSize: "11px", color: "#89939B", margin: 0 }}>
                   Gross Profit
                 </p>
                 <strong>{formatMoney(selectedDonutItem.gross_profit, currency)}</strong>
               </div>
 
               <div>
-                <p style={{ fontSize: "11px", color: "#94A3B8", margin: 0 }}>
+                <p style={{ fontSize: "11px", color: "#89939B", margin: 0 }}>
                   Gross Margin
                 </p>
-                <strong style={{ color: "#8B5CF6" }}>
+                <strong style={{ color: "#596D82" }}>
                   {Number(selectedDonutItem.gross_margin).toFixed(2)}%
                 </strong>
               </div>
@@ -1575,7 +1576,7 @@ export default function ProfitabilityPage() {
                 style={{
                   border: "none",
                   background: "transparent",
-                  color: "#64748B",
+                  color: "#64717C",
                   cursor: "pointer",
                   fontSize: "12px",
                 }}
@@ -1605,8 +1606,8 @@ export default function ProfitabilityPage() {
               display: "grid",
               placeItems: "center",
               borderRadius: "10px",
-              color: "#059669",
-              background: "#D1FAE5",
+              color: "#657D7A",
+              background: "#E7E9E2",
             }}>
               <SlidersHorizontal size={18} />
             </div>
@@ -1618,7 +1619,7 @@ export default function ProfitabilityPage() {
             Markup What-if Simulator
           </h2>
 
-          <p style={{ color: "#94A3B8", fontSize: "13px", marginTop: "7px" }}>
+          <p style={{ color: "#89939B", fontSize: "13px", marginTop: "7px" }}>
             Experiment with different markup strategies and see their impact on your profitability.
           </p>
         </div>
@@ -1643,13 +1644,13 @@ export default function ProfitabilityPage() {
                 alignItems: "center",
                 padding: "22px",
                 borderRadius: "16px",
-                background: "linear-gradient(120deg, #ECFDF5, #F0FDFA, #EFF6FF)",
-                border: "1px solid #D1FAE5",
+                background: "linear-gradient(120deg, #E7E9E2, #E7E9E2, #EAE5DB)",
+                border: "1px solid #E7E9E2",
               }}>
                 <div>
                   <p style={{
                     ...smallLabel,
-                    color: "#059669",
+                    color: "#657D7A",
                     margin: "0 0 13px",
                   }}>
                     ADJUST YOUR PROPOSED MARKUP
@@ -1663,7 +1664,7 @@ export default function ProfitabilityPage() {
                   }}>
                     <strong style={{
                       fontSize: "42px",
-                      color: "#047857",
+                      color: "#657D7A",
                       letterSpacing: "-2px",
                     }}>
                       {markupPercentage}
@@ -1671,7 +1672,7 @@ export default function ProfitabilityPage() {
 
                     <span style={{
                       fontSize: "23px",
-                      color: "#059669",
+                      color: "#657D7A",
                       fontWeight: 700,
                     }}>
                       %
@@ -1688,7 +1689,7 @@ export default function ProfitabilityPage() {
                     aria-label="Proposed markup percentage"
                     style={{
                       width: "100%",
-                      accentColor: "#059669",
+                      accentColor: "#657D7A",
                       cursor: "pointer",
                     }}
                   />
@@ -1696,7 +1697,7 @@ export default function ProfitabilityPage() {
                   <div style={{
                     display: "flex",
                     justifyContent: "space-between",
-                    color: "#94A3B8",
+                    color: "#89939B",
                     fontSize: "11px",
                     marginTop: "7px",
                   }}>
@@ -1723,14 +1724,14 @@ export default function ProfitabilityPage() {
                           padding: "7px 13px",
                           borderRadius: "8px",
                           border: markupPercentage === value
-                            ? "1px solid #059669"
-                            : "1px solid #D1D5DB",
+                            ? "1px solid #657D7A"
+                            : "1px solid #C9C8C1",
                           background: markupPercentage === value
-                            ? "#D1FAE5"
-                            : "#FFFFFF",
+                            ? "#E7E9E2"
+                            : "#F8F5EF",
                           color: markupPercentage === value
-                            ? "#047857"
-                            : "#64748B",
+                            ? "#657D7A"
+                            : "#64717C",
                           fontSize: "11px",
                           fontWeight: 750,
                           cursor: "pointer",
@@ -1744,14 +1745,14 @@ export default function ProfitabilityPage() {
 
                 <div style={{
                   padding: "20px",
-                  background: "#FFFFFF",
-                  border: "1px solid #D1FAE5",
+                  background: "#F1ECE2",
+                  border: "1px solid #E7E9E2",
                   borderRadius: "14px",
                   textAlign: "center",
                 }}>
                   <p style={{
                     ...smallLabel,
-                    color: "#64748B",
+                    color: "#64717C",
                     margin: "0 0 10px",
                   }}>
                     CURRENT MARKUP
@@ -1759,14 +1760,14 @@ export default function ProfitabilityPage() {
 
                   <strong style={{
                     fontSize: "32px",
-                    color: "#334155",
+                    color: "#465563",
                   }}>
                     {Number(markupData.current_markup).toFixed(2)}%
                   </strong>
 
                   <p style={{
                     fontSize: "11px",
-                    color: "#94A3B8",
+                    color: "#89939B",
                     margin: "8px 0 0",
                   }}>
                     Based on existing booking prices
@@ -1785,18 +1786,18 @@ export default function ProfitabilityPage() {
                 <div style={{
                   padding: "19px",
                   borderRadius: "13px",
-                  background: "#F0FDF4",
-                  border: "1px solid #DCFCE7",
+                  background: "#E7E9E2",
+                  border: "1px solid #DCE5DD",
                 }}>
-                  <p style={{ ...smallLabel, color: "#16A34A", margin: "0 0 10px" }}>
+                  <p style={{ ...smallLabel, color: "#657D7A", margin: "0 0 10px" }}>
                     PROJECTED PROFIT
                   </p>
 
-                  <strong style={{ fontSize: "23px", color: "#047857" }}>
+                  <strong style={{ fontSize: "23px", color: "#657D7A" }}>
                     {formatMoney(markupData.projected_gross_profit, currency)}
                   </strong>
 
-                  <p style={{ fontSize: "11px", color: "#64748B", margin: "8px 0 0" }}>
+                  <p style={{ fontSize: "11px", color: "#64717C", margin: "8px 0 0" }}>
                     At {markupPercentage}% proposed markup
                   </p>
                 </div>
@@ -1804,12 +1805,12 @@ export default function ProfitabilityPage() {
                 <div style={{
                   padding: "19px",
                   borderRadius: "13px",
-                  background: isProfitImproved ? "#EFF6FF" : "#FFF7ED",
-                  border: `1px solid ${isProfitImproved ? "#DBEAFE" : "#FED7AA"}`,
+                  background: isProfitImproved ? "#EAE5DB" : "#F0E9DC",
+                  border: `1px solid ${isProfitImproved ? "#D9DDE0" : "#D9CDBB"}`,
                 }}>
                   <p style={{
                     ...smallLabel,
-                    color: isProfitImproved ? "#2563EB" : "#C2410C",
+                    color: isProfitImproved ? "#596D82" : "#9B8468",
                     margin: "0 0 10px",
                   }}>
                     PROFIT IMPACT
@@ -1821,19 +1822,19 @@ export default function ProfitabilityPage() {
                     gap: "7px",
                   }}>
                     {isProfitImproved
-                      ? <ArrowUpRight size={22} color="#2563EB" />
-                      : <ArrowDownRight size={22} color="#C2410C" />}
+                      ? <ArrowUpRight size={22} color="#596D82" />
+                      : <ArrowDownRight size={22} color="#9B8468" />}
 
                     <strong style={{
                       fontSize: "23px",
-                      color: isProfitImproved ? "#1D4ED8" : "#C2410C",
+                      color: isProfitImproved ? "#465A6D" : "#9B8468",
                     }}>
                       {profitDifference >= 0 ? "+" : ""}
                       {formatMoney(profitDifference, currency)}
                     </strong>
                   </div>
 
-                  <p style={{ fontSize: "11px", color: "#64748B", margin: "8px 0 0" }}>
+                  <p style={{ fontSize: "11px", color: "#64717C", margin: "8px 0 0" }}>
                     Compared with current gross profit
                   </p>
                 </div>
@@ -1841,18 +1842,18 @@ export default function ProfitabilityPage() {
                 <div style={{
                   padding: "19px",
                   borderRadius: "13px",
-                  background: "#F5F3FF",
-                  border: "1px solid #E9D5FF",
+                  background: "#EAE5DB",
+                  border: "1px solid #D9D3C8",
                 }}>
-                  <p style={{ ...smallLabel, color: "#7C3AED", margin: "0 0 10px" }}>
+                  <p style={{ ...smallLabel, color: "#596D82", margin: "0 0 10px" }}>
                     PROJECTED MARGIN
                   </p>
 
-                  <strong style={{ fontSize: "23px", color: "#7C3AED" }}>
+                  <strong style={{ fontSize: "23px", color: "#596D82" }}>
                     {Number(markupData.projected_gross_margin).toFixed(2)}%
                   </strong>
 
-                  <p style={{ fontSize: "11px", color: "#64748B", margin: "8px 0 0" }}>
+                  <p style={{ fontSize: "11px", color: "#64717C", margin: "8px 0 0" }}>
                     Current: {Number(markupData.current_gross_margin).toFixed(2)}%
                   </p>
                 </div>
@@ -1864,8 +1865,8 @@ export default function ProfitabilityPage() {
                 marginTop: "24px",
                 padding: "21px",
                 borderRadius: "15px",
-                border: "1px solid #E8EAF2",
-                background: "#FAFBFD",
+                border: "1px solid #E2DDD3",
+                background: "#F5F1E8",
               }}>
                 <div style={{
                   display: "flex",
@@ -1883,7 +1884,7 @@ export default function ProfitabilityPage() {
                     <h3 style={{
                       fontSize: "16px",
                       margin: 0,
-                      color: "#26324A",
+                      color: "#344454",
                     }}>
                       Current vs projected performance
                     </h3>
@@ -1891,9 +1892,9 @@ export default function ProfitabilityPage() {
 
                   <span style={{
                     fontSize: "11px",
-                    color: "#64748B",
-                    background: "#FFFFFF",
-                    border: "1px solid #E2E8F0",
+                    color: "#64717C",
+                    background: "#F1ECE2",
+                    border: "1px solid #D9DDE0",
                     padding: "7px 10px",
                     borderRadius: "8px",
                   }}>
@@ -1907,13 +1908,13 @@ export default function ProfitabilityPage() {
                     label: "Gross Sales",
                     current: markupData.current_gross_sales,
                     projected: markupData.projected_gross_sales,
-                    color: "#0891B2",
+                    color: "#657D7A",
                   },
                   {
                     label: "Gross Profit",
                     current: markupData.current_gross_profit,
                     projected: markupData.projected_gross_profit,
-                    color: "#059669",
+                    color: "#657D7A",
                   },
                 ].map((item) => {
                   const maxValue = Math.max(
@@ -1931,11 +1932,11 @@ export default function ProfitabilityPage() {
                         gap: "10px",
                         marginBottom: "10px",
                       }}>
-                        <strong style={{ fontSize: "12px", color: "#475569" }}>
+                        <strong style={{ fontSize: "12px", color: "#53616D" }}>
                           {item.label}
                         </strong>
 
-                        <span style={{ fontSize: "11px", color: "#94A3B8" }}>
+                        <span style={{ fontSize: "11px", color: "#89939B" }}>
                           Current / Projected
                         </span>
                       </div>
@@ -1949,14 +1950,14 @@ export default function ProfitabilityPage() {
                       }}>
                         <div style={{
                           height: "13px",
-                          background: "#E8EDF3",
+                          background: "#D9DDE0",
                           borderRadius: "20px",
                           overflow: "hidden",
                         }}>
                           <div style={{
                             height: "100%",
                             width: `${Math.max(0, Math.abs(Number(item.current)) / maxValue * 100)}%`,
-                            background: "#94A3B8",
+                            background: "#89939B",
                             borderRadius: "20px",
                             transition: "width 0.5s ease",
                           }} />
@@ -1964,7 +1965,7 @@ export default function ProfitabilityPage() {
 
                         <strong style={{
                           fontSize: "12px",
-                          color: "#64748B",
+                          color: "#64717C",
                           minWidth: "95px",
                           textAlign: "right",
                         }}>
@@ -1980,7 +1981,7 @@ export default function ProfitabilityPage() {
                       }}>
                         <div style={{
                           height: "13px",
-                          background: "#E8EDF3",
+                          background: "#D9DDE0",
                           borderRadius: "20px",
                           overflow: "hidden",
                         }}>
@@ -2012,44 +2013,44 @@ export default function ProfitabilityPage() {
                   gap: "12px",
                   marginTop: "10px",
                   paddingTop: "17px",
-                  borderTop: "1px solid #E8EAF2",
+                  borderTop: "1px solid #E2DDD3",
                 }}>
                   <div>
-                    <p style={{ fontSize: "10px", color: "#94A3B8", margin: "0 0 5px" }}>
+                    <p style={{ fontSize: "10px", color: "#89939B", margin: "0 0 5px" }}>
                       CURRENT GROSS MARGIN
                     </p>
 
-                    <strong style={{ fontSize: "18px", color: "#64748B" }}>
+                    <strong style={{ fontSize: "18px", color: "#64717C" }}>
                       {Number(markupData.current_gross_margin).toFixed(2)}%
                     </strong>
                   </div>
 
                   <div>
-                    <p style={{ fontSize: "10px", color: "#94A3B8", margin: "0 0 5px" }}>
+                    <p style={{ fontSize: "10px", color: "#89939B", margin: "0 0 5px" }}>
                       PROJECTED GROSS MARGIN
                     </p>
 
-                    <strong style={{ fontSize: "18px", color: "#7C3AED" }}>
+                    <strong style={{ fontSize: "18px", color: "#596D82" }}>
                       {Number(markupData.projected_gross_margin).toFixed(2)}%
                     </strong>
                   </div>
 
                   <div>
-                    <p style={{ fontSize: "10px", color: "#94A3B8", margin: "0 0 5px" }}>
+                    <p style={{ fontSize: "10px", color: "#89939B", margin: "0 0 5px" }}>
                       COMPLETED BOOKINGS
                     </p>
 
-                    <strong style={{ fontSize: "18px", color: "#334155" }}>
+                    <strong style={{ fontSize: "18px", color: "#465563" }}>
                       {markupData.completed_bookings}
                     </strong>
                   </div>
 
                   <div>
-                    <p style={{ fontSize: "10px", color: "#94A3B8", margin: "0 0 5px" }}>
+                    <p style={{ fontSize: "10px", color: "#89939B", margin: "0 0 5px" }}>
                       CANCELLATION LEAKAGE
                     </p>
 
-                    <strong style={{ fontSize: "18px", color: "#DC6B6B" }}>
+                    <strong style={{ fontSize: "18px", color: "#9B8468" }}>
                       {formatMoney(markupData.cancellation_leakage, currency)}
                     </strong>
                   </div>
@@ -2065,7 +2066,7 @@ export default function ProfitabilityPage() {
               {markupLoading && (
                 <p style={{
                   fontSize: "11px",
-                  color: "#94A3B8",
+                  color: "#89939B",
                   marginTop: "12px",
                 }}>
                   Updating projection...
@@ -2074,7 +2075,7 @@ export default function ProfitabilityPage() {
 
               <p style={{
                 fontSize: "11px",
-                color: "#94A3B8",
+                color: "#89939B",
                 lineHeight: 1.6,
                 margin: "17px 0 0",
               }}>
@@ -2105,8 +2106,8 @@ export default function ProfitabilityPage() {
               display: "grid",
               placeItems: "center",
               borderRadius: "10px",
-              color: "#0891B2",
-              background: "#CFFAFE",
+              color: "#657D7A",
+              background: "#E7E9E2",
             }}>
               <TrendingUp size={18} />
             </div>
@@ -2118,13 +2119,13 @@ export default function ProfitabilityPage() {
             fontSize: "23px",
             margin: 0,
             fontWeight: 800,
-            color: "#1E293B",
+            color: "#344454",
           }}>
             Monthly Profitability Trend
           </h2>
 
           <p style={{
-            color: "#94A3B8",
+            color: "#89939B",
             fontSize: "13px",
             marginTop: "7px",
           }}>
@@ -2140,8 +2141,8 @@ export default function ProfitabilityPage() {
           <div style={panelStyle}>No monthly data available.</div>
         ) : (
           <div style={{
-            background: "#FFFFFF",
-            border: "1px solid #E8E7E2",
+            background: "#F1ECE2",
+            border: "1px solid #E2DDD3",
             borderRadius: "18px",
             padding: "22px",
             boxShadow: "0 8px 28px rgba(30,41,59,0.045)",
@@ -2159,7 +2160,7 @@ export default function ProfitabilityPage() {
               <div>
                 <p style={{
                   fontSize: "11px",
-                  color: "#94A3B8",
+                  color: "#89939B",
                   fontWeight: 750,
                   letterSpacing: "0.8px",
                   margin: "0 0 7px",
@@ -2169,7 +2170,7 @@ export default function ProfitabilityPage() {
 
                 <strong style={{
                   fontSize: "30px",
-                  color: "#1E293B",
+                  color: "#344454",
                   letterSpacing: "-1px",
                 }}>
                   {formatMoney(selectedMonth?.gross_profit ?? 0, currency)}
@@ -2177,7 +2178,7 @@ export default function ProfitabilityPage() {
 
                 <p style={{
                   fontSize: "12px",
-                  color: "#94A3B8",
+                  color: "#89939B",
                   margin: "5px 0 0",
                 }}>
                   {selectedMonth?.label || "Select a month"}
@@ -2185,15 +2186,15 @@ export default function ProfitabilityPage() {
               </div>
 
               <div style={{
-                background: "#FFF8E7",
-                border: "1px solid #FDE7B0",
+                background: "#F0E9DC",
+                border: "1px solid #DDD2BE",
                 borderRadius: "12px",
                 padding: "12px 18px",
                 minWidth: "125px",
               }}>
                 <p style={{
                   fontSize: "10px",
-                  color: "#A87919",
+                  color: "#8F795D",
                   fontWeight: 700,
                   margin: "0 0 5px",
                   letterSpacing: "0.6px",
@@ -2203,7 +2204,7 @@ export default function ProfitabilityPage() {
 
                 <strong style={{
                   fontSize: "24px",
-                  color: "#D69B16",
+                  color: "#A9947A",
                 }}>
                   {Number(selectedMonth?.gross_margin || 0).toFixed(2)}%
                 </strong>
@@ -2223,12 +2224,12 @@ export default function ProfitabilityPage() {
                 alignItems: "center",
                 gap: "8px",
                 fontSize: "11px",
-                color: "#64748B",
+                color: "#64717C",
               }}>
                 <span style={{
                   width: "20px",
                   height: "3px",
-                  background: "#06B6D4",
+                  background: "#657D7A",
                   borderRadius: "5px",
                 }} />
                 Gross profit
@@ -2239,12 +2240,12 @@ export default function ProfitabilityPage() {
                 alignItems: "center",
                 gap: "8px",
                 fontSize: "11px",
-                color: "#64748B",
+                color: "#64717C",
               }}>
                 <span style={{
                   width: "20px",
                   height: "3px",
-                  background: "#E8A317",
+                  background: "#A9947A",
                   borderRadius: "5px",
                 }} />
                 Gross margin
@@ -2271,21 +2272,21 @@ export default function ProfitabilityPage() {
                       x2="0"
                       y2="1"
                     >
-                      <stop offset="0%" stopColor="#06B6D4" stopOpacity={0.2} />
-                      <stop offset="95%" stopColor="#06B6D4" stopOpacity={0.01} />
+                      <stop offset="0%" stopColor="#657D7A" stopOpacity={0.2} />
+                      <stop offset="95%" stopColor="#657D7A" stopOpacity={0.01} />
                     </linearGradient>
                   </defs>
 
                   <CartesianGrid
-                    stroke="#E9EDF2"
+                    stroke="#D9DDE0"
                     strokeDasharray="3 5"
                     vertical={false}
                   />
 
                   <XAxis
                     dataKey="label"
-                    tick={{ fill: "#94A3B8", fontSize: 10 }}
-                    axisLine={{ stroke: "#E2E8F0" }}
+                    tick={{ fill: "#89939B", fontSize: 10 }}
+                    axisLine={{ stroke: "#D9DDE0" }}
                     tickLine={false}
                     interval="preserveStartEnd"
                     minTickGap={18}
@@ -2295,7 +2296,7 @@ export default function ProfitabilityPage() {
                     yAxisId="profit"
                     orientation="left"
                     tickFormatter={formatShortMoney}
-                    tick={{ fill: "#94A3B8", fontSize: 10 }}
+                    tick={{ fill: "#89939B", fontSize: 10 }}
                     axisLine={false}
                     tickLine={false}
                     width={53}
@@ -2305,14 +2306,14 @@ export default function ProfitabilityPage() {
                     yAxisId="margin"
                     orientation="right"
                     tickFormatter={(value) => `${value}%`}
-                    tick={{ fill: "#D69B16", fontSize: 10 }}
+                    tick={{ fill: "#A9947A", fontSize: 10 }}
                     axisLine={false}
                     tickLine={false}
                     width={40}
                   />
 
                   <Tooltip
-                    cursor={{ stroke: "#CBD5E1", strokeDasharray: "4 4" }}
+                    cursor={{ stroke: "#C5C9CB", strokeDasharray: "4 4" }}
                     content={<MonthlyTooltip currency={currency} />}
                   />
 
@@ -2320,13 +2321,13 @@ export default function ProfitabilityPage() {
                     yAxisId="profit"
                     type="monotone"
                     dataKey="gross_profit"
-                    stroke="#06B6D4"
+                    stroke="#657D7A"
                     strokeWidth={3}
                     fill="url(#monthlyProfitGradient)"
                     activeDot={{
                       r: 6,
-                      fill: "#06B6D4",
-                      stroke: "#FFFFFF",
+                      fill: "#657D7A",
+                      stroke: "#F8F5EF",
                       strokeWidth: 2,
                     }}
                     animationDuration={1200}
@@ -2337,14 +2338,14 @@ export default function ProfitabilityPage() {
                     yAxisId="margin"
                     type="monotone"
                     dataKey="gross_margin"
-                    stroke="#E8A317"
+                    stroke="#A9947A"
                     strokeWidth={2.5}
                     strokeDasharray="6 5"
                     dot={false}
                     activeDot={{
                       r: 5,
-                      fill: "#E8A317",
-                      stroke: "#FFFFFF",
+                      fill: "#A9947A",
+                      stroke: "#F8F5EF",
                       strokeWidth: 2,
                     }}
                     animationDuration={1400}
@@ -2357,13 +2358,13 @@ export default function ProfitabilityPage() {
             {/* MONTH SELECTOR */}
 
             <div style={{
-              borderTop: "1px solid #EDF0F4",
+              borderTop: "1px solid #EAE5DB",
               paddingTop: "16px",
               marginTop: "8px",
             }}>
               <p style={{
                 fontSize: "10px",
-                color: "#94A3B8",
+                color: "#89939B",
                 fontWeight: 750,
                 letterSpacing: "0.8px",
                 margin: "0 0 11px",
@@ -2390,9 +2391,9 @@ export default function ProfitabilityPage() {
                         flexShrink: 0,
                         padding: "8px 12px",
                         borderRadius: "8px",
-                        border: active ? "1px solid #06B6D4" : "1px solid #E2E8F0",
-                        background: active ? "#ECFEFF" : "#F8FAFC",
-                        color: active ? "#0891B2" : "#64748B",
+                        border: active ? "1px solid #657D7A" : "1px solid #D9DDE0",
+                        background: active ? "#E7E9E2" : "#F3EFE7",
+                        color: active ? "#718397" : "#64717C",
                         fontSize: "11px",
                         fontWeight: 700,
                         cursor: "pointer",
@@ -2416,21 +2417,21 @@ export default function ProfitabilityPage() {
                 marginTop: "15px",
               }}>
                 {[
-                  ["Gross Sales", formatMoney(selectedMonth.gross_sales, currency), "#0891B2"],
-                  ["Net Cost", formatMoney(selectedMonth.total_net_cost, currency), "#64748B"],
-                  ["Cancellation Loss", formatMoney(selectedMonth.cancellation_leakage, currency), "#DC6B6B"],
-                  ["Completed Bookings", selectedMonth.completed_bookings, "#059669"],
+                  ["Gross Sales", formatMoney(selectedMonth.gross_sales, currency), "#718397"],
+                  ["Net Cost", formatMoney(selectedMonth.total_net_cost, currency), "#64717C"],
+                  ["Cancellation Loss", formatMoney(selectedMonth.cancellation_leakage, currency), "#9B8468"],
+                  ["Completed Bookings", selectedMonth.completed_bookings, "#657D7A"],
                 ].map(([label, value, color]) => (
                   <div
                     key={label}
                     style={{
                       padding: "13px",
                       borderRadius: "11px",
-                      background: "#F8FAFC",
-                      border: "1px solid #EDF0F4",
+                      background: "#F3EFE7",
+                      border: "1px solid #EAE5DB",
                     }}
                   >
-                    <p style={{ fontSize: "10px", color: "#94A3B8", margin: "0 0 7px" }}>
+                    <p style={{ fontSize: "10px", color: "#89939B", margin: "0 0 7px" }}>
                       {label}
                     </p>
 
