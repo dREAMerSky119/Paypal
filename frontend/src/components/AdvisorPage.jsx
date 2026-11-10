@@ -90,7 +90,7 @@ export default function AdvisorPage() {
     <>
       <PageHeader eyebrow={info.eyebrow} title={<>{info.title}<span className="title-period">.</span></>} description={info.description}
         action={<Button to={info.action.to} variant="outline">{info.action.label}</Button>} />
-      <p className="inv-banner" role="note"><Status tone="gold">Sample data</Status> Plans are built only from the generated sample inventory, so every price traces to an inventory item. This is not live availability, and no AI model is guessing prices.</p>
+      
       <div className="adv-shell">
         <div className="adv-chat" aria-live="polite">
           {messages.length === 0 && (

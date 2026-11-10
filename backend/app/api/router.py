@@ -9,6 +9,9 @@ from app.api.routes import (
     overview,
     analytics,
     forecast,
+    simulator,
+    responsible,
+    ai_advisor,
 )
 
 api_router = APIRouter()
@@ -20,3 +23,6 @@ api_router.include_router(inventory.router)
 api_router.include_router(advisor.router)
 api_router.include_router(analytics.router)
 api_router.include_router(forecast.router)
+api_router.include_router(simulator.router)
+api_router.include_router(responsible.router)
+api_router.include_router(ai_advisor.router)

@@ -1,5 +1,12 @@
 import os
+from pathlib import Path
 from dataclasses import dataclass, field
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parents[2] / ".env")
+except ImportError:
+    pass
 
 
 def _split_csv(value: str) -> list[str]:
@@ -21,6 +28,9 @@ class Settings:
     cors_origin_regex: str | None = field(
         default_factory=lambda: os.getenv("CORS_ORIGIN_REGEX") or None
     )
+
+    gemini_api_key: str | None = field(default_factory=lambda: os.getenv("GEMINI_API_KEY") or None)
+    gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-3.6-flash"))
 
 
 settings = Settings()

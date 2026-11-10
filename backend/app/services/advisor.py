@@ -354,9 +354,6 @@ def respond(message: str, constraints: dict | None = None, destination_hint: str
     base = dict(constraints or {})
     if destination_hint and not base.get("destination") and destination_hint in {d["slug"] for d in _destinations()}:
         base["destination"] = destination_hint
-    # Constraints the caller sent explicitly are checked on their own first, so a bad
-    # value is rejected rather than silently replaced by whatever the message parses to.
-    validate(base)
     merged = validate(merge_constraints(base, parse_request(message)))
     missing = missing_fields(merged)
     if missing:

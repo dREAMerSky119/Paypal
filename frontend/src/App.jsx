@@ -19,6 +19,10 @@ const featurePages = {
   "/app/ai-studio": lazy(() => import("./components/AdvisorPage.jsx")),
   "/app/analytics": lazy(() => import("./components/ProfitabilityPage.jsx")),
   "/app/forecast": lazy(() => import("./components/DemandForecastPage.jsx")),
+  "/app/simulator": lazy(() => import("./components/SimulatorPage.jsx")),
+  "/app/responsible-travel": lazy(() => import("./components/ResponsibleTravelPage.jsx")),
+  "/app/ai-operations": lazy(() => import("./components/AIOperationsPage.jsx")),
+  "/app/related-spots": lazy(() => import("./components/RelatedSpotsPage.jsx")),
 };
 
 function RouteFallback() {
