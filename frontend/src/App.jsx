@@ -18,6 +18,7 @@ const featurePages = {
   "/app/inventory": lazy(() => import("./components/InventoryPage.jsx")),
   "/app/ai-studio": lazy(() => import("./components/AdvisorPage.jsx")),
   "/app/analytics": lazy(() => import("./components/ProfitabilityPage.jsx")),
+  "/app/forecast": lazy(() => import("./components/DemandForecastPage.jsx")),
 };
 
 function RouteFallback() {
