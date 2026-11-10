@@ -23,6 +23,7 @@ import {
   Button,
   PageHeader,
   MetricCard,
+  Status,
 } from "./ui.jsx";
 
 import {
@@ -40,7 +41,7 @@ import {
   CartesianGrid,
 } from "recharts";
 
-import { api } from "../lib/api.js";
+import { useApi } from "../lib/useApi.js";
 
 import "../profitability.css";
 
@@ -373,19 +374,7 @@ export default function ProfitabilityPage() {
   const [period, setPeriod] = useState("all");
   const [groupBy, setGroupBy] = useState("destination");
 
-  const [summary, setSummary] = useState(null);
-  const [breakdown, setBreakdown] = useState([]);
-
-  const [monthlyTrend, setMonthlyTrend] = useState([]);
   const [selectedMonth, setSelectedMonth] = useState(null);
-
-  const [loading, setLoading] = useState(true);
-  const [breakdownLoading, setBreakdownLoading] = useState(false);
-  const [monthlyLoading, setMonthlyLoading] = useState(true);
-
-  const [error, setError] = useState("");
-  const [breakdownError, setBreakdownError] = useState("");
-  const [monthlyError, setMonthlyError] = useState("");
 
   const [treemapView, setTreemapView] = useState("sales");
   const [selectedItem, setSelectedItem] = useState(null);
@@ -395,152 +384,46 @@ export default function ProfitabilityPage() {
   // MARKUP SIMULATOR STATE
 
   const [markupPercentage, setMarkupPercentage] = useState(15);
-  const [markupData, setMarkupData] = useState(null);
-  const [markupLoading, setMarkupLoading] = useState(true);
-  const [markupError, setMarkupError] = useState("");
+
+  // Data comes from the shared useApi hook so every request gets the same
+  // loading, "waking the server" and error handling as the other pages.
+  const periodQuery = getPeriodQuery(period);
+  const periodParams = periodQuery.replace("?", "&");
+  const errorText = (err, fallback) => (err ? err.detail || err.message || fallback : "");
+
+  const summaryApi = useApi(`/analytics/profitability/summary${periodQuery}`);
+  const breakdownApi = useApi(`/analytics/profitability/breakdown?group_by=${groupBy}${periodParams}`);
+  const monthlyApi = useApi(`/analytics/profitability/monthly-trend${periodQuery}`);
+  const markupApi = useApi(`/analytics/profitability/markup-what-if?markup_percentage=${markupPercentage}${periodParams}`);
+
+  const summary = summaryApi.data;
+  const breakdown = useMemo(() => breakdownApi.data?.results || [], [breakdownApi.data]);
+  const monthlyTrend = useMemo(() => monthlyApi.data?.results || [], [monthlyApi.data]);
+  const markupData = markupApi.data;
+
+  const loading = summaryApi.isLoading;
+  const breakdownLoading = breakdownApi.isLoading;
+  const monthlyLoading = monthlyApi.isLoading;
+  const markupLoading = markupApi.isLoading;
+  const error = errorText(summaryApi.error, "Failed to load profitability data");
+  const breakdownError = errorText(breakdownApi.error, "Failed to load breakdown");
+  const monthlyError = errorText(monthlyApi.error, "Failed to load monthly profitability");
+  const markupError = errorText(markupApi.error, "Failed to calculate markup simulation");
+  const isWaking = [summaryApi, breakdownApi, monthlyApi, markupApi].some((r) => r.isWaking);
 
   const currency = summary?.currency || "USD";
 
-  // ==========================================
-  // FETCH SUMMARY
-  // ==========================================
-
+  // A new breakdown or period clears any selection made on the old data.
   useEffect(() => {
-    const fetchSummary = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const data = await api(
-          `/profitability/summary${getPeriodQuery(period)}`
-        );
-        setSummary(data);
-      } catch (err) {
-        setError(
-          err.detail ||
-          err.message ||
-          "Failed to load profitability data"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSummary();
-  }, [period]);
-
-  // ==========================================
-  // FETCH BREAKDOWN
-  // ==========================================
-
-  useEffect(() => {
-    const fetchBreakdown = async () => {
-      try {
-        setBreakdownLoading(true);
-        setBreakdownError("");
-
-        setSelectedItem(null);
-        setSelectedMarginItem(null);
-        setSelectedDonutItem(null);
-
-        const data = await api(
-          `/profitability/breakdown?group_by=${groupBy}${getPeriodQuery(period).replace("?", "&")}`
-        );
-
-        setBreakdown(data.results || []);
-      } catch (err) {
-        setBreakdownError(
-          err.detail ||
-          err.message ||
-          "Failed to load breakdown"
-        );
-
-        setBreakdown([]);
-      } finally {
-        setBreakdownLoading(false);
-      }
-    };
-
-    fetchBreakdown();
+    setSelectedItem(null);
+    setSelectedMarginItem(null);
+    setSelectedDonutItem(null);
   }, [groupBy, period]);
 
-  // ==========================================
-  // FETCH MONTHLY TREND
-  // ==========================================
-
+  // Default the trend selection to the latest month whenever the trend reloads.
   useEffect(() => {
-    const fetchMonthlyTrend = async () => {
-      try {
-        setMonthlyLoading(true);
-        setMonthlyError("");
-
-        const data = await api(
-          `/profitability/monthly-trend${getPeriodQuery(period)}`
-        );
-
-        const results = data.results || [];
-
-        setMonthlyTrend(results);
-
-        if (results.length > 0) {
-          setSelectedMonth(results[results.length - 1]);
-        }
-      } catch (err) {
-        setMonthlyError(
-          err.detail ||
-          err.message ||
-          "Failed to load monthly profitability"
-        );
-
-        setMonthlyTrend([]);
-      } finally {
-        setMonthlyLoading(false);
-      }
-    };
-
-    fetchMonthlyTrend();
-  }, [period]);
-
-  // ==========================================
-  // FETCH MARKUP WHAT-IF SIMULATION
-  // ==========================================
-
-  useEffect(() => {
-    let isActive = true;
-
-    const fetchMarkupSimulation = async () => {
-      try {
-        setMarkupLoading(true);
-        setMarkupError("");
-
-        const data = await api(
-          `/profitability/markup-what-if?markup_percentage=${markupPercentage}${getPeriodQuery(period).replace("?", "&")}`
-        );
-
-        if (isActive) {
-          setMarkupData(data);
-        }
-      } catch (err) {
-        if (isActive) {
-          setMarkupError(
-            err.detail ||
-            err.message ||
-            "Failed to calculate markup simulation"
-          );
-        }
-      } finally {
-        if (isActive) {
-          setMarkupLoading(false);
-        }
-      }
-    };
-
-    fetchMarkupSimulation();
-
-    return () => {
-      isActive = false;
-    };
-  }, [markupPercentage, period]);
+    setSelectedMonth(monthlyTrend.length ? monthlyTrend[monthlyTrend.length - 1] : null);
+  }, [monthlyTrend]);
 
   // ==========================================
   // SELECTED TREEMAP ITEM
@@ -764,7 +647,11 @@ export default function ProfitabilityPage() {
         </div>
       </div>
 
-      {loading && <p>Loading profitability data...</p>}
+      <p className="inv-banner" role="note"><Status tone="gold">Sample data</Status> All bookings here are simulated from seeded rates. Nothing is a real booking, price or supplier.</p>
+
+      {isWaking && <p role="status" aria-live="polite">Waking the server, this can take up to a minute on the free plan…</p>}
+
+      {loading && !summary && <p>Loading profitability data...</p>}
 
       {error && (
         <p className="error-message">{error}</p>

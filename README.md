@@ -89,3 +89,19 @@ Imported rows are held in memory and are lost on restart until a database is con
 
 Seasonal rate shapes: Hotel Booking Demand (Antonio, Almeida & Nunes, 2019). Map tiles and data: © OpenStreetMap contributors.
 Overture Maps, Inside Airbnb, Wikipedia and others will be added to the attribution as each feature starts using them.
+
+## Profitability analysis (feature 2)
+
+`/app/analytics` is live: KPI cards, margin by destination / supplier / package / season, a monthly trend and a markup what-if
+slider. Every figure comes from about 7,000 **simulated** bookings (`backend/app/data/bookings.json`, rebuilt by
+`backend/scripts/build_bookings.py`); nothing is a real booking. Definitions are in
+[`docs/data-dictionary.md`](docs/data-dictionary.md#bookings-and-profitability).
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/analytics/profitability/summary` | KPIs for the range. `from` / `to` are optional ISO dates (inclusive); `from` after `to` returns 400 |
+| `GET /api/analytics/profitability/breakdown` | `group_by=destination\|supplier\|package\|season` (supplier rows carry the name and `supplier_id`) |
+| `GET /api/analytics/profitability/monthly-trend` | one row per month |
+| `GET /api/analytics/profitability/markup-what-if` | `markup_percentage` 0 to 100; read-only, so GET. Uses the same engine and date filter as the summary |
+| `GET /api/analytics/suppliers/ranking` | `by=gross_profit\|gross_margin\|cancellation_leakage`, `limit` 1 to 100 |
+

@@ -83,3 +83,29 @@ Frankfurter/ECB), `row_counts`.
 * Imported CSV rows live in process memory and vanish on restart until a database is configured.
 * The in-memory store scans linearly. At 171 items a list call takes about 2 ms; revisit with an
   index if inventory grows past roughly 10,000 items.
+
+## Bookings and profitability
+
+`backend/app/data/bookings.json` holds 7,054 simulated booking lines (May 2025 to Oct 2026, all `data_origin = synthetic_sample`).
+`build_dataset.py` samples lead time, cancellation, deposit type, segment and nights jointly from real Hotel Booking Demand rows
+(same arrival month); prices come from the seeded rates. `build_bookings.py` only extracts the `booking` rows from
+`wayfare_master.csv` and writes this file. About 34% of lines are cancelled, in line with Hotel Booking Demand.
+Only the *shapes* (lead time, cancellation, seasonality) come from the real data, never price levels.
+
+| Field | Meaning |
+| --- | --- |
+| `net_amount` / `sell_amount` | Supplier cost and price charged, USD, for the whole line (rate x quantity) |
+| `fees` | Payment and distribution fees, 2.5% of `sell_amount` |
+| `is_canceled` | Cancelled lines earn no sales and no cost of goods |
+| `cancel_penalty` | **Unrecovered loss on a cancelled line**: 8% of net cost for "No Deposit", 10% for "Refundable", 0 for "Non Refund" (the agency keeps the deposit). This is an assumption, not a measurement |
+
+Metric definitions used by `services/profitability.py`:
+
+* **gross sales** = sum of `sell_amount` over completed lines.
+* **gross profit** = completed (`sell_amount - net_amount - fees`) **minus cancellation leakage**.
+* **gross margin** = gross profit / gross sales.
+* **cancellation leakage** = sum of `cancel_penalty` over cancelled lines. It is a cost and is subtracted from profit.
+* **margin forgone on cancelled** = the margin cancelled lines would have earned (`sell - net - fees`). It is an opportunity cost, shown for context, and is **not** subtracted from profit.
+* **markup** = (sell - net) / net on completed lines. The what-if applies a new markup to completed net cost and keeps fees and leakage unchanged; it assumes demand does not react to price.
+* All groupings use the booking's own `date` (check-in). Seasons are calendar seasons (Dec to Feb winter), not destination-specific ones.
+
