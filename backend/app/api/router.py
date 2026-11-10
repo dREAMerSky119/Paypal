@@ -7,6 +7,7 @@ from app.api.routes import (
     health,
     inventory,
     overview,
+    payments,
     analytics,
     forecast,
 )
@@ -20,3 +21,4 @@ api_router.include_router(inventory.router)
 api_router.include_router(advisor.router)
 api_router.include_router(analytics.router)
 api_router.include_router(forecast.router)
+api_router.include_router(payments.router)

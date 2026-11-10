@@ -56,6 +56,9 @@ cd frontend && npm run report:images   # lists stock photo IDs reused across des
 | `FRONTEND_URL` | backend (Render) | Comma-separated allowed origins, e.g. your Vercel URL |
 | `CORS_ORIGIN_REGEX` | backend, optional | Also allow Vercel preview URLs |
 | `VITE_API_URL` | frontend (Vercel) | Base URL of the backend, no trailing slash |
+| `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` | backend (Render) | PayPal **sandbox** app credentials. Without them payment endpoints return 503 |
+| `DEPOSIT_PCT` | backend, optional | Percent of the trip price charged up front (default 30) |
+| `BOOKINGS_DB` | backend, optional | SQLite path for bookings (default: OS temp dir, lost on restart) |
 
 Render's free plan sleeps when idle; the first API call can take about a minute, and the UI shows a "waking the server" state instead of an error.
 
@@ -105,3 +108,14 @@ slider. Every figure comes from about 7,000 **simulated** bookings (`backend/app
 | `GET /api/analytics/profitability/markup-what-if` | `markup_percentage` 0 to 100; read-only, so GET. Uses the same engine and date filter as the summary |
 | `GET /api/analytics/suppliers/ranking` | `by=gross_profit\|gross_margin\|cancellation_leakage`, `limit` 1 to 100 |
 
+
+## PayPal sandbox payments (hackathon work)
+
+Phase-wise plan: [`docs/paypal-ai-plan.md`](docs/paypal-ai-plan.md). The server recomputes the trip price from inventory and charges a deposit; the browser never supplies an amount.
+
+| Endpoint | Purpose |
+| --- | --- |
+| `GET /api/payments/config` | Public client id, environment (always `sandbox`) and deposit percentage |
+| `POST /api/payments/orders` | Body `{"constraints": {...}}` (same shape the advisor returns). Plans the trip, opens a PayPal order for the deposit |
+| `POST /api/payments/orders/{order_id}/capture` | Captures an approved order we created; verifies amount and currency; safe to retry |
+| `GET /api/payments/bookings/{booking_id}` | Booking and proposal snapshot |

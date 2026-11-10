@@ -19,3 +19,10 @@ services:
       # e.g. https://your-app.vercel.app
       - key: FRONTEND_URL
         sync: false
+      # PayPal sandbox app credentials (set in the Render dashboard)
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      - key: DEPOSIT_PCT
+        value: "30"

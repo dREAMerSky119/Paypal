@@ -23,4 +23,27 @@ class Settings:
     )
 
 
+def _float_env(name: str, default: float) -> float:
+    try:
+        return float(os.getenv(name, default))
+    except ValueError:
+        return default
+
+
+@dataclass(frozen=True)
+class PayPalSettings:
+    """PayPal sandbox credentials. Sandbox only: live mode is deliberately unsupported."""
+    client_id: str = field(default_factory=lambda: os.getenv("PAYPAL_CLIENT_ID", "").strip())
+    client_secret: str = field(default_factory=lambda: os.getenv("PAYPAL_CLIENT_SECRET", "").strip())
+    # Share of the server-computed trip price charged up front, in percent (1-100).
+    deposit_pct: float = field(default_factory=lambda: min(100.0, max(1.0, _float_env("DEPOSIT_PCT", 30.0))))
+    # SQLite file for bookings. Empty means a file in the OS temp dir.
+    bookings_db: str = field(default_factory=lambda: os.getenv("BOOKINGS_DB", "").strip())
+
+    @property
+    def configured(self) -> bool:
+        return bool(self.client_id and self.client_secret)
+
+
 settings = Settings()
+paypal_settings = PayPalSettings()
