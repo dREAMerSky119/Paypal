@@ -23,12 +23,16 @@ Deliverables
 
 Exit criteria: `pytest` green; with real sandbox keys a curl-driven order can be created.
 
-## Phase 2 — Gemini in the advisor
+## Phase 2 — Gemini in the advisor (done)
 
 - `app/services/llm.py`: thin Gemini wrapper (`GEMINI_API_KEY`, free tier).
 - Constraint extraction by Gemini (structured output), falling back to the existing regex `parse_request` when the key is missing or the call fails.
 - Reply and itinerary narrative written by Gemini from the proposal numbers; a guard checks that every dollar figure in the text matches a proposal line, otherwise the deterministic `describe()` is used.
 - Tests with the Gemini call mocked.
+
+Built: `services/llm.py` (REST via httpx, no new dependency), `sanitize_llm_constraints` and `narrative_is_faithful` in `advisor.py`, an `ai` field on the advisor response, `tests/conftest.py` that keeps the suite offline, `tests/test_llm_advisor.py`.
+Design rules: rules beat Gemini on conflict; the narrative call never sees the user's message, net cost or margin; the key goes in a header, never the URL.
+Known limit: the rule parser reads "weekend" as 2 nights and wins over Gemini, so "long weekend" stays 2 nights.
 
 Exit criteria: advisor works with and without a key; no price in text that is not in the proposal.
 

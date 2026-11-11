@@ -26,3 +26,8 @@ services:
         sync: false
       - key: DEPOSIT_PCT
         value: "30"
+      # Gemini (optional; the advisor falls back to rules without it)
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash

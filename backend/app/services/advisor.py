@@ -1,10 +1,14 @@
 """Inventory-grounded travel advisor.
 
-Deterministic on purpose: the request is parsed into constraints with plain rules,
-and the proposal is built only from rows in the inventory, so every price in a
-proposal traces to an inventory item id. No LLM is involved, so no API key, no
-cost, and nothing can be invented. (An LLM can later sit in front of `plan()` to
-phrase replies; it should keep calling this module for the numbers.)
+The proposal is deterministic: it is built only from rows in the inventory, so every
+price traces to an inventory item id, and `plan()` never calls an LLM.
+
+Gemini (optional, see services/llm.py) sits around `plan()` in two places:
+  * before it, to understand free text. Its output is whitelisted by
+    `sanitize_llm_constraints`; plain rules win on conflict and fill whatever it misses.
+  * after it, to phrase the reply. Any money figure in that text must match the
+    proposal (`narrative_is_faithful`), otherwise the rule-based `describe()` is used.
+With no key, or on any Gemini failure, the advisor behaves exactly as it did without an LLM.
 """
 import math
 import re
@@ -12,6 +16,7 @@ import statistics
 from collections import defaultdict
 
 from app.services import inventory as inv
+from app.services import llm
 from app.services.seed import load_json
 
 MAX_NIGHTS = 21
@@ -99,6 +104,99 @@ def parse_request(text: str) -> dict:
             out["pace"] = pace
             break
     return out
+
+
+def _int_in(value, lo: int, hi: int) -> int | None:
+    if isinstance(value, bool) or not isinstance(value, (int, float)) or value != int(value):
+        return None
+    return int(value) if lo <= int(value) <= hi else None
+
+
+def sanitize_llm_constraints(raw: dict | None) -> dict:
+    """Keep only well-formed, in-range values from the model. Anything else is dropped
+    silently: a confused model must never turn into a validation error for the user."""
+    if not isinstance(raw, dict):
+        return {}
+    out: dict = {}
+    if raw.get("destination") in {d["slug"] for d in _destinations()}:
+        out["destination"] = raw["destination"]
+    if (n := _int_in(raw.get("nights"), 1, MAX_NIGHTS)) is not None:
+        out["nights"] = n
+    if (t := _int_in(raw.get("travellers"), 1, MAX_TRAVELLERS)) is not None:
+        out["travellers"] = t
+    if raw.get("tier") in TIER_RANK:
+        out["tier"] = raw["tier"]
+    if raw.get("pace") in PER_DAY:
+        out["pace"] = raw["pace"]
+    if isinstance(raw.get("interests"), list):
+        interests = [i for i in dict.fromkeys(raw["interests"]) if isinstance(i, str) and i in INTERESTS]
+        if interests:
+            out["interests"] = interests
+    amount = raw.get("budget_amount")
+    if (not isinstance(amount, bool) and isinstance(amount, (int, float)) and 0 < amount < 1e9
+            and raw.get("budget_currency") in ("INR", "USD")):
+        out["budget_input"] = {"amount": float(amount), "currency": raw["budget_currency"],
+                               "per_person": raw.get("budget_per_person") is True}
+    return out
+
+
+def llm_constraints(message: str, previous: dict | None) -> dict:
+    """Constraints Gemini understood from the message (sanitized), or {} if unavailable."""
+    raw = llm.extract_constraints(
+        message, previous,
+        destinations=[d["slug"] for d in _destinations()],
+        tiers=list(TIER_RANK), paces=list(PER_DAY), interests=list(INTERESTS),
+    )
+    return sanitize_llm_constraints(raw)
+
+
+_MONEY_RE = re.compile(r"(?:\$|US\$|USD\s*|₹|Rs\.?\s*|INR\s*|€|£)\s*([\d,]+(?:\.\d+)?)", re.I)
+_MAX_NARRATIVE_CHARS = 700
+
+
+def _allowed_amounts(proposal: dict) -> list[float]:
+    t = proposal["totals"]
+    vals = [t["sell_usd"], t["per_person_usd"]]
+    if proposal.get("budget_usd") is not None:
+        vals.append(proposal["budget_usd"])
+    for l in proposal["lines"]:
+        vals += [l["sell_usd"], l["unit_sell_usd"]]
+    return vals
+
+
+def narrative_is_faithful(text: str, proposal: dict) -> bool:
+    """True only if the text is plain, short, and every money amount it states is a figure
+    from the proposal (cents-exact, or rounded to a whole unit). Net cost and margin are
+    internal, so quoting them fails the check too."""
+    if not text or len(text) > _MAX_NARRATIVE_CHARS or re.search(r"[*#`]|\n\s*[-•]", text):
+        return False
+    allowed = _allowed_amounts(proposal)
+    for m in _MONEY_RE.finditer(text):
+        raw = m.group(1).replace(",", "").rstrip(".")
+        try:
+            val = float(raw)
+        except ValueError:
+            return False
+        tol = 0.011 if "." in raw else 0.51
+        if not any(abs(val - a) <= tol for a in allowed):
+            return False
+    return True
+
+
+def narrative_facts(proposal: dict) -> dict:
+    """The only things the model is told about a proposal. Deliberately excludes net cost,
+    margin, item ids and the user's own message."""
+    name = next((d["name"] for d in _destinations() if d["slug"] == proposal["destination"]), proposal["destination"])
+    t = proposal["totals"]
+    stay = next((l["name"] for l in proposal["lines"] if l["type"] == "stay"), None)
+    return {
+        "destination": name, "nights": proposal["nights"], "travellers": proposal["travellers"],
+        "stay": stay,
+        "activities": [{"day": l["day"], "name": l["name"]} for l in proposal["lines"] if l["day"]],
+        "total_usd": t["sell_usd"], "per_person_usd": t["per_person_usd"],
+        "budget_usd": proposal.get("budget_usd"), "within_budget": proposal["within_budget"],
+        "notes": [c["message"] for c in proposal["checks"] if c["level"] == "warn"],
+    }
 
 
 def merge_constraints(previous: dict | None, new: dict) -> dict:
@@ -357,9 +455,20 @@ def respond(message: str, constraints: dict | None = None, destination_hint: str
     # Constraints the caller sent explicitly are checked on their own first, so a bad
     # value is rejected rather than silently replaced by whatever the message parses to.
     validate(base)
-    merged = validate(merge_constraints(base, parse_request(message)))
+    # Layers, weakest first: earlier turns < Gemini's reading < explicit rule matches.
+    # Rules win because they are deterministic; Gemini fills what the rules cannot read
+    # ("a long weekend", "2 lakh rupees").
+    understood = llm_constraints(message, base)
+    merged = validate(merge_constraints(merge_constraints(base, understood), parse_request(message)))
+    ai = {"model": llm.model_name() if llm.is_configured() else None,
+          "understanding": "gemini" if understood else "rules", "reply": "rules"}
     missing = missing_fields(merged)
     if missing:
-        return {"reply": clarifying_question(missing), "constraints": merged, "missing": missing, "proposal": None}
+        return {"reply": clarifying_question(missing), "constraints": merged, "missing": missing,
+                "proposal": None, "ai": ai}
     proposal = plan(merged)
-    return {"reply": describe(merged, proposal), "constraints": merged, "missing": [], "proposal": proposal}
+    reply = describe(merged, proposal)
+    text = llm.narrate(narrative_facts(proposal))
+    if text and narrative_is_faithful(text, proposal):
+        reply, ai["reply"] = text, "gemini"
+    return {"reply": reply, "constraints": merged, "missing": [], "proposal": proposal, "ai": ai}

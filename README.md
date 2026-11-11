@@ -57,6 +57,8 @@ cd frontend && npm run report:images   # lists stock photo IDs reused across des
 | `CORS_ORIGIN_REGEX` | backend, optional | Also allow Vercel preview URLs |
 | `VITE_API_URL` | frontend (Vercel) | Base URL of the backend, no trailing slash |
 | `PAYPAL_CLIENT_ID`, `PAYPAL_CLIENT_SECRET` | backend (Render) | PayPal **sandbox** app credentials. Without them payment endpoints return 503 |
+| `GEMINI_API_KEY` | backend (Render), optional | Google AI Studio key. Enables Gemini in the advisor; without it the advisor is rule-based |
+| `GEMINI_MODEL` | backend, optional | Gemini model id (default `gemini-2.5-flash`); change it if Google retires that one |
 | `DEPOSIT_PCT` | backend, optional | Percent of the trip price charged up front (default 30) |
 | `BOOKINGS_DB` | backend, optional | SQLite path for bookings (default: OS temp dir, lost on restart) |
 
@@ -119,3 +121,10 @@ Phase-wise plan: [`docs/paypal-ai-plan.md`](docs/paypal-ai-plan.md). The server 
 | `POST /api/payments/orders` | Body `{"constraints": {...}}` (same shape the advisor returns). Plans the trip, opens a PayPal order for the deposit |
 | `POST /api/payments/orders/{order_id}/capture` | Captures an approved order we created; verifies amount and currency; safe to retry |
 | `GET /api/payments/bookings/{booking_id}` | Booking and proposal snapshot |
+
+## Gemini in the advisor (hackathon work)
+
+`POST /api/advisor/plan` now returns an `ai` field: `{model, understanding: "gemini"|"rules", reply: "gemini"|"rules"}`.
+Gemini reads free text into trip constraints (whitelisted and range-checked; explicit rule matches win on conflict) and phrases the reply.
+It never sets prices: the proposal is still built only from inventory, and a Gemini reply is discarded unless every money figure in it matches the proposal.
+With no key, or on any Gemini error or timeout, the advisor behaves exactly as before.

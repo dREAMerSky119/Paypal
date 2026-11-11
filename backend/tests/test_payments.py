@@ -194,3 +194,27 @@ def test_money_and_deposit_rounding(fake):
 def test_rate_limit(fake):
     codes = [order({"constraints": {}}).status_code for _ in range(route.LIMIT + 1)]
     assert codes[-1] == 429
+
+
+# ------------------------------------------------------------------ .env loading
+
+def test_env_file_is_loaded_and_real_env_wins(monkeypatch, tmp_path):
+    from app.core.config import load_env_file
+    f = tmp_path / ".env"
+    f.write_text('# comment\nPAYPAL_TEST_A=from_file\nPAYPAL_TEST_B = "quoted value"\nexport PAYPAL_TEST_C=x\nPAYPAL_TEST_D=from_file\n', encoding="utf-8")
+    for k in "ABCD":
+        monkeypatch.delenv(f"PAYPAL_TEST_{k}", raising=False)
+    monkeypatch.setenv("PAYPAL_TEST_D", "from_real_env")
+    load_env_file(f)
+    import os
+    assert os.environ["PAYPAL_TEST_A"] == "from_file"
+    assert os.environ["PAYPAL_TEST_B"] == "quoted value"
+    assert os.environ["PAYPAL_TEST_C"] == "x"
+    assert os.environ["PAYPAL_TEST_D"] == "from_real_env"
+    for k in "ABC":
+        monkeypatch.delenv(f"PAYPAL_TEST_{k}", raising=False)
+
+
+def test_missing_env_file_is_fine(tmp_path):
+    from app.core.config import load_env_file
+    load_env_file(tmp_path / "nope.env")
