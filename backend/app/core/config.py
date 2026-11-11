@@ -1,6 +1,6 @@
 import os
-from dataclasses import dataclass, field
 from pathlib import Path
+from dataclasses import dataclass, field
 
 
 def load_env_file(path: Path) -> None:
@@ -29,7 +29,6 @@ def load_env_file(path: Path) -> None:
 # backend/.env, found relative to this file so it works from any working directory.
 load_env_file(Path(__file__).resolve().parents[2] / ".env")
 
-
 def _split_csv(value: str) -> list[str]:
     return [item.strip().rstrip("/") for item in value.split(",") if item.strip()]
 
@@ -49,6 +48,9 @@ class Settings:
     cors_origin_regex: str | None = field(
         default_factory=lambda: os.getenv("CORS_ORIGIN_REGEX") or None
     )
+
+    gemini_api_key: str | None = field(default_factory=lambda: os.getenv("GEMINI_API_KEY") or None)
+    gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-3.6-flash"))
 
 
 def _float_env(name: str, default: float) -> float:

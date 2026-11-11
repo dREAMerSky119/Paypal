@@ -19,7 +19,7 @@ const proposal = {
     { item_id: "item_0021", name: "Test stay", type: "stay", day: null, qty_label: "1 room(s) × 3 night(s)", sell_usd: 900 },
     { item_id: "item_0027", name: "Tea class", type: "experience", day: 1, qty_label: "2 traveller(s)", sell_usd: 200 },
   ],
-  checks: [{ level: "info", message: "Sample data. Prices are generated, not live availability." }],
+  checks: [{ level: "info", message: "" }],
 };
 
 const CONFIG = { configured: true, client_id: "sandbox-client", environment: "sandbox", currency: "USD", deposit_pct: 30 };

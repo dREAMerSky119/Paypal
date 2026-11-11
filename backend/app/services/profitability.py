@@ -6,17 +6,6 @@ from datetime import datetime, date
 from app.services.seed import load_json
 
 
-def get_supplier_names():
-    """Map supplier id -> display name from the inventory seed."""
-    return {s["id"]: s["name"] for s in load_json("inventory_suppliers.json")}
-
-
-def attach_supplier_names(results):
-    """Replace supplier ids in breakdown rows with names; the id is kept as supplier_id."""
-    names = get_supplier_names()
-    return [{**row, "supplier_id": row["name"], "name": names.get(row["name"], row["name"])} for row in results]
-
-
 def get_bookings():
     """Load the generated booking records."""
     return load_json("bookings.json")
@@ -89,21 +78,12 @@ def get_group_name(booking, group_by):
 
 
 def calculate_summary(bookings):
-    """Calculate the main profitability metrics.
-
-    Definitions (see docs/data-dictionary.md):
-    * gross_profit = completed sell - net cost - fees - cancellation_leakage.
-    * cancellation_leakage = the unrecovered loss on cancelled bookings (the seed's
-      cancel_penalty_usd: 8-10% of net cost, 0 for non-refundable deposits). It is a cost.
-    * margin_forgone_on_cancelled = the margin those cancelled bookings would have earned.
-      It is an opportunity cost, reported for context and NOT subtracted from profit.
-    """
+    """Calculate the main profitability metrics."""
 
     gross_sales = 0.0
     total_net_cost = 0.0
     completed_profit = 0.0
     cancellation_leakage = 0.0
-    margin_forgone = 0.0
 
     completed_bookings = 0
     cancelled_bookings = 0
@@ -118,7 +98,6 @@ def calculate_summary(bookings):
         if booking["is_canceled"]:
             cancelled_bookings += 1
             cancellation_leakage += cancel_penalty
-            margin_forgone += sell_amount - net_amount - fees
 
         else:
             completed_bookings += 1
@@ -143,7 +122,6 @@ def calculate_summary(bookings):
         "gross_profit": round(gross_profit, 2),
         "gross_margin": round(gross_margin, 2),
         "cancellation_leakage": round(cancellation_leakage, 2),
-        "margin_forgone_on_cancelled": round(margin_forgone, 2),
         "completed_bookings": completed_bookings,
         "cancelled_bookings": cancelled_bookings,
         "total_bookings": len(bookings),
