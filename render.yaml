@@ -24,6 +24,9 @@ services:
         sync: false
       - key: PAYPAL_CLIENT_SECRET
         sync: false
+      # Aiven PostgreSQL Service URI (set in the Render dashboard; never commit it)
+      - key: DATABASE_URL
+        sync: false
       - key: DEPOSIT_PCT
         value: "30"
       # Gemini (optional; the advisor falls back to rules without it)

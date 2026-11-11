@@ -5,5 +5,5 @@ holidays>=0.50
 scikit-learn>=1.5
 # enrich_overture.py (optional, needs network access to Overture's S3 bucket)
 duckdb>=1.0
-# load_to_sql.py (optional, for a hosted Postgres)
-sqlalchemy>=2.0
+# load_to_sql.py (loads the seed into Aiven; same psycopg driver as the app)
+psycopg[binary]>=3.2

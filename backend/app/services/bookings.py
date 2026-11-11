@@ -1,48 +1,53 @@
-"""Booking store (SQLite).
+"""Booking store.
 
-Render's free plan has no persistent disk, so by default the file lives in the OS
-temp dir and is lost on restart. That is fine for a sandbox demo; set BOOKINGS_DB
-to a durable path (or swap this module for the Aiven SQL database) later.
+With DATABASE_URL set, bookings live in the Aiven PostgreSQL table `checkout_booking`, so they survive
+restarts and redeploys. Without it they go to a local SQLite file (BOOKINGS_DB, default: the OS temp dir,
+lost on restart on Render's free plan), which is fine for local development and tests.
 """
 import json
 import secrets
-import sqlite3
 import tempfile
-from contextlib import closing
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
 
+from app import db
 from app.core.config import paypal_settings as settings
 
 STATUS_CREATED = "CREATED"
 STATUS_PAID = "PAID"
 
+# Keep in sync with the same table in scripts/schema.sql.
 _SCHEMA = """
-CREATE TABLE IF NOT EXISTS bookings (
-    id TEXT PRIMARY KEY,
-    paypal_order_id TEXT UNIQUE NOT NULL,
-    status TEXT NOT NULL,
+CREATE TABLE IF NOT EXISTS checkout_booking (
+    id VARCHAR(24) PRIMARY KEY,
+    paypal_order_id VARCHAR(64) UNIQUE NOT NULL,
+    status VARCHAR(12) NOT NULL,
     constraints_json TEXT NOT NULL,
     proposal_json TEXT NOT NULL,
-    sell_usd REAL NOT NULL,
-    deposit_usd REAL NOT NULL,
-    capture_id TEXT,
-    payer_email TEXT,
-    created_at TEXT NOT NULL,
-    paid_at TEXT
+    sell_usd DOUBLE PRECISION NOT NULL,
+    deposit_usd DOUBLE PRECISION NOT NULL,
+    capture_id VARCHAR(64),
+    payer_email VARCHAR(200),
+    created_at VARCHAR(32) NOT NULL,
+    paid_at VARCHAR(32)
 )
 """
+_ready: set[str] = set()
 
 
 def _path() -> str:
     return settings.bookings_db or str(Path(tempfile.gettempdir()) / "wayfare_bookings.sqlite3")
 
 
-def _connect() -> sqlite3.Connection:
-    conn = sqlite3.connect(_path())
-    conn.row_factory = sqlite3.Row
-    conn.execute(_SCHEMA)
-    return conn
+@contextmanager
+def _connect():
+    target = db.url() if db.enabled() else "sqlite:///" + _path()
+    with db.connect(target) as conn:
+        if db.kind(target) == "sqlite" or target not in _ready:  # Postgres: create the table once per process
+            conn.execute(_SCHEMA)
+            _ready.add(target)
+        yield conn
 
 
 def _now() -> str:
@@ -53,7 +58,7 @@ def new_id() -> str:
     return "WF-" + secrets.token_hex(5).upper()
 
 
-def _row(r: sqlite3.Row | None) -> dict | None:
+def _row(r: dict | None) -> dict | None:
     if r is None:
         return None
     d = dict(r)
@@ -64,9 +69,9 @@ def _row(r: sqlite3.Row | None) -> dict | None:
 
 
 def create(booking_id: str, order_id: str, constraints: dict, proposal: dict, sell_usd: float, deposit_usd: float) -> dict:
-    with closing(_connect()) as conn, conn:
+    with _connect() as conn:
         conn.execute(
-            "INSERT INTO bookings (id, paypal_order_id, status, constraints_json, proposal_json, sell_usd, deposit_usd, created_at)"
+            "INSERT INTO checkout_booking (id, paypal_order_id, status, constraints_json, proposal_json, sell_usd, deposit_usd, created_at)"
             " VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
             (booking_id, order_id, STATUS_CREATED, json.dumps(constraints), json.dumps(proposal),
              sell_usd, deposit_usd, _now()),
@@ -75,19 +80,19 @@ def create(booking_id: str, order_id: str, constraints: dict, proposal: dict, se
 
 
 def get(booking_id: str) -> dict | None:
-    with closing(_connect()) as conn:
-        return _row(conn.execute("SELECT * FROM bookings WHERE id = ?", (booking_id,)).fetchone())
+    with _connect() as conn:
+        return _row(conn.one("SELECT * FROM checkout_booking WHERE id = ?", (booking_id,)))
 
 
 def get_by_order(order_id: str) -> dict | None:
-    with closing(_connect()) as conn:
-        return _row(conn.execute("SELECT * FROM bookings WHERE paypal_order_id = ?", (order_id,)).fetchone())
+    with _connect() as conn:
+        return _row(conn.one("SELECT * FROM checkout_booking WHERE paypal_order_id = ?", (order_id,)))
 
 
 def mark_paid(booking_id: str, capture_id: str, payer_email: str | None) -> dict:
-    with closing(_connect()) as conn, conn:
+    with _connect() as conn:
         conn.execute(
-            "UPDATE bookings SET status = ?, capture_id = ?, payer_email = ?, paid_at = ? WHERE id = ?",
+            "UPDATE checkout_booking SET status = ?, capture_id = ?, payer_email = ?, paid_at = ? WHERE id = ?",
             (STATUS_PAID, capture_id, payer_email, _now(), booking_id),
         )
     return get(booking_id)

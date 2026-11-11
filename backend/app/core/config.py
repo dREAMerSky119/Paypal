@@ -87,6 +87,18 @@ class GeminiSettings:
         return bool(self.api_key)
 
 
+@dataclass(frozen=True)
+class DatabaseSettings:
+    """Aiven PostgreSQL connection. Empty means no database: the app serves the committed
+    JSON seed and keeps bookings in a local SQLite file (the pre-database behaviour)."""
+    url: str = field(default_factory=lambda: os.getenv("DATABASE_URL", "").strip())
+
+    @property
+    def configured(self) -> bool:
+        return bool(self.url)
+
+
 settings = Settings()
+db_settings = DatabaseSettings()
 paypal_settings = PayPalSettings()
 gemini_settings = GeminiSettings()

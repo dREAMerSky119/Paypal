@@ -1,8 +1,8 @@
 """Inventory store: loads the committed seed into memory and answers queries.
 
-Render's free plan has no persistent disk, so everything lives in process memory.
-Rows added through the CSV import are held in memory too and disappear on restart
-until a database is configured (Phase 3 of #9 / #3 introduces Postgres).
+The seed is read once into process memory (from the Aiven database when DATABASE_URL is set,
+otherwise from the committed JSON). Rows added through the CSV import are written to the
+database first, so they survive restarts; without a database they are held in memory only.
 """
 import csv
 import io
@@ -11,6 +11,8 @@ import threading
 from collections import defaultdict
 from datetime import date
 
+from app import db
+from app.services import db_seed
 from app.services.seed import load_json
 
 ITEM_TYPES = ("stay", "guide", "experience", "transport")
@@ -18,6 +20,7 @@ TIERS = ("budget", "mid", "luxury")
 MAX_PAGE_SIZE = 100
 MAX_IMPORT_BYTES = 1_000_000
 MAX_IMPORT_ROWS = 5_000
+COLUMN_LIMITS = {"supplier": 200, "category": 60, "unit": 30}  # = VARCHAR sizes in scripts/schema.sql
 
 REQUIRED_COLUMNS = ("name", "destination", "type", "tier", "currency", "net_price", "lat", "lon")
 OPTIONAL_COLUMNS = ("supplier", "category", "unit", "capacity")
@@ -260,7 +263,7 @@ def _validate_row(row: dict, fx: dict, destinations: set) -> dict:
     name = row["name"].strip()
     if len(name) > 200:
         raise ValueError("name is longer than 200 characters")
-    return {
+    out = {
         "destination": dest, "name": name, "type": typ, "tier": tier, "currency": cur,
         "base_net_price": price, "base_net_price_usd": round(price / fx[cur], 2),
         "lat": lat, "lon": lon, "capacity": capacity,
@@ -268,6 +271,10 @@ def _validate_row(row: dict, fx: dict, destinations: set) -> dict:
         "unit": (row.get("unit") or "").strip() or None,
         "supplier": (row.get("supplier") or "").strip() or name,
     }
+    for field, limit in COLUMN_LIMITS.items():  # the database columns are VARCHAR(n)
+        if len(out[field] or "") > limit:
+            raise ValueError(f"{field} is longer than {limit} characters")
+    return out
 
 
 def import_csv(raw: bytes, dry_run: bool = False) -> dict:
@@ -326,7 +333,7 @@ def _commit(clean: list[dict]) -> list[dict]:
     sup_by_name = {(x["destination"], x["name"].lower()): x for x in s["suppliers"]}
     today = date.today()
     period, first = today.strftime("%Y-%m"), today.replace(day=1).isoformat()
-    added = []
+    added, new_sups, new_rates = [], [], {}
     for c in clean:
         sp = sup_by_name.get((c["destination"], c["supplier"].lower()))
         if sp is None:
@@ -335,7 +342,7 @@ def _commit(clean: list[dict]) -> list[dict]:
                   "kind": c["type"], "tier": c["tier"], "lat": c["lat"], "lon": c["lon"],
                   "currency": c["currency"], "locality": None, "ownership": None, "chain_brand": None,
                   "overture_id": None, "data_origin": "imported"}
-            s["suppliers"].append(sp)
+            new_sups.append(sp)
             sup_by_name[(c["destination"], c["supplier"].lower())] = sp
         n_item += 1
         item = {
@@ -347,8 +354,12 @@ def _commit(clean: list[dict]) -> list[dict]:
             "responsible": {"ownership": None, "chain_brand": None, "locality": None},
             "data_origin": "imported",
         }
-        s["items"].append(item)
-        s["rates"][item["id"]] = [{"period": period, "date": first, "net_price": c["base_net_price"],
-                                   "net_price_usd": c["base_net_price_usd"]}]
+        new_rates[item["id"]] = [{"period": period, "date": first, "net_price": c["base_net_price"],
+                                  "net_price_usd": c["base_net_price_usd"]}]
         added.append(item)
+    if db.enabled():  # database first: if this fails nothing in memory has changed and the import errors out
+        db_seed.save_imported(new_sups, added, new_rates)
+    s["suppliers"].extend(new_sups)
+    s["items"].extend(added)
+    s["rates"].update(new_rates)
     return added

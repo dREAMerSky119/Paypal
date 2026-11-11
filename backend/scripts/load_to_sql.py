@@ -1,16 +1,35 @@
 #!/usr/bin/env python3
 """
-Split wayfare_master.csv into tables and load them into an SQL database.
+Load wayfare_master.csv (+ the hand-written JSON content) into the Wayfare database.
 
-  pip install pandas sqlalchemy "psycopg[binary]"        # Aiven PostgreSQL
-  export DATABASE_URL="postgresql+psycopg://avnadmin:PASSWORD@HOST:PORT/defaultdb?sslmode=require"
-  python load_to_sql.py --csv wayfare_master.csv --schema schema.sql --reset
+  pip install -r requirements-scripts.txt
+  export DATABASE_URL="postgres://avnadmin:PASSWORD@HOST:PORT/defaultdb?sslmode=require"   # Aiven > Overview > Service URI
+  python scripts/load_to_sql.py --reset          # run from backend/; DATABASE_URL may also live in backend/.env
+
+  --reset   drop and recreate the SEED tables first (everything in wayfare_master.csv + content_doc,
+            imported inventory rows included). App-owned tables such as checkout_booking are never dropped.
+            Without --reset the load refuses to run if the database already holds seed data.
+  --check   validate the CSV against schema.sql (column lengths, duplicate ids) and exit; touches no database.
 
 Local test without a server:  --url sqlite:///wayfare_test.db
+The whole load is one transaction: it either completes or leaves the database as it was.
 """
-import argparse, json, os, re
+import argparse
+import json
+import math
+import re
+import sys
+from datetime import date
+from pathlib import Path
+
 import pandas as pd
-from sqlalchemy import create_engine, text
+
+BACKEND = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(BACKEND))
+from app import db  # noqa: E402
+
+CONTENT_DOCS = ("destinations.json", "overview_seed.json", "inventory_meta.json")
+INT_COLS = {"nights", "lead_time_days", "is_canceled", "travellers", "travel_min"}
 
 # record_type -> (table, {csv/attr column -> table column}, [attr keys to expand from attrs_json])
 SPEC = {
@@ -57,6 +76,7 @@ SPEC = {
 DATE_COLS = {"rate_date", "check_in", "check_out", "booking_date", "period_date", "start_date", "end_date", "holiday_date"}
 
 
+
 def table_frame(df, rtype, mapping, attrs):
     sub = df[df.record_type == rtype].copy()
     out = pd.DataFrame({dst: sub[src] for src, dst in mapping.items()})
@@ -67,29 +87,124 @@ def table_frame(df, rtype, mapping, attrs):
     for c in out.columns:
         if c in DATE_COLS:
             out[c] = pd.to_datetime(out[c], errors="coerce").dt.date
-    return out.dropna(axis=1, how="all") if False else out
+    return out
+
+
+def parse_schema(sql_text):
+    """-> (statements, {table: {column: max_len or None}}) from schema.sql."""
+    ddl = [s.strip() for s in re.sub(r"--.*", "", sql_text).split(";") if s.strip()]
+    cols = {}
+    for s in ddl:
+        m = re.match(r"CREATE TABLE (?:IF NOT EXISTS )?(\w+)\s*\((.*)\)\s*$", s, re.S)
+        if not m:
+            continue
+        depth, buf, parts = 0, "", []
+        for ch in m.group(2):
+            depth += ch == "("
+            depth -= ch == ")"
+            if ch == "," and depth == 0:
+                parts.append(buf); buf = ""
+            else:
+                buf += ch
+        parts.append(buf)
+        table = {}
+        for p in parts:
+            tok = p.split()
+            if not tok or tok[0].upper() in ("PRIMARY", "UNIQUE", "FOREIGN", "CONSTRAINT"):
+                continue
+            ln = re.search(r"VARCHAR\((\d+)\)", p, re.I)
+            table[tok[0]] = int(ln.group(1)) if ln else None
+        cols[m.group(1)] = table
+    return ddl, cols
+
+
+def _clean(v, col, dialect):
+    if v is None or v is pd.NaT or (isinstance(v, float) and math.isnan(v)):
+        return None
+    if not isinstance(v, (str, bytes, list, dict)) and pd.isna(v):  # pd.NA and friends
+        return None
+    if hasattr(v, "item") and not isinstance(v, (str, date)):
+        v = v.item()  # numpy scalar -> python
+    if col in INT_COLS and isinstance(v, (int, float)):
+        return int(v)
+    if isinstance(v, date) and dialect == "sqlite":
+        return v.isoformat()
+    return v
+
+
+def build_rows(df, schema_cols):
+    """-> {table: (columns, rows)}; raises ValueError listing every problem found."""
+    out, problems = {}, []
+    for rtype, (table, mapping, attrs) in SPEC.items():
+        t = table_frame(df, rtype, mapping, attrs)
+        unknown = [c for c in t.columns if c not in schema_cols[table]]
+        if unknown:
+            problems.append(f"{table}: columns not in schema.sql: {unknown}")
+            continue
+        pk = t.columns[0]
+        dups = t[pk][t[pk].duplicated()].unique().tolist()
+        if dups:
+            problems.append(f"{table}: duplicate {pk} values, e.g. {dups[:3]}")
+        for c in t.columns:
+            limit = schema_cols[table][c]
+            if limit:
+                longest = t[c].dropna().astype(str).str.len().max()
+                if longest and longest > limit:
+                    problems.append(f"{table}.{c}: longest value is {longest} chars, schema allows {limit}")
+        out[table] = (list(t.columns), t)
+    if problems:
+        raise ValueError("\n".join(problems))
+    return out
+
+
+def run(url, csv_path, schema_path, reset=False, check_only=False, log=print):
+    schema_text = Path(schema_path).read_text()
+    ddl, schema_cols = parse_schema(schema_text)
+    df = pd.read_csv(csv_path, low_memory=False)
+    frames = build_rows(df, schema_cols)
+    if check_only:
+        log("CSV matches schema.sql: " + ", ".join(f"{t}={len(f)}" for t, (_, f) in frames.items()))
+        return {t: len(f) for t, (_, f) in frames.items()}
+    seed_tables = [t for t, _ in frames.items()] + ["content_doc"]
+    counts = {}
+    with db.connect(url) as c:
+        if reset:
+            for t in reversed(seed_tables):
+                c.execute(f"DROP TABLE IF EXISTS {t}")
+        for s in ddl:
+            c.execute(s)
+        if not reset and c.one("SELECT COUNT(*) AS n FROM destination")["n"]:
+            raise SystemExit("Database already holds seed data. Re-run with --reset to replace it (imported inventory rows are dropped too).")
+        for table, (cols, frame) in frames.items():
+            rows = [tuple(_clean(v, col, c.dialect) for col, v in zip(cols, rec)) for rec in frame.itertuples(index=False, name=None)]
+            c.executemany(f"INSERT INTO {table} ({', '.join(cols)}) VALUES ({', '.join('?' * len(cols))})", rows)
+            counts[table] = len(rows)
+            log(f"{table:22s} {len(rows):6d} rows")
+        for name in CONTENT_DOCS:
+            body = (BACKEND / "app" / "data" / name).read_text(encoding="utf-8")
+            json.loads(body)  # refuse to store malformed JSON
+            c.execute("INSERT INTO content_doc (doc_name, body) VALUES (?, ?)", (name, body))
+            counts["content_doc"] = counts.get("content_doc", 0) + 1
+        log(f"{'content_doc':22s} {counts['content_doc']:6d} rows")
+    log("done")
+    return counts
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--csv", default="wayfare_master.csv"); ap.add_argument("--schema", default="schema.sql")
-    ap.add_argument("--url", default=os.getenv("DATABASE_URL")); ap.add_argument("--reset", action="store_true", help="drop and recreate all tables first")
+    ap.add_argument("--csv", default=str(Path(__file__).parent / "data" / "wayfare_master.csv"))
+    ap.add_argument("--schema", default=str(Path(__file__).parent / "schema.sql"))
+    ap.add_argument("--url", default=None, help="default: DATABASE_URL (env or backend/.env)")
+    ap.add_argument("--reset", action="store_true")
+    ap.add_argument("--check", action="store_true")
     a = ap.parse_args()
-    assert a.url, "set DATABASE_URL or pass --url"
-    eng = create_engine(a.url)
-    ddl = [s.strip() for s in re.sub(r"--.*", "", open(a.schema).read()).split(";") if s.strip()]
-    tables = [re.search(r"CREATE TABLE (\w+)", s).group(1) for s in ddl if s.startswith("CREATE TABLE")]
-    with eng.begin() as c:
-        if a.reset:
-            for t in reversed(tables): c.execute(text(f"DROP TABLE IF EXISTS {t}"))
-        for s in ddl: c.execute(text(s))
-    df = pd.read_csv(a.csv, low_memory=False)
-    with eng.begin() as c:
-        for rtype, (table, mapping, attrs) in SPEC.items():
-            t = table_frame(df, rtype, mapping, attrs)
-            t.to_sql(table, c, if_exists="append", index=False, chunksize=1000)
-            print(f"{table:22s} {len(t):6d} rows")
-    print("done")
+    url = a.url or db.url()
+    if not url and not a.check:
+        sys.exit("Set DATABASE_URL (or pass --url).")
+    try:
+        run(url, a.csv, a.schema, reset=a.reset, check_only=a.check)
+    except ValueError as e:
+        sys.exit(f"CSV does not fit schema.sql:\n{e}")
 
 
 if __name__ == "__main__":

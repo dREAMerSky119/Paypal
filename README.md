@@ -87,7 +87,7 @@ Data is a labelled sample (see [`docs/data-dictionary.md`](docs/data-dictionary.
 curl -X POST "localhost:8000/api/inventory/import?dry_run=true" -H "Content-Type: text/csv" --data-binary @my_rates.csv
 ```
 
-Imported rows are held in memory and are lost on restart until a database is configured.
+Imported rows are saved to the Aiven database when `DATABASE_URL` is set (see [docs/database-setup.md](docs/database-setup.md)); without it they are held in memory and lost on restart.
 
 
 ## Attribution

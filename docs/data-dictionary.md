@@ -80,7 +80,7 @@ Frankfurter/ECB), `row_counts`.
   Overture's S3 bucket and is **untested**. Until it is run, supplier names are placeholders.
 * Inside Airbnb calendars are not used in this seed (seasonality comes from Hotel Booking Demand
   only), so the plan's Inside Airbnb attribution is not needed yet.
-* Imported CSV rows live in process memory and vanish on restart until a database is configured.
+* Imported CSV rows are written to the `item`/`supplier`/`rate` tables (`data_origin = 'imported'`) when `DATABASE_URL` is set; without a database they live in process memory and vanish on restart.
 * The in-memory store scans linearly. At 171 items a list call takes about 2 ms; revisit with an
   index if inventory grows past roughly 10,000 items.
 
