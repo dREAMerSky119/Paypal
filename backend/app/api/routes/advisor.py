@@ -29,6 +29,11 @@ def advisor_plan(body: PlanRequest, request: Request) -> dict:
         raise HTTPException(status_code=429, detail="Too many requests, try again in a minute")
     q.append(now)
     try:
+<<<<<<< HEAD
+=======
+        if body.constraints:
+            advisor.validate(body.constraints)
+>>>>>>> fe70b5b (Add updated project files final one)
         return advisor.respond(body.message, body.constraints, body.destination)
     except advisor.AdvisorError as e:
         raise HTTPException(status_code=422, detail=str(e))

@@ -3,8 +3,11 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
 import { AppRoutes } from "../App.jsx";
+<<<<<<< HEAD
 import { AuthProvider } from "../context/AuthContext.jsx";
 import { seedDemoSession } from "../test/demoSession.js";
+=======
+>>>>>>> fe70b5b (Add updated project files final one)
 
 const summary = {
   gross_sales: 395, total_net_cost: 350, gross_profit: 27, gross_margin: 6.84, cancellation_leakage: 8,
@@ -40,8 +43,12 @@ function mockApi(overrides = {}) {
 }
 
 function visit() {
+<<<<<<< HEAD
   seedDemoSession();
   return render(<AuthProvider><MotionConfig reducedMotion="always"><MemoryRouter initialEntries={["/app/analytics"]}><AppRoutes /></MemoryRouter></MotionConfig></AuthProvider>);
+=======
+  return render(<MotionConfig reducedMotion="always"><MemoryRouter initialEntries={["/app/analytics"]}><AppRoutes /></MemoryRouter></MotionConfig>);
+>>>>>>> fe70b5b (Add updated project files final one)
 }
 
 beforeEach(() => mockApi());
@@ -51,6 +58,7 @@ describe("ProfitabilityPage", () => {
   it("loads from the planned /analytics endpoints and shows the Sample data label", async () => {
     visit();
     expect(await screen.findByRole("heading", { level: 1 })).toHaveTextContent(/profitability analysis/i);
+<<<<<<< HEAD
     expect(await screen.findByText(/illustrative sample data/i)).toBeInTheDocument();
     await waitFor(() => {
       for (const p of ["/api/profitability/summary", "/api/profitability/breakdown",
@@ -59,6 +67,16 @@ describe("ProfitabilityPage", () => {
       }
     });
     expect(calls.some((c) => c.startsWith("/api/analytics/profitability/"))).toBe(false); // stale paths are not used
+=======
+    expect(screen.getByRole("note")).toHaveTextContent(/sample data/i);
+    await waitFor(() => {
+      for (const p of ["/api/analytics/profitability/summary", "/api/analytics/profitability/breakdown",
+        "/api/analytics/profitability/monthly-trend", "/api/analytics/profitability/markup-what-if"]) {
+        expect(calls.some((c) => c.startsWith(p))).toBe(true);
+      }
+    });
+    expect(calls.some((c) => c.startsWith("/api/profitability/"))).toBe(false); // old paths are gone
+>>>>>>> fe70b5b (Add updated project files final one)
   });
 
   it("re-requests the breakdown when the grouping changes", async () => {
@@ -80,13 +98,21 @@ describe("ProfitabilityPage", () => {
   });
 
   it("shows the server's explanation when the API rejects a request", async () => {
+<<<<<<< HEAD
     mockApi({ "/api/profitability/summary": { status: 400, body: { detail: "'from' date cannot be later than 'to' date" } } });
+=======
+    mockApi({ "/api/analytics/profitability/summary": { status: 400, body: { detail: "'from' date cannot be later than 'to' date" } } });
+>>>>>>> fe70b5b (Add updated project files final one)
     visit();
     expect(await screen.findByText(/cannot be later than/i)).toBeInTheDocument();
   });
 
   it("shows an error, not a blank page, when the breakdown fails", async () => {
+<<<<<<< HEAD
     mockApi({ "/api/profitability/breakdown": { status: 500, body: {} } });
+=======
+    mockApi({ "/api/analytics/profitability/breakdown": { status: 500, body: {} } });
+>>>>>>> fe70b5b (Add updated project files final one)
     visit();
     await waitFor(() => expect(screen.getAllByText(/request failed|failed to load/i).length).toBeGreaterThan(0));
   });

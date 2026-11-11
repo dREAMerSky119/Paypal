@@ -30,7 +30,11 @@ class Settings:
     )
 
     gemini_api_key: str | None = field(default_factory=lambda: os.getenv("GEMINI_API_KEY") or None)
+<<<<<<< HEAD
     gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-3.6-flash"))
+=======
+    gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite"))
+>>>>>>> fe70b5b (Add updated project files final one)
 
 
 settings = Settings()

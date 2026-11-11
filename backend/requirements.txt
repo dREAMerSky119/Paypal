@@ -1,8 +1,18 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> fe70b5b (Add updated project files final one)
 fastapi>=0.115
 uvicorn[standard]>=0.30
 google-genai>=1.0.0
 python-dotenv>=1.0.0
+<<<<<<< HEAD
 pandas==2.2.3
 numpy==2.1.3
 scikit-learn==1.6.1
 joblib==1.6.0
+=======
+numpy>=2.3.3,<3
+pandas==2.3.3
+joblib>=1.4.2
+>>>>>>> fe70b5b (Add updated project files final one)

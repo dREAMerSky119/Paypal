@@ -3,9 +3,12 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import { MemoryRouter, useLocation } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
 import { AppRoutes } from "../App.jsx";
+<<<<<<< HEAD
 import { AuthProvider } from "../context/AuthContext.jsx";
 import { seedDemoSession } from "../test/demoSession.js";
 import { PROFILE_STORAGE_KEY } from "../lib/profileStorage.js";
+=======
+>>>>>>> fe70b5b (Add updated project files final one)
 
 const mk = (n, over = {}) => ({
   id: `item_${n}`, name: `Sample Stay ${n}`, supplier_name: `Supplier ${n}`, destination: "kyoto-japan",
@@ -28,9 +31,14 @@ function mockApi(handler) {
 }
 
 function Where() { const l = useLocation(); return <output data-testid="where">{l.pathname + l.search}</output>; }
+<<<<<<< HEAD
 function visit(url, shouldSeed = true) {
   if (shouldSeed) seedDemoSession();
   return render(<AuthProvider><MotionConfig reducedMotion="always"><MemoryRouter initialEntries={[url]}><AppRoutes /><Where /></MemoryRouter></MotionConfig></AuthProvider>);
+=======
+function visit(url) {
+  return render(<MotionConfig reducedMotion="always"><MemoryRouter initialEntries={[url]}><AppRoutes /><Where /></MemoryRouter></MotionConfig>);
+>>>>>>> fe70b5b (Add updated project files final one)
 }
 const where = () => screen.getByTestId("where").textContent;
 
@@ -52,7 +60,11 @@ describe("InventoryPage", () => {
     await screen.findByRole("button", { name: "Sample Stay 1" });
     const q = new URLSearchParams(calls.find((c) => c.startsWith("/api/inventory?")).split("?")[1]);
     expect(Object.fromEntries(q)).toMatchObject({ destination: "kyoto-japan", type: "stay", tier: "mid", price_band: "30_75", q: "gion", sort: "price_desc", page: "2", page_size: "25" });
+<<<<<<< HEAD
     expect(screen.getByRole("tab", { name: /stays/i })).toHaveAttribute("aria-selected", "true");
+=======
+    expect(screen.getByLabelText("Type")).toHaveValue("stay");
+>>>>>>> fe70b5b (Add updated project files final one)
     expect(screen.getByLabelText("Sort")).toHaveValue("price_desc");
   });
 
@@ -64,6 +76,7 @@ describe("InventoryPage", () => {
     await waitFor(() => expect(where()).toBe("/app/inventory?tier=luxury"));
   });
 
+<<<<<<< HEAD
   it("browses categories from the same filtered inventory and keeps accurate server counts", async () => {
     mockApi((u) => {
       const type = u.searchParams.get("type") || "all";
@@ -93,6 +106,8 @@ describe("InventoryPage", () => {
     expect(screen.getByText(/USD 80/)).toBeInTheDocument();
   });
 
+=======
+>>>>>>> fe70b5b (Add updated project files final one)
   it("debounces search typing", async () => {
     vi.useFakeTimers({ shouldAdvanceTime: true });
     try {

@@ -10,6 +10,10 @@ from functools import lru_cache
 
 from app.core.config import settings
 from app.services import advisor, inventory
+<<<<<<< HEAD
+=======
+from app.services.seed import load_json
+>>>>>>> fe70b5b (Add updated project files final one)
 
 logger = logging.getLogger(__name__)
 
@@ -76,7 +80,11 @@ def _is_plan_request(message, constraints, messages=None):
     new_plan = re.search(
         r"\b(plan|create|build|prepare|generate|design)\b.*"
         r"\b(trip|itinerary|holiday|vacation|tour|package)\b"
+<<<<<<< HEAD
         r"|\b(trip|itinerary|holiday|vacation)\s+plan\b",
+=======
+        r"|\b(trip|itinerary|holiday|vacation)\s+plan\b|\bplan\b.*\b(?:nights?|days?)\b",
+>>>>>>> fe70b5b (Add updated project files final one)
         low,
     )
 
@@ -94,11 +102,19 @@ def _is_plan_request(message, constraints, messages=None):
 
     return bool(new_plan or modify_plan)
 
+<<<<<<< HEAD
 def _inventory_context(message):
     low = message.lower()
     if not re.search(r"\b(inventory|available|availability|hotels?|stays?|suppliers?|transport|transfers?|prices?|rates?|costs?|experiences?|guides?)\b", low):
         return None
     destination = advisor.find_destination(message)
+=======
+def _inventory_context(message, destination_hint=None):
+    low = message.lower()
+    if not re.search(r"\b(inventory|available|availability|hotels?|stays?|suppliers?|transport|transfers?|prices?|rates?|costs?|experiences?|guides?|recommend(?:ations?)?|places|things to do)\b", low):
+        return None
+    destination = advisor.find_destination(message) or destination_hint
+>>>>>>> fe70b5b (Add updated project files final one)
     requested_place = None
     if destination is None:
         place_match = re.search(r"\b(?:in|at|around)\s+([A-Za-z][A-Za-z -]{1,30}?)(?=\s+(?:for|with|during|from)\b|[?.!,]|$)", message, re.I)
@@ -139,6 +155,41 @@ def _inventory_context(message):
         } for x in result["items"]]
     }
 
+<<<<<<< HEAD
+=======
+def _travel_recommendations(destination: str | None) -> dict:
+    """Return grounded inventory items and destination attractions for the chat UI."""
+    if not destination:
+        return {"recommendations": [], "places": []}
+    try:
+        data = inventory.search_items(destination=destination, page=1, page_size=30, sort="price_asc")
+        by_type = {}
+        for item in data["items"]:
+            by_type.setdefault(item["type"], [])
+            if len(by_type[item["type"]]) < 3:
+                by_type[item["type"]].append({
+                    "id": item["id"], "name": item["name"], "type": item["type"],
+                    "tier": item["tier"], "destination": item["destination"],
+                    "currency": item["currency"], "price": item.get("base_net_price"),
+                    "unit": item.get("unit"), "supplier": item.get("supplier_name"),
+                    "locality": item.get("responsible", {}).get("locality"),
+                    "data_origin": item.get("data_origin"),
+                })
+        destinations = load_json("destinations.json")
+        dest = next((d for d in destinations if d["slug"] == destination), None)
+        places = [{
+            "name": a["name"], "category": a.get("category"),
+            "location": a.get("location"), "description": a.get("description", ""),
+            "duration": a.get("duration", ""),
+        } for a in (dest or {}).get("attractions", [])[:6]]
+        return {"recommendations": [item for group in by_type.values() for item in group],
+                "places": places}
+    except Exception:
+        logger.exception("Could not assemble destination recommendations")
+        return {"recommendations": [], "places": []}
+
+
+>>>>>>> fe70b5b (Add updated project files final one)
 def chat_with_unified_agent(messages: list[dict], constraints: dict | None = None) -> dict:
     if not messages:
         raise ValueError("Send a message to start the conversation.")
@@ -183,10 +234,30 @@ def chat_with_unified_agent(messages: list[dict], constraints: dict | None = Non
                     reply += f" Budget: ₹{_format_inr(proposal['budget_inr'])} — " + ("within budget." if proposal["within_budget"] else "over budget.")
             else:
                 reply = planned["reply"] + " INR conversion is not configured, so prices remain in their source currency."
+<<<<<<< HEAD
             return {"reply": reply, "constraints": planned["constraints"], "proposal": proposal, "mode": "planning"}
         return {"reply": planned["reply"], "constraints": planned["constraints"], "proposal": None, "mode": "planning"}
 
     context = _inventory_context(latest)
+=======
+            extras = _travel_recommendations(proposal["destination"])
+            return {"reply": reply, "constraints": planned["constraints"], "proposal": proposal,
+                    "mode": "planning", **extras}
+        destination = planned.get("constraints", {}).get("destination") or advisor.find_destination(latest)
+        extras = _travel_recommendations(destination)
+        return {"reply": planned["reply"], "constraints": planned["constraints"], "proposal": None,
+                "mode": "planning", **extras}
+
+    conversation_text = " ".join(
+        item["parts"][0]["text"] for item in history if item.get("parts")
+    )
+    conversation_destination = (
+        advisor.find_destination(latest)
+        or advisor.find_destination(conversation_text)
+        or (constraints or {}).get("destination")
+    )
+    context = _inventory_context(latest, conversation_destination)
+>>>>>>> fe70b5b (Add updated project files final one)
     contents = [dict(item) for item in history]
     if context is not None:
         contents[-1] = {
@@ -198,12 +269,23 @@ def chat_with_unified_agent(messages: list[dict], constraints: dict | None = Non
         response = get_client().models.generate_content(
             model=settings.gemini_model,
             contents=contents,
+<<<<<<< HEAD
             config={"system_instruction": SYSTEM_INSTRUCTIONS, "temperature": 0.35, "max_output_tokens": 1400},
+=======
+            config={"system_instruction": SYSTEM_INSTRUCTIONS, "max_output_tokens": 1400},
+>>>>>>> fe70b5b (Add updated project files final one)
         )
         answer = (response.text or "").strip()
         if not answer:
             raise AIProviderError("Gemini returned an empty response. Please try again.")
+<<<<<<< HEAD
         return {"reply": answer, "constraints": constraints or {}, "proposal": None, "mode": "conversation"}
+=======
+        destination = conversation_destination
+        extras = _travel_recommendations(destination)
+        return {"reply": answer, "constraints": constraints or {}, "proposal": None,
+                "mode": "conversation", **extras}
+>>>>>>> fe70b5b (Add updated project files final one)
     except AIConfigurationError:
         raise
     except AIProviderError:

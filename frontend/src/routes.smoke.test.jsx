@@ -5,8 +5,11 @@ import { MotionConfig } from "framer-motion";
 import { AppRoutes } from "./App.jsx";
 import { destinations } from "./data/destinations.js";
 import { featureInfo } from "./data/featureInfo.js";
+<<<<<<< HEAD
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { PROFILE_STORAGE_KEY, SESSION_STORAGE_KEY } from "./lib/profileStorage.js";
+=======
+>>>>>>> fe70b5b (Add updated project files final one)
 
 const overviewFixture = {
   is_sample: true,
@@ -22,14 +25,21 @@ const overviewFixture = {
 };
 
 function visit(path) {
+<<<<<<< HEAD
   return render(<AuthProvider><MotionConfig reducedMotion="always"><MemoryRouter initialEntries={[path]}><AppRoutes /></MemoryRouter></MotionConfig></AuthProvider>);
+=======
+  return render(<MotionConfig reducedMotion="always"><MemoryRouter initialEntries={[path]}><AppRoutes /></MemoryRouter></MotionConfig>);
+>>>>>>> fe70b5b (Add updated project files final one)
 }
 
 const inventoryFixture = { count: 0, page: 1, page_size: 25, pages: 1, items: [], is_sample: true };
 
 beforeEach(() => {
+<<<<<<< HEAD
   localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify({ "demo@agency.com": { fullName: "Rain Sharma", designation: "Travel designer", agencyType: "self-employed" } }));
   sessionStorage.setItem(SESSION_STORAGE_KEY, JSON.stringify({ email: "demo@agency.com" }));
+=======
+>>>>>>> fe70b5b (Add updated project files final one)
   vi.spyOn(globalThis, "fetch").mockImplementation(async (url) => {
     const body = String(url).includes("/api/inventory") ? inventoryFixture : overviewFixture;
     return new Response(JSON.stringify(body), { status: 200 });
@@ -42,7 +52,11 @@ const staticRoutes = [
   ["/home", /thoughtfully/i],
   [`/destinations/${destinations[0].slug}`, new RegExp(destinations[0].name, "i")],
   ["/app", /good (morning|afternoon|evening)/i],
+<<<<<<< HEAD
   ...Object.entries(featureInfo).map(([path, info]) => [path, path === "/app/anomalies" ? /supplier price anomalies/i : new RegExp(info.title, "i")]),
+=======
+  ...Object.entries(featureInfo).map(([path, info]) => [path, new RegExp(info.title, "i")]),
+>>>>>>> fe70b5b (Add updated project files final one)
 ];
 
 describe("every route renders", () => {
@@ -100,7 +114,11 @@ describe("every route renders", () => {
     await screen.findByRole("heading", { level: 1 });
     // the old workspace switcher and profile menu were buttons that did nothing
     expect(screen.queryByRole("button", { name: /northstar travel/i })).not.toBeInTheDocument();
+<<<<<<< HEAD
     expect(screen.queryByRole("button", { name: /rain sharma/i })).not.toBeInTheDocument();
+=======
+    expect(screen.queryByRole("button", { name: /alex morgan/i })).not.toBeInTheDocument();
+>>>>>>> fe70b5b (Add updated project files final one)
     expect(screen.queryByText(/new workspace/i)).not.toBeInTheDocument();
   });
 });

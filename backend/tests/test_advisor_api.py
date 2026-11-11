@@ -39,3 +39,35 @@ def test_rate_limit():
     codes = [post({"message": "kyoto 2 nights"}).status_code for _ in range(route.LIMIT + 1)]
     assert codes[-1] == 429
     route._hits.clear()
+<<<<<<< HEAD
+=======
+
+
+def test_unified_chat_plans_and_returns_inventory_recommendations():
+    r = client.post("/api/advisor/chat", json={
+        "messages": [{"role": "user", "content": "Plan 3 nights in Kyoto for 2"}]
+    })
+    body = r.json()
+    assert r.status_code == 200
+    assert body["mode"] == "planning"
+    assert body["proposal"]["destination"] == "kyoto-japan"
+    assert body["recommendations"]
+    assert {item["type"] for item in body["recommendations"]} >= {"stay", "guide", "experience"}
+    assert body["places"] and body["places"][0]["name"]
+
+
+def test_unified_chat_rejects_invalid_history():
+    r = client.post("/api/advisor/chat", json={
+        "messages": [{"role": "model", "content": "hello"}]
+    })
+    assert r.status_code == 422
+
+
+def test_inventory_follow_up_uses_destination_from_prior_turn():
+    from app.services.unified_assistant import _inventory_context
+
+    context = _inventory_context("show me local guides", "kyoto-japan")
+    assert context["destination_filter"] == "kyoto-japan"
+    assert context["count"] > 0
+    assert all(item["destination"] == "kyoto-japan" for item in context["items"])
+>>>>>>> fe70b5b (Add updated project files final one)

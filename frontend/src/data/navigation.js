@@ -1,6 +1,10 @@
 import {
   BarChart3, CalendarDays, Compass, Globe2, LayoutDashboard, Leaf,
+<<<<<<< HEAD
   MapPinned, ShieldAlert, Sparkles, WalletCards, Map, Bot,
+=======
+  MapPinned, ShieldAlert, Sparkles, WalletCards, Map,
+>>>>>>> fe70b5b (Add updated project files final one)
 } from "lucide-react";
 
 export const navGroups = [
@@ -8,7 +12,10 @@ export const navGroups = [
     { to: "/app", label: "Overview", icon: LayoutDashboard, end: true },
     { to: "/app/inventory", label: "Inventory", icon: Compass },
     { to: "/app/ai-studio", label: "AI studio", icon: Sparkles, tag: "BETA" },
+<<<<<<< HEAD
     { to: "/app/ai-operations", label: "AI operations", icon: Bot, tag: "NEW" },
+=======
+>>>>>>> fe70b5b (Add updated project files final one)
     { to: "/app/related-spots", label: "Related spots", icon: Map },
     { to: "/app/packages", label: "Packages", icon: WalletCards },
     { to: "/app/itinerary-studio", label: "Itinerary studio", icon: MapPinned },

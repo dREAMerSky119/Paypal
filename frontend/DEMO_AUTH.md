@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Wayfare browser demo session and profiles
 
 The current flow is a frontend prototype, not production authentication. Login accepts any syntactically valid email and non-empty password. The password is used only for the form validation step and is never persisted or sent. The temporary session stores the normalized email in `sessionStorage`; it provides navigation continuity only and is not a credential, token, or security boundary.
@@ -26,3 +27,14 @@ The FastAPI router currently has no authentication or profile endpoints. The fol
 When that API is available, replace `writeDemoSession`/`readDemoSession`/`clearDemoSession` with login/session/logout calls and replace `getSavedProfile`/`saveProfile` with authenticated retrieval/create/update calls. Keep the context interface stable so page components do not need to change.
 
 Google OAuth remains unconfigured and the UI does not claim it succeeded.
+=======
+# Frontend demo authentication
+
+The `/login` page is a frontend-only demo. It checks basic email formatting and requires a non-empty password, then navigates to `/home`. It does not call an authentication service, create a session, issue tokens, or verify credentials.
+
+Password input remains only in component memory while the page is mounted. The app does not write passwords to `localStorage` or `sessionStorage`. The Google sign-in control only explains that Google OAuth is not configured; it never reports a successful OAuth sign-in.
+
+This demo flow is not production authentication or a security boundary. Do not use it to protect real data. Production access requires backend authentication, secure session handling, and server-side authorization.
+
+updating auth for vercel checks
+>>>>>>> fe70b5b (Add updated project files final one)
