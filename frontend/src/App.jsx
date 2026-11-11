@@ -67,6 +67,14 @@ const featurePages = {
     import("./components/RelatedSpotsPage.jsx")
   ),
 
+  "/app/packages": lazy(() =>
+    import("./components/PackageBuilderPage.jsx")
+  ),
+
+  "/app/itinerary-studio": lazy(() =>
+    import("./components/ItineraryStudioPage.jsx")
+  ),
+
   // NEW: Supplier Price Anomaly Detection
   "/app/anomalies": lazy(() =>
     import("./components/SupplierAnomalyPage.jsx")
