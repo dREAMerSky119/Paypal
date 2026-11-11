@@ -71,6 +71,15 @@ const featurePages = {
   "/app/anomalies": lazy(() =>
     import("./components/SupplierAnomalyPage.jsx")
   ),
+
+  // Package Builder + Itinerary Studio
+  "/app/packages": lazy(() =>
+    import("./components/PackageBuilderPage.jsx")
+  ),
+
+  "/app/itinerary-studio": lazy(() =>
+    import("./components/ItineraryStudioPage.jsx")
+  ),
 };
 
 function RouteFallback() {

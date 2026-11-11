@@ -1,0 +1,7 @@
+{
+  "fee_rate": 0.025,
+  "method": "median booking fees / sell amount",
+  "source_rows": 7054,
+  "currency": "USD",
+  "is_sample": true
+}

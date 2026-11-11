@@ -1,0 +1,211 @@
+[
+  {
+    "id": "apt_VCE_dolomites-italy",
+    "destination": "dolomites-italy",
+    "name": "Venice Marco Polo Airport",
+    "category": "primary",
+    "type": "large_airport",
+    "distance_km": 126.7,
+    "travel_min": 163.0,
+    "iata": "VCE",
+    "municipality": "Venezia (VE)"
+  },
+  {
+    "id": "apt_TSF_dolomites-italy",
+    "destination": "dolomites-italy",
+    "name": "Treviso Airport",
+    "category": "alternate",
+    "type": "large_airport",
+    "distance_km": 108.9,
+    "travel_min": 143.0,
+    "iata": "TSF",
+    "municipality": "Treviso (TV)"
+  },
+  {
+    "id": "apt_BZO_dolomites-italy",
+    "destination": "dolomites-italy",
+    "name": "Bolzano Airport",
+    "category": "alternate",
+    "type": "medium_airport",
+    "distance_km": 54.8,
+    "travel_min": 84.0,
+    "iata": "BZO",
+    "municipality": "Bolzano (BZ)"
+  },
+  {
+    "id": "apt_INN_dolomites-italy",
+    "destination": "dolomites-italy",
+    "name": "Innsbruck Airport",
+    "category": "alternate",
+    "type": "large_airport",
+    "distance_km": 87.2,
+    "travel_min": 120.0,
+    "iata": "INN",
+    "municipality": "Innsbruck"
+  },
+  {
+    "id": "apt_KIX_kyoto-japan",
+    "destination": "kyoto-japan",
+    "name": "Kansai International Airport",
+    "category": "primary",
+    "type": "large_airport",
+    "distance_km": 78.9,
+    "travel_min": 111.0,
+    "iata": "KIX",
+    "municipality": "Osaka"
+  },
+  {
+    "id": "apt_ITM_kyoto-japan",
+    "destination": "kyoto-japan",
+    "name": "Osaka Itami International Airport",
+    "category": "alternate",
+    "type": "large_airport",
+    "distance_km": 37.2,
+    "travel_min": 65.0,
+    "iata": "ITM",
+    "municipality": "Osaka"
+  },
+  {
+    "id": "apt_RAK_marrakech-morocco",
+    "destination": "marrakech-morocco",
+    "name": "Marrakesh Menara Airport",
+    "category": "primary",
+    "type": "large_airport",
+    "distance_km": 5.0,
+    "travel_min": 30.0,
+    "iata": "RAK",
+    "municipality": "Marrakesh"
+  },
+  {
+    "id": "apt_SXR_kashmir-india",
+    "destination": "kashmir-india",
+    "name": "Srinagar International Airport",
+    "category": "primary",
+    "type": "large_airport",
+    "distance_km": 25.2,
+    "travel_min": 52.0,
+    "iata": "SXR",
+    "municipality": "Srinagar"
+  },
+  {
+    "id": "apt_JAI_jaipur-india",
+    "destination": "jaipur-india",
+    "name": "Jaipur International Airport",
+    "category": "primary",
+    "type": "large_airport",
+    "distance_km": 13.6,
+    "travel_min": 39.0,
+    "iata": "JAI",
+    "municipality": "Jaipur"
+  },
+  {
+    "id": "apt_UDR_udaipur-india",
+    "destination": "udaipur-india",
+    "name": "Maharana Pratap Airport",
+    "category": "primary",
+    "type": "medium_airport",
+    "distance_km": 22.1,
+    "travel_min": 49.0,
+    "iata": "UDR",
+    "municipality": "Udaipur"
+  },
+  {
+    "id": "apt_COK_kerala-india",
+    "destination": "kerala-india",
+    "name": "Cochin International Airport",
+    "category": "primary",
+    "type": "large_airport",
+    "distance_km": 37.0,
+    "travel_min": 65.0,
+    "iata": "COK",
+    "municipality": "Kochi"
+  },
+  {
+    "id": "apt_IXL_ladakh-india",
+    "destination": "ladakh-india",
+    "name": "Leh Kushok Bakula Rimpochee Airport",
+    "category": "primary",
+    "type": "medium_airport",
+    "distance_km": 14.2,
+    "travel_min": 40.0,
+    "iata": "IXL",
+    "municipality": "Leh"
+  },
+  {
+    "id": "apt_GAU_meghalaya-india",
+    "destination": "meghalaya-india",
+    "name": "Lokpriya Gopinath Bordoloi International Airport",
+    "category": "primary",
+    "type": "large_airport",
+    "distance_km": 90.0,
+    "travel_min": 123.0,
+    "iata": "GAU",
+    "municipality": "Guwahati"
+  },
+  {
+    "id": "apt_SHL_meghalaya-india",
+    "destination": "meghalaya-india",
+    "name": "Shillong Airport",
+    "category": "alternate",
+    "type": "medium_airport",
+    "distance_km": 41.9,
+    "travel_min": 70.0,
+    "iata": "SHL",
+    "municipality": "Shillong"
+  },
+  {
+    "id": "apt_DPS_bali-indonesia",
+    "destination": "bali-indonesia",
+    "name": "Denpasar I Gusti Ngurah Rai International Airport",
+    "category": "primary",
+    "type": "large_airport",
+    "distance_km": 18.3,
+    "travel_min": 44.0,
+    "iata": "DPS",
+    "municipality": "Kuta, Badung"
+  },
+  {
+    "id": "apt_KEF_iceland",
+    "destination": "iceland",
+    "name": "Keflavik International Airport",
+    "category": "primary",
+    "type": "large_airport",
+    "distance_km": 92.5,
+    "travel_min": 125.0,
+    "iata": "KEF",
+    "municipality": "Reykjavík"
+  },
+  {
+    "id": "apt_RKV_iceland",
+    "destination": "iceland",
+    "name": "Reykjavík Domestic Airport",
+    "category": "alternate",
+    "type": "medium_airport",
+    "distance_km": 63.3,
+    "travel_min": 94.0,
+    "iata": "RKV",
+    "municipality": "Reykjavík"
+  },
+  {
+    "id": "apt_NAP_amalfi-coast-italy",
+    "destination": "amalfi-coast-italy",
+    "name": "Naples International Airport",
+    "category": "primary",
+    "type": "large_airport",
+    "distance_km": 37.4,
+    "travel_min": 65.0,
+    "iata": "NAP",
+    "municipality": "Napoli"
+  },
+  {
+    "id": "apt_QSR_amalfi-coast-italy",
+    "destination": "amalfi-coast-italy",
+    "name": "Salerno Costa d'Amalfi Airport",
+    "category": "alternate",
+    "type": "medium_airport",
+    "distance_km": 27.2,
+    "travel_min": 54.0,
+    "iata": "QSR",
+    "municipality": "Salerno"
+  }
+]
