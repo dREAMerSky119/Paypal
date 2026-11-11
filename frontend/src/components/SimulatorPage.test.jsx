@@ -3,6 +3,8 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import { MemoryRouter } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
 import { AppRoutes } from "../App.jsx";
+import { AuthProvider } from "../context/AuthContext.jsx";
+import { seedDemoSession } from "../test/demoSession.js";
 
 // jsdom has no ResizeObserver, which recharts' ResponsiveContainer needs.
 globalThis.ResizeObserver ??= class { observe() {} unobserve() {} disconnect() {} };
@@ -60,7 +62,8 @@ function mockApi({ run } = {}) {
 }
 
 function visit(path = "/app/simulator") {
-  return render(<MotionConfig reducedMotion="always"><MemoryRouter initialEntries={[path]}><AppRoutes /></MemoryRouter></MotionConfig>);
+  seedDemoSession();
+  return render(<AuthProvider><MotionConfig reducedMotion="always"><MemoryRouter initialEntries={[path]}><AppRoutes /></MemoryRouter></MotionConfig></AuthProvider>);
 }
 
 beforeEach(() => { mockApi(); localStorage.clear(); });

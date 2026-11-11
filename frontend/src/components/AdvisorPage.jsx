@@ -3,9 +3,10 @@ import { useSearchParams } from "react-router-dom";
 import { ArrowUp, RotateCcw, Sparkles } from "lucide-react";
 import { Button, PageHeader, Status } from "./ui.jsx";
 import { api } from "../lib/api.js";
-import { formatMoney } from "../lib/format.js";
 import { destinations } from "../data/destinations.js";
 import { featureInfo } from "../data/featureInfo.js";
+import { useAuth } from "../context/AuthContext.jsx";
+import PriceDisplay from "./PriceDisplay.jsx";
 import "../advisor.css";
 
 const SUGGESTIONS = [
@@ -17,15 +18,16 @@ const SUGGESTIONS = [
 
 const TYPE_LABEL = { stay: "Stay", experience: "Experience", guide: "Guide", transport: "Transfer" };
 
-function Proposal({ p }) {
+function Proposal({ p, displayCurrency }) {
   const t = p.totals;
+  const money = (amount, sourceLabel = "USD itinerary estimate") => <PriceDisplay amount={amount} currency="USD" usdReference={amount} displayCurrency={displayCurrency} sourceLabel={sourceLabel} compact />;
   const days = [...new Set(p.lines.filter((l) => l.day).map((l) => l.day))].sort((a, b) => a - b);
   const base = p.lines.filter((l) => !l.day);
   const Row = ({ l }) => (
     <li className="adv-line">
       <span className="adv-line-type">{TYPE_LABEL[l.type] || l.type}</span>
       <span className="adv-line-name"><strong>{l.name}</strong><small>{l.qty_label} · {l.item_id}</small></span>
-      <span className="adv-line-price">{formatMoney(l.sell_usd)}</span>
+      <span className="adv-line-price"><PriceDisplay amount={l.sell_usd} currency="USD" usdReference={l.sell_usd} displayCurrency={displayCurrency} sourceLabel="USD itinerary estimate" compact/></span>
     </li>
   );
   return (
@@ -33,11 +35,11 @@ function Proposal({ p }) {
       <header>
         <p className="eyebrow">PROPOSAL · {p.nights} NIGHTS · {p.travellers} TRAVELLER{p.travellers === 1 ? "" : "S"}</p>
         <div className="adv-totals">
-          <div><span>Sell price</span><strong>{formatMoney(t.sell_usd)}</strong></div>
-          <div><span>Per person</span><strong>{formatMoney(t.per_person_usd)}</strong></div>
-          <div><span>Net cost</span><strong>{formatMoney(t.net_usd)}</strong></div>
-          <div><span>Margin</span><strong>{formatMoney(t.margin_usd)} <em>({t.margin_pct}%)</em></strong></div>
-          {p.budget_usd != null && <div><span>Budget</span><strong>{formatMoney(p.budget_usd)} <em>{p.within_budget ? "· within" : "· over"}</em></strong></div>}
+          <div><span>Sell price</span><strong>{money(t.sell_usd)}</strong></div>
+          <div><span>Per person</span><strong>{money(t.per_person_usd)}</strong></div>
+          <div><span>Net cost</span><strong>{money(t.net_usd)}</strong></div>
+          <div><span>Margin</span><strong>{money(t.margin_usd)} <em>({t.margin_pct}%)</em></strong></div>
+          {p.budget_usd != null && <div><span>Budget</span><strong>{money(p.budget_usd, "USD budget")} <em>{p.within_budget ? "· within" : "· over"}</em></strong></div>}
         </div>
       </header>
       <h3>Stay and transfers</h3>
@@ -51,6 +53,7 @@ function Proposal({ p }) {
 }
 
 export default function AdvisorPage() {
+  const { preferredCurrency } = useAuth();
   const info = featureInfo["/app/ai-studio"];
   const [params] = useSearchParams();
   const hint = destinations.find((d) => d.slug === params.get("destination"));
@@ -103,7 +106,7 @@ export default function AdvisorPage() {
           {messages.map((m, i) => (
             <div key={i} className={`adv-msg adv-${m.role}`}>
               <p>{m.text}</p>
-              {m.proposal && <Proposal p={m.proposal} />}
+              {m.proposal && <Proposal p={m.proposal} displayCurrency={preferredCurrency} />}
             </div>
           ))}
           {busy && <div className="adv-msg adv-advisor" role="status"><p>{waking ? "Waking the server — the free host sleeps when idle, this can take up to a minute…" : "Planning…"}</p></div>}

@@ -41,6 +41,7 @@ import {
 } from "recharts";
 
 import { api } from "../lib/api.js";
+import { useAuth } from "../context/AuthContext.jsx";
 
 import "../profitability.css";
 
@@ -371,6 +372,7 @@ function getPeriodQuery(period) {
 // ==========================================
 
 export default function ProfitabilityPage() {
+  const { preferredCurrency } = useAuth();
   const [period, setPeriod] = useState("all");
   const [groupBy, setGroupBy] = useState("destination");
 
@@ -727,6 +729,9 @@ export default function ProfitabilityPage() {
           </Button>
         }
       />
+
+      {summary?.is_sample && <p className="profit-sample-note" role="note">Illustrative sample data · no real bookings or transactions</p>}
+      <p className="profit-currency-note" role="note">Reporting figures are in {summary?.currency || "USD"}. Your preferred display currency is {preferredCurrency}; no verified exchange-rate feed is configured, so these analytical values remain in their source currency.</p>
 
       {/* FILTERS */}
 

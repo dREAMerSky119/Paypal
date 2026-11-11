@@ -6,11 +6,13 @@ import RowMenu from "./RowMenu.jsx";
 import { useApi } from "../lib/useApi.js";
 import { trendGeometry } from "../lib/chart.js";
 import { addDays, formatEyebrowDate, formatShortDate, greeting } from "../lib/format.js";
+import { useAuth } from "../context/AuthContext.jsx";
 
 const metricIcons = { gbv: WalletCards, itineraries: MapPinned, margin: BarChart3, suppliers: Users };
 const photo = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=100&q=75`;
 
 export default function OverviewPage() {
+  const { fullName } = useAuth();
   const api = useApi("/overview");
   const [bannerOpen, setBannerOpen] = useState(true);
   const now = useMemo(() => new Date(), []);
@@ -18,7 +20,7 @@ export default function OverviewPage() {
   const trend = useMemo(() => trendGeometry(data?.trend?.values), [data]);
 
   return <>
-    <PageHeader eyebrow={formatEyebrowDate(now)} title={<>{greeting(now.getHours())}, Alex<span className="title-period">.</span></>} description="A considered start to the journeys taking shape this week." action={<Button to="/app/packages" variant="primary"><ArrowRight size={15}/> Create an itinerary</Button>}/>
+    <PageHeader eyebrow={formatEyebrowDate(now)} title={<>{greeting(now.getHours())}, {fullName.split(/\s+/)[0]}<span className="title-period">.</span></>} description="A considered start to the journeys taking shape this week." action={<Button to="/app/packages" variant="primary"><ArrowRight size={15}/> Create an itinerary</Button>}/>
     {bannerOpen && <div className="illustrative-banner"><span className="illustrative-mark"><Sparkles size={15}/></span><p><strong>Illustrative workspace preview</strong><span>All figures and bookings shown are sample data for demonstration purposes.</span></p><button type="button" aria-label="Dismiss notice" onClick={() => setBannerOpen(false)}><X size={16}/></button></div>}
     <ApiState api={api} label="the overview" />
     {data && <>
