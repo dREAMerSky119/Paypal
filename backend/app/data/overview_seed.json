@@ -1,0 +1,21 @@
+{
+  "metrics": [
+    {"key": "gbv", "label": "Gross booking value", "value": "$284,650", "change": "12.8%", "detail": "vs. previous period"},
+    {"key": "itineraries", "label": "Active itineraries", "value": "38", "change": "6.2%", "detail": "across 12 destinations"},
+    {"key": "margin", "label": "Avg. gross margin", "value": "18.4%", "change": "2.1%", "detail": "vs. previous period"},
+    {"key": "suppliers", "label": "Supplier partners", "value": "126", "change": "8 new", "detail": "this quarter"}
+  ],
+  "journeys": [
+    {"id": "j1", "place": "Kyoto & the Inland Sea", "region": "Japan · 8 nights", "initials": "SK", "traveller": "Sofia Kim", "departure_offset_days": 14, "status": "In planning", "tone": "blue", "image": "photo-1493976040374-85c8e12f0c0e"},
+    {"id": "j2", "place": "A slower Tuscany", "region": "Italy · 6 nights", "initials": "JL", "traveller": "James Liu", "departure_offset_days": 22, "status": "Ready to share", "tone": "sage", "image": "photo-1516483638261-f4dbaf036963"},
+    {"id": "j3", "place": "Atlas to the Atlantic", "region": "Morocco · 9 nights", "initials": "MR", "traveller": "Maya Rivera", "departure_offset_days": 36, "status": "In planning", "tone": "blue", "image": "photo-1539020140153-e479b8c22e70"}
+  ],
+  "trend": {
+    "labels": ["APR", "MAY", "JUN", "JUL", "AUG", "SEP"],
+    "values": [14, 17, 22, 21, 28, 33],
+    "summary_value": "+14.6%",
+    "summary_text": "Illustrative interest in shoulder-season departures",
+    "footnote": "Sample signal for interface preview only · not a live forecast"
+  },
+  "responsible_note": "7 sample journeys include community-led experiences"
+}

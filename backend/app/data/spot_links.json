@@ -1,0 +1,1905 @@
+{
+  "near": [
+    {
+      "from_id": "spot_001",
+      "to_id": "spot_002",
+      "destination": "dolomites-italy",
+      "distance_km": 18.6,
+      "travel_min": 32.0
+    },
+    {
+      "from_id": "spot_001",
+      "to_id": "spot_003",
+      "destination": "dolomites-italy",
+      "distance_km": 38.9,
+      "travel_min": 63.0
+    },
+    {
+      "from_id": "spot_002",
+      "to_id": "spot_001",
+      "destination": "dolomites-italy",
+      "distance_km": 18.6,
+      "travel_min": 32.0
+    },
+    {
+      "from_id": "spot_002",
+      "to_id": "spot_003",
+      "destination": "dolomites-italy",
+      "distance_km": 52.4,
+      "travel_min": 83.0
+    },
+    {
+      "from_id": "spot_003",
+      "to_id": "spot_001",
+      "destination": "dolomites-italy",
+      "distance_km": 38.9,
+      "travel_min": 63.0
+    },
+    {
+      "from_id": "spot_003",
+      "to_id": "spot_002",
+      "destination": "dolomites-italy",
+      "distance_km": 52.4,
+      "travel_min": 83.0
+    },
+    {
+      "from_id": "spot_004",
+      "to_id": "spot_007",
+      "destination": "kyoto-japan",
+      "distance_km": 4.1,
+      "travel_min": 11.0
+    },
+    {
+      "from_id": "spot_004",
+      "to_id": "spot_008",
+      "destination": "kyoto-japan",
+      "distance_km": 4.3,
+      "travel_min": 11.0
+    },
+    {
+      "from_id": "spot_004",
+      "to_id": "spot_006",
+      "destination": "kyoto-japan",
+      "distance_km": 9.0,
+      "travel_min": 18.0
+    },
+    {
+      "from_id": "spot_005",
+      "to_id": "spot_006",
+      "destination": "kyoto-japan",
+      "distance_km": 5.8,
+      "travel_min": 13.0
+    },
+    {
+      "from_id": "spot_005",
+      "to_id": "spot_008",
+      "destination": "kyoto-japan",
+      "distance_km": 8.6,
+      "travel_min": 17.0
+    },
+    {
+      "from_id": "spot_005",
+      "to_id": "spot_007",
+      "destination": "kyoto-japan",
+      "distance_km": 9.6,
+      "travel_min": 19.0
+    },
+    {
+      "from_id": "spot_006",
+      "to_id": "spot_008",
+      "destination": "kyoto-japan",
+      "distance_km": 5.0,
+      "travel_min": 12.0
+    },
+    {
+      "from_id": "spot_006",
+      "to_id": "spot_007",
+      "destination": "kyoto-japan",
+      "distance_km": 5.8,
+      "travel_min": 13.0
+    },
+    {
+      "from_id": "spot_006",
+      "to_id": "spot_005",
+      "destination": "kyoto-japan",
+      "distance_km": 5.8,
+      "travel_min": 13.0
+    },
+    {
+      "from_id": "spot_007",
+      "to_id": "spot_008",
+      "destination": "kyoto-japan",
+      "distance_km": 1.0,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_007",
+      "to_id": "spot_004",
+      "destination": "kyoto-japan",
+      "distance_km": 4.1,
+      "travel_min": 11.0
+    },
+    {
+      "from_id": "spot_007",
+      "to_id": "spot_006",
+      "destination": "kyoto-japan",
+      "distance_km": 5.8,
+      "travel_min": 13.0
+    },
+    {
+      "from_id": "spot_008",
+      "to_id": "spot_007",
+      "destination": "kyoto-japan",
+      "distance_km": 1.0,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_008",
+      "to_id": "spot_004",
+      "destination": "kyoto-japan",
+      "distance_km": 4.3,
+      "travel_min": 11.0
+    },
+    {
+      "from_id": "spot_008",
+      "to_id": "spot_006",
+      "destination": "kyoto-japan",
+      "distance_km": 5.0,
+      "travel_min": 12.0
+    },
+    {
+      "from_id": "spot_009",
+      "to_id": "spot_010",
+      "destination": "marrakech-morocco",
+      "distance_km": 0.7,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_009",
+      "to_id": "spot_011",
+      "destination": "marrakech-morocco",
+      "distance_km": 2.2,
+      "travel_min": 8.0
+    },
+    {
+      "from_id": "spot_010",
+      "to_id": "spot_009",
+      "destination": "marrakech-morocco",
+      "distance_km": 0.7,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_010",
+      "to_id": "spot_011",
+      "destination": "marrakech-morocco",
+      "distance_km": 2.9,
+      "travel_min": 9.0
+    },
+    {
+      "from_id": "spot_011",
+      "to_id": "spot_009",
+      "destination": "marrakech-morocco",
+      "distance_km": 2.2,
+      "travel_min": 8.0
+    },
+    {
+      "from_id": "spot_011",
+      "to_id": "spot_010",
+      "destination": "marrakech-morocco",
+      "distance_km": 2.9,
+      "travel_min": 9.0
+    },
+    {
+      "from_id": "spot_012",
+      "to_id": "spot_013",
+      "destination": "kashmir-india",
+      "distance_km": 0.8,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_012",
+      "to_id": "spot_014",
+      "destination": "kashmir-india",
+      "distance_km": 42.5,
+      "travel_min": 68.0
+    },
+    {
+      "from_id": "spot_013",
+      "to_id": "spot_012",
+      "destination": "kashmir-india",
+      "distance_km": 0.8,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_013",
+      "to_id": "spot_014",
+      "destination": "kashmir-india",
+      "distance_km": 42.1,
+      "travel_min": 68.0
+    },
+    {
+      "from_id": "spot_014",
+      "to_id": "spot_013",
+      "destination": "kashmir-india",
+      "distance_km": 42.1,
+      "travel_min": 68.0
+    },
+    {
+      "from_id": "spot_014",
+      "to_id": "spot_012",
+      "destination": "kashmir-india",
+      "distance_km": 42.5,
+      "travel_min": 68.0
+    },
+    {
+      "from_id": "spot_015",
+      "to_id": "spot_017",
+      "destination": "jaipur-india",
+      "distance_km": 7.3,
+      "travel_min": 15.0
+    },
+    {
+      "from_id": "spot_015",
+      "to_id": "spot_016",
+      "destination": "jaipur-india",
+      "distance_km": 7.3,
+      "travel_min": 15.0
+    },
+    {
+      "from_id": "spot_016",
+      "to_id": "spot_017",
+      "destination": "jaipur-india",
+      "distance_km": 0.2,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_016",
+      "to_id": "spot_015",
+      "destination": "jaipur-india",
+      "distance_km": 7.3,
+      "travel_min": 15.0
+    },
+    {
+      "from_id": "spot_017",
+      "to_id": "spot_016",
+      "destination": "jaipur-india",
+      "distance_km": 0.2,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_017",
+      "to_id": "spot_015",
+      "destination": "jaipur-india",
+      "distance_km": 7.3,
+      "travel_min": 15.0
+    },
+    {
+      "from_id": "spot_018",
+      "to_id": "spot_020",
+      "destination": "udaipur-india",
+      "distance_km": 0.5,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_018",
+      "to_id": "spot_019",
+      "destination": "udaipur-india",
+      "distance_km": 0.7,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_019",
+      "to_id": "spot_018",
+      "destination": "udaipur-india",
+      "distance_km": 0.7,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_019",
+      "to_id": "spot_020",
+      "destination": "udaipur-india",
+      "distance_km": 1.0,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_020",
+      "to_id": "spot_018",
+      "destination": "udaipur-india",
+      "distance_km": 0.5,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_020",
+      "to_id": "spot_019",
+      "destination": "udaipur-india",
+      "distance_km": 1.0,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_021",
+      "to_id": "spot_022",
+      "destination": "kerala-india",
+      "distance_km": 53.1,
+      "travel_min": 84.0
+    },
+    {
+      "from_id": "spot_021",
+      "to_id": "spot_023",
+      "destination": "kerala-india",
+      "distance_km": 90.5,
+      "travel_min": 140.0
+    },
+    {
+      "from_id": "spot_022",
+      "to_id": "spot_021",
+      "destination": "kerala-india",
+      "distance_km": 53.1,
+      "travel_min": 84.0
+    },
+    {
+      "from_id": "spot_022",
+      "to_id": "spot_023",
+      "destination": "kerala-india",
+      "distance_km": 102.7,
+      "travel_min": 159.0
+    },
+    {
+      "from_id": "spot_023",
+      "to_id": "spot_021",
+      "destination": "kerala-india",
+      "distance_km": 90.5,
+      "travel_min": 140.0
+    },
+    {
+      "from_id": "spot_023",
+      "to_id": "spot_022",
+      "destination": "kerala-india",
+      "distance_km": 102.7,
+      "travel_min": 159.0
+    },
+    {
+      "from_id": "spot_024",
+      "to_id": "spot_026",
+      "destination": "ladakh-india",
+      "distance_km": 14.1,
+      "travel_min": 26.0
+    },
+    {
+      "from_id": "spot_024",
+      "to_id": "spot_025",
+      "destination": "ladakh-india",
+      "distance_km": 41.9,
+      "travel_min": 67.0
+    },
+    {
+      "from_id": "spot_025",
+      "to_id": "spot_024",
+      "destination": "ladakh-india",
+      "distance_km": 41.9,
+      "travel_min": 67.0
+    },
+    {
+      "from_id": "spot_025",
+      "to_id": "spot_026",
+      "destination": "ladakh-india",
+      "distance_km": 54.6,
+      "travel_min": 86.0
+    },
+    {
+      "from_id": "spot_026",
+      "to_id": "spot_024",
+      "destination": "ladakh-india",
+      "distance_km": 14.1,
+      "travel_min": 26.0
+    },
+    {
+      "from_id": "spot_026",
+      "to_id": "spot_025",
+      "destination": "ladakh-india",
+      "distance_km": 54.6,
+      "travel_min": 86.0
+    },
+    {
+      "from_id": "spot_027",
+      "to_id": "spot_028",
+      "destination": "meghalaya-india",
+      "distance_km": 33.7,
+      "travel_min": 55.0
+    },
+    {
+      "from_id": "spot_027",
+      "to_id": "spot_029",
+      "destination": "meghalaya-india",
+      "distance_km": 41.6,
+      "travel_min": 67.0
+    },
+    {
+      "from_id": "spot_028",
+      "to_id": "spot_027",
+      "destination": "meghalaya-india",
+      "distance_km": 33.7,
+      "travel_min": 55.0
+    },
+    {
+      "from_id": "spot_028",
+      "to_id": "spot_029",
+      "destination": "meghalaya-india",
+      "distance_km": 45.3,
+      "travel_min": 72.0
+    },
+    {
+      "from_id": "spot_029",
+      "to_id": "spot_027",
+      "destination": "meghalaya-india",
+      "distance_km": 41.6,
+      "travel_min": 67.0
+    },
+    {
+      "from_id": "spot_029",
+      "to_id": "spot_028",
+      "destination": "meghalaya-india",
+      "distance_km": 45.3,
+      "travel_min": 72.0
+    },
+    {
+      "from_id": "spot_030",
+      "to_id": "spot_031",
+      "destination": "bali-indonesia",
+      "distance_km": 8.6,
+      "travel_min": 17.0
+    },
+    {
+      "from_id": "spot_030",
+      "to_id": "spot_032",
+      "destination": "bali-indonesia",
+      "distance_km": 40.8,
+      "travel_min": 66.0
+    },
+    {
+      "from_id": "spot_031",
+      "to_id": "spot_030",
+      "destination": "bali-indonesia",
+      "distance_km": 8.6,
+      "travel_min": 17.0
+    },
+    {
+      "from_id": "spot_031",
+      "to_id": "spot_032",
+      "destination": "bali-indonesia",
+      "distance_km": 49.1,
+      "travel_min": 78.0
+    },
+    {
+      "from_id": "spot_032",
+      "to_id": "spot_030",
+      "destination": "bali-indonesia",
+      "distance_km": 40.8,
+      "travel_min": 66.0
+    },
+    {
+      "from_id": "spot_032",
+      "to_id": "spot_031",
+      "destination": "bali-indonesia",
+      "distance_km": 49.1,
+      "travel_min": 78.0
+    },
+    {
+      "from_id": "spot_033",
+      "to_id": "spot_035",
+      "destination": "iceland",
+      "distance_km": 41.2,
+      "travel_min": 66.0
+    },
+    {
+      "from_id": "spot_033",
+      "to_id": "spot_034",
+      "destination": "iceland",
+      "distance_km": 138.4,
+      "travel_min": 212.0
+    },
+    {
+      "from_id": "spot_034",
+      "to_id": "spot_033",
+      "destination": "iceland",
+      "distance_km": 138.4,
+      "travel_min": 212.0
+    },
+    {
+      "from_id": "spot_034",
+      "to_id": "spot_035",
+      "destination": "iceland",
+      "distance_km": 163.4,
+      "travel_min": 250.0
+    },
+    {
+      "from_id": "spot_035",
+      "to_id": "spot_033",
+      "destination": "iceland",
+      "distance_km": 41.2,
+      "travel_min": 66.0
+    },
+    {
+      "from_id": "spot_035",
+      "to_id": "spot_034",
+      "destination": "iceland",
+      "distance_km": 163.4,
+      "travel_min": 250.0
+    },
+    {
+      "from_id": "spot_036",
+      "to_id": "spot_038",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 1.8,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_036",
+      "to_id": "spot_037",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 4.0,
+      "travel_min": 10.0
+    },
+    {
+      "from_id": "spot_037",
+      "to_id": "spot_036",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 4.0,
+      "travel_min": 10.0
+    },
+    {
+      "from_id": "spot_037",
+      "to_id": "spot_038",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 5.2,
+      "travel_min": 12.0
+    },
+    {
+      "from_id": "spot_038",
+      "to_id": "spot_036",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 1.8,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_038",
+      "to_id": "spot_037",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 5.2,
+      "travel_min": 12.0
+    }
+  ],
+  "day_items": [
+    {
+      "from_id": "spot_001",
+      "to_id": "item_0015",
+      "destination": "dolomites-italy",
+      "distance_km": 7.4,
+      "travel_min": 17.0
+    },
+    {
+      "from_id": "spot_001",
+      "to_id": "item_0011",
+      "destination": "dolomites-italy",
+      "distance_km": 8.2,
+      "travel_min": 18.0
+    },
+    {
+      "from_id": "spot_001",
+      "to_id": "item_0009",
+      "destination": "dolomites-italy",
+      "distance_km": 15.5,
+      "travel_min": 31.0
+    },
+    {
+      "from_id": "spot_002",
+      "to_id": "item_0009",
+      "destination": "dolomites-italy",
+      "distance_km": 12.4,
+      "travel_min": 26.0
+    },
+    {
+      "from_id": "spot_002",
+      "to_id": "item_0010",
+      "destination": "dolomites-italy",
+      "distance_km": 15.5,
+      "travel_min": 31.0
+    },
+    {
+      "from_id": "spot_002",
+      "to_id": "item_0015",
+      "destination": "dolomites-italy",
+      "distance_km": 16.0,
+      "travel_min": 32.0
+    },
+    {
+      "from_id": "spot_003",
+      "to_id": "item_0012",
+      "destination": "dolomites-italy",
+      "distance_km": 5.4,
+      "travel_min": 14.0
+    },
+    {
+      "from_id": "spot_003",
+      "to_id": "item_0013",
+      "destination": "dolomites-italy",
+      "distance_km": 5.6,
+      "travel_min": 14.0
+    },
+    {
+      "from_id": "spot_003",
+      "to_id": "item_0008",
+      "destination": "dolomites-italy",
+      "distance_km": 19.0,
+      "travel_min": 37.0
+    },
+    {
+      "from_id": "spot_004",
+      "to_id": "item_0023",
+      "destination": "kyoto-japan",
+      "distance_km": 0.3,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_004",
+      "to_id": "item_0028",
+      "destination": "kyoto-japan",
+      "distance_km": 0.4,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_004",
+      "to_id": "item_0027",
+      "destination": "kyoto-japan",
+      "distance_km": 3.1,
+      "travel_min": 10.0
+    },
+    {
+      "from_id": "spot_005",
+      "to_id": "item_0030",
+      "destination": "kyoto-japan",
+      "distance_km": 0.9,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_005",
+      "to_id": "item_0022",
+      "destination": "kyoto-japan",
+      "distance_km": 1.4,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_005",
+      "to_id": "item_0027",
+      "destination": "kyoto-japan",
+      "distance_km": 8.0,
+      "travel_min": 18.0
+    },
+    {
+      "from_id": "spot_006",
+      "to_id": "item_0024",
+      "destination": "kyoto-japan",
+      "distance_km": 4.9,
+      "travel_min": 13.0
+    },
+    {
+      "from_id": "spot_006",
+      "to_id": "item_0030",
+      "destination": "kyoto-japan",
+      "distance_km": 5.6,
+      "travel_min": 14.0
+    },
+    {
+      "from_id": "spot_006",
+      "to_id": "item_0025",
+      "destination": "kyoto-japan",
+      "distance_km": 5.8,
+      "travel_min": 14.0
+    },
+    {
+      "from_id": "spot_007",
+      "to_id": "item_0026",
+      "destination": "kyoto-japan",
+      "distance_km": 0.3,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_007",
+      "to_id": "item_0029",
+      "destination": "kyoto-japan",
+      "distance_km": 0.7,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_007",
+      "to_id": "item_0024",
+      "destination": "kyoto-japan",
+      "distance_km": 0.9,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_008",
+      "to_id": "item_0024",
+      "destination": "kyoto-japan",
+      "distance_km": 0.3,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_008",
+      "to_id": "item_0026",
+      "destination": "kyoto-japan",
+      "distance_km": 1.2,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_008",
+      "to_id": "item_0025",
+      "destination": "kyoto-japan",
+      "distance_km": 1.3,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_009",
+      "to_id": "item_0045",
+      "destination": "marrakech-morocco",
+      "distance_km": 0.8,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_009",
+      "to_id": "item_0038",
+      "destination": "marrakech-morocco",
+      "distance_km": 0.8,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_009",
+      "to_id": "item_0040",
+      "destination": "marrakech-morocco",
+      "distance_km": 1.4,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_010",
+      "to_id": "item_0040",
+      "destination": "marrakech-morocco",
+      "distance_km": 1.0,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_010",
+      "to_id": "item_0045",
+      "destination": "marrakech-morocco",
+      "distance_km": 1.0,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_010",
+      "to_id": "item_0038",
+      "destination": "marrakech-morocco",
+      "distance_km": 1.2,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_011",
+      "to_id": "item_0041",
+      "destination": "marrakech-morocco",
+      "distance_km": 1.4,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_011",
+      "to_id": "item_0038",
+      "destination": "marrakech-morocco",
+      "distance_km": 2.0,
+      "travel_min": 8.0
+    },
+    {
+      "from_id": "spot_011",
+      "to_id": "item_0045",
+      "destination": "marrakech-morocco",
+      "distance_km": 2.2,
+      "travel_min": 8.0
+    },
+    {
+      "from_id": "spot_012",
+      "to_id": "item_0053",
+      "destination": "kashmir-india",
+      "distance_km": 4.7,
+      "travel_min": 13.0
+    },
+    {
+      "from_id": "spot_012",
+      "to_id": "item_0056",
+      "destination": "kashmir-india",
+      "distance_km": 4.8,
+      "travel_min": 13.0
+    },
+    {
+      "from_id": "spot_012",
+      "to_id": "item_0054",
+      "destination": "kashmir-india",
+      "distance_km": 42.1,
+      "travel_min": 77.0
+    },
+    {
+      "from_id": "spot_013",
+      "to_id": "item_0053",
+      "destination": "kashmir-india",
+      "distance_km": 5.5,
+      "travel_min": 14.0
+    },
+    {
+      "from_id": "spot_013",
+      "to_id": "item_0056",
+      "destination": "kashmir-india",
+      "distance_km": 5.6,
+      "travel_min": 14.0
+    },
+    {
+      "from_id": "spot_013",
+      "to_id": "item_0054",
+      "destination": "kashmir-india",
+      "distance_km": 41.8,
+      "travel_min": 76.0
+    },
+    {
+      "from_id": "spot_014",
+      "to_id": "item_0059",
+      "destination": "kashmir-india",
+      "distance_km": 0.2,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_014",
+      "to_id": "item_0054",
+      "destination": "kashmir-india",
+      "distance_km": 0.4,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_014",
+      "to_id": "item_0057",
+      "destination": "kashmir-india",
+      "distance_km": 0.9,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_015",
+      "to_id": "item_0069",
+      "destination": "jaipur-india",
+      "distance_km": 7.7,
+      "travel_min": 18.0
+    },
+    {
+      "from_id": "spot_015",
+      "to_id": "item_0070",
+      "destination": "jaipur-india",
+      "distance_km": 8.4,
+      "travel_min": 19.0
+    },
+    {
+      "from_id": "spot_015",
+      "to_id": "item_0073",
+      "destination": "jaipur-india",
+      "distance_km": 8.6,
+      "travel_min": 19.0
+    },
+    {
+      "from_id": "spot_016",
+      "to_id": "item_0069",
+      "destination": "jaipur-india",
+      "distance_km": 0.6,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_016",
+      "to_id": "item_0073",
+      "destination": "jaipur-india",
+      "distance_km": 3.1,
+      "travel_min": 10.0
+    },
+    {
+      "from_id": "spot_016",
+      "to_id": "item_0070",
+      "destination": "jaipur-india",
+      "distance_km": 3.8,
+      "travel_min": 11.0
+    },
+    {
+      "from_id": "spot_017",
+      "to_id": "item_0069",
+      "destination": "jaipur-india",
+      "distance_km": 0.8,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_017",
+      "to_id": "item_0073",
+      "destination": "jaipur-india",
+      "distance_km": 2.9,
+      "travel_min": 9.0
+    },
+    {
+      "from_id": "spot_017",
+      "to_id": "item_0070",
+      "destination": "jaipur-india",
+      "distance_km": 3.6,
+      "travel_min": 11.0
+    },
+    {
+      "from_id": "spot_018",
+      "to_id": "item_0085",
+      "destination": "udaipur-india",
+      "distance_km": 0.2,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_018",
+      "to_id": "item_0087",
+      "destination": "udaipur-india",
+      "distance_km": 1.2,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_018",
+      "to_id": "item_0082",
+      "destination": "udaipur-india",
+      "distance_km": 1.2,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_019",
+      "to_id": "item_0082",
+      "destination": "udaipur-india",
+      "distance_km": 0.5,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_019",
+      "to_id": "item_0085",
+      "destination": "udaipur-india",
+      "distance_km": 0.6,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_019",
+      "to_id": "item_0087",
+      "destination": "udaipur-india",
+      "distance_km": 0.9,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_020",
+      "to_id": "item_0085",
+      "destination": "udaipur-india",
+      "distance_km": 0.6,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_020",
+      "to_id": "item_0087",
+      "destination": "udaipur-india",
+      "distance_km": 1.3,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_020",
+      "to_id": "item_0082",
+      "destination": "udaipur-india",
+      "distance_km": 1.6,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_021",
+      "to_id": "item_0096",
+      "destination": "kerala-india",
+      "distance_km": 0.4,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_021",
+      "to_id": "item_0097",
+      "destination": "kerala-india",
+      "distance_km": 43.2,
+      "travel_min": 79.0
+    },
+    {
+      "from_id": "spot_021",
+      "to_id": "item_0094",
+      "destination": "kerala-india",
+      "distance_km": 53.8,
+      "travel_min": 97.0
+    },
+    {
+      "from_id": "spot_022",
+      "to_id": "item_0094",
+      "destination": "kerala-india",
+      "distance_km": 0.8,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_022",
+      "to_id": "item_0097",
+      "destination": "kerala-india",
+      "distance_km": 17.5,
+      "travel_min": 34.0
+    },
+    {
+      "from_id": "spot_022",
+      "to_id": "item_0096",
+      "destination": "kerala-india",
+      "distance_km": 53.4,
+      "travel_min": 96.0
+    },
+    {
+      "from_id": "spot_023",
+      "to_id": "item_0098",
+      "destination": "kerala-india",
+      "distance_km": 0.5,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_023",
+      "to_id": "item_0100",
+      "destination": "kerala-india",
+      "distance_km": 55.3,
+      "travel_min": 99.0
+    },
+    {
+      "from_id": "spot_023",
+      "to_id": "item_0101",
+      "destination": "kerala-india",
+      "distance_km": 55.6,
+      "travel_min": 100.0
+    },
+    {
+      "from_id": "spot_024",
+      "to_id": "item_0112",
+      "destination": "ladakh-india",
+      "distance_km": 1.8,
+      "travel_min": 8.0
+    },
+    {
+      "from_id": "spot_024",
+      "to_id": "item_0115",
+      "destination": "ladakh-india",
+      "distance_km": 2.0,
+      "travel_min": 8.0
+    },
+    {
+      "from_id": "spot_024",
+      "to_id": "item_0110",
+      "destination": "ladakh-india",
+      "distance_km": 2.4,
+      "travel_min": 9.0
+    },
+    {
+      "from_id": "spot_025",
+      "to_id": "item_0109",
+      "destination": "ladakh-india",
+      "distance_km": 0.3,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_025",
+      "to_id": "item_0113",
+      "destination": "ladakh-india",
+      "distance_km": 0.5,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_025",
+      "to_id": "item_0114",
+      "destination": "ladakh-india",
+      "distance_km": 0.5,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_026",
+      "to_id": "item_0112",
+      "destination": "ladakh-india",
+      "distance_km": 13.6,
+      "travel_min": 28.0
+    },
+    {
+      "from_id": "spot_026",
+      "to_id": "item_0110",
+      "destination": "ladakh-india",
+      "distance_km": 13.8,
+      "travel_min": 28.0
+    },
+    {
+      "from_id": "spot_026",
+      "to_id": "item_0115",
+      "destination": "ladakh-india",
+      "distance_km": 14.0,
+      "travel_min": 29.0
+    },
+    {
+      "from_id": "spot_027",
+      "to_id": "item_0126",
+      "destination": "meghalaya-india",
+      "distance_km": 1.2,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_027",
+      "to_id": "item_0124",
+      "destination": "meghalaya-india",
+      "distance_km": 1.2,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_027",
+      "to_id": "item_0127",
+      "destination": "meghalaya-india",
+      "distance_km": 3.7,
+      "travel_min": 11.0
+    },
+    {
+      "from_id": "spot_028",
+      "to_id": "item_0125",
+      "destination": "meghalaya-india",
+      "distance_km": 0.8,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_028",
+      "to_id": "item_0123",
+      "destination": "meghalaya-india",
+      "distance_km": 0.8,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_028",
+      "to_id": "item_0122",
+      "destination": "meghalaya-india",
+      "distance_km": 10.5,
+      "travel_min": 23.0
+    },
+    {
+      "from_id": "spot_029",
+      "to_id": "item_0128",
+      "destination": "meghalaya-india",
+      "distance_km": 0.5,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_029",
+      "to_id": "item_0129",
+      "destination": "meghalaya-india",
+      "distance_km": 0.7,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_029",
+      "to_id": "item_0127",
+      "destination": "meghalaya-india",
+      "distance_km": 38.1,
+      "travel_min": 70.0
+    },
+    {
+      "from_id": "spot_030",
+      "to_id": "item_0140",
+      "destination": "bali-indonesia",
+      "distance_km": 0.1,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_030",
+      "to_id": "item_0136",
+      "destination": "bali-indonesia",
+      "distance_km": 19.9,
+      "travel_min": 39.0
+    },
+    {
+      "from_id": "spot_030",
+      "to_id": "item_0139",
+      "destination": "bali-indonesia",
+      "distance_km": 21.5,
+      "travel_min": 41.0
+    },
+    {
+      "from_id": "spot_031",
+      "to_id": "item_0140",
+      "destination": "bali-indonesia",
+      "distance_km": 8.7,
+      "travel_min": 19.0
+    },
+    {
+      "from_id": "spot_031",
+      "to_id": "item_0136",
+      "destination": "bali-indonesia",
+      "distance_km": 19.3,
+      "travel_min": 38.0
+    },
+    {
+      "from_id": "spot_031",
+      "to_id": "item_0139",
+      "destination": "bali-indonesia",
+      "distance_km": 29.3,
+      "travel_min": 55.0
+    },
+    {
+      "from_id": "spot_032",
+      "to_id": "item_0141",
+      "destination": "bali-indonesia",
+      "distance_km": 0.3,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_032",
+      "to_id": "item_0143",
+      "destination": "bali-indonesia",
+      "distance_km": 0.3,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_032",
+      "to_id": "item_0142",
+      "destination": "bali-indonesia",
+      "distance_km": 0.5,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_033",
+      "to_id": "item_0153",
+      "destination": "iceland",
+      "distance_km": 36.0,
+      "travel_min": 66.0
+    },
+    {
+      "from_id": "spot_033",
+      "to_id": "item_0157",
+      "destination": "iceland",
+      "distance_km": 40.8,
+      "travel_min": 74.0
+    },
+    {
+      "from_id": "spot_033",
+      "to_id": "item_0151",
+      "destination": "iceland",
+      "distance_km": 41.4,
+      "travel_min": 75.0
+    },
+    {
+      "from_id": "spot_034",
+      "to_id": "item_0150",
+      "destination": "iceland",
+      "distance_km": 3.5,
+      "travel_min": 11.0
+    },
+    {
+      "from_id": "spot_034",
+      "to_id": "item_0154",
+      "destination": "iceland",
+      "distance_km": 3.7,
+      "travel_min": 11.0
+    },
+    {
+      "from_id": "spot_034",
+      "to_id": "item_0155",
+      "destination": "iceland",
+      "distance_km": 80.1,
+      "travel_min": 142.0
+    },
+    {
+      "from_id": "spot_035",
+      "to_id": "item_0151",
+      "destination": "iceland",
+      "distance_km": 0.4,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_035",
+      "to_id": "item_0157",
+      "destination": "iceland",
+      "distance_km": 0.9,
+      "travel_min": 6.0
+    },
+    {
+      "from_id": "spot_035",
+      "to_id": "item_0153",
+      "destination": "iceland",
+      "distance_km": 51.3,
+      "travel_min": 93.0
+    },
+    {
+      "from_id": "spot_036",
+      "to_id": "item_0167",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 0.3,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_036",
+      "to_id": "item_0169",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 0.3,
+      "travel_min": 5.0
+    },
+    {
+      "from_id": "spot_036",
+      "to_id": "item_0164",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 2.8,
+      "travel_min": 9.0
+    },
+    {
+      "from_id": "spot_037",
+      "to_id": "item_0170",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 2.4,
+      "travel_min": 9.0
+    },
+    {
+      "from_id": "spot_037",
+      "to_id": "item_0167",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 4.0,
+      "travel_min": 11.0
+    },
+    {
+      "from_id": "spot_037",
+      "to_id": "item_0169",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 4.3,
+      "travel_min": 12.0
+    },
+    {
+      "from_id": "spot_038",
+      "to_id": "item_0169",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 1.6,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_038",
+      "to_id": "item_0164",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 1.7,
+      "travel_min": 7.0
+    },
+    {
+      "from_id": "spot_038",
+      "to_id": "item_0167",
+      "destination": "amalfi-coast-italy",
+      "distance_km": 2.1,
+      "travel_min": 8.0
+    }
+  ],
+  "similar": [
+    {
+      "from_id": "spot_001",
+      "to_id": "spot_019",
+      "destination": "dolomites-italy",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_001",
+      "to_id": "spot_018",
+      "destination": "dolomites-italy",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_002",
+      "to_id": "spot_025",
+      "destination": "dolomites-italy",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_002",
+      "to_id": "spot_037",
+      "destination": "dolomites-italy",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_003",
+      "to_id": "spot_037",
+      "destination": "dolomites-italy",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_003",
+      "to_id": "spot_025",
+      "destination": "dolomites-italy",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_004",
+      "to_id": "spot_026",
+      "destination": "kyoto-japan",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_004",
+      "to_id": "spot_031",
+      "destination": "kyoto-japan",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_005",
+      "to_id": "spot_011",
+      "destination": "kyoto-japan",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_005",
+      "to_id": "spot_028",
+      "destination": "kyoto-japan",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_006",
+      "to_id": "spot_011",
+      "destination": "kyoto-japan",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_006",
+      "to_id": "spot_033",
+      "destination": "kyoto-japan",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_007",
+      "to_id": "spot_021",
+      "destination": "kyoto-japan",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_007",
+      "to_id": "spot_030",
+      "destination": "kyoto-japan",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_008",
+      "to_id": "spot_023",
+      "destination": "kyoto-japan",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_008",
+      "to_id": "spot_035",
+      "destination": "kyoto-japan",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_009",
+      "to_id": "spot_020",
+      "destination": "marrakech-morocco",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_009",
+      "to_id": "spot_036",
+      "destination": "marrakech-morocco",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_010",
+      "to_id": "spot_038",
+      "destination": "marrakech-morocco",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_010",
+      "to_id": "spot_015",
+      "destination": "marrakech-morocco",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_011",
+      "to_id": "spot_006",
+      "destination": "marrakech-morocco",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_011",
+      "to_id": "spot_005",
+      "destination": "marrakech-morocco",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_012",
+      "to_id": "spot_018",
+      "destination": "kashmir-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_012",
+      "to_id": "spot_020",
+      "destination": "kashmir-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_013",
+      "to_id": "spot_038",
+      "destination": "kashmir-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_013",
+      "to_id": "spot_024",
+      "destination": "kashmir-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_014",
+      "to_id": "spot_025",
+      "destination": "kashmir-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_014",
+      "to_id": "spot_028",
+      "destination": "kashmir-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_015",
+      "to_id": "spot_038",
+      "destination": "jaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_015",
+      "to_id": "spot_026",
+      "destination": "jaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_016",
+      "to_id": "spot_024",
+      "destination": "jaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_016",
+      "to_id": "spot_018",
+      "destination": "jaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_017",
+      "to_id": "spot_001",
+      "destination": "jaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_017",
+      "to_id": "spot_003",
+      "destination": "jaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_018",
+      "to_id": "spot_026",
+      "destination": "udaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_018",
+      "to_id": "spot_012",
+      "destination": "udaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_019",
+      "to_id": "spot_012",
+      "destination": "udaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_019",
+      "to_id": "spot_023",
+      "destination": "udaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_020",
+      "to_id": "spot_012",
+      "destination": "udaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_020",
+      "to_id": "spot_032",
+      "destination": "udaipur-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_021",
+      "to_id": "spot_007",
+      "destination": "kerala-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_021",
+      "to_id": "spot_030",
+      "destination": "kerala-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_022",
+      "to_id": "spot_031",
+      "destination": "kerala-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_022",
+      "to_id": "spot_005",
+      "destination": "kerala-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_023",
+      "to_id": "spot_014",
+      "destination": "kerala-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_023",
+      "to_id": "spot_019",
+      "destination": "kerala-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_024",
+      "to_id": "spot_016",
+      "destination": "ladakh-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_024",
+      "to_id": "spot_018",
+      "destination": "ladakh-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_025",
+      "to_id": "spot_014",
+      "destination": "ladakh-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_025",
+      "to_id": "spot_003",
+      "destination": "ladakh-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_026",
+      "to_id": "spot_018",
+      "destination": "ladakh-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_026",
+      "to_id": "spot_015",
+      "destination": "ladakh-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_027",
+      "to_id": "spot_021",
+      "destination": "meghalaya-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_027",
+      "to_id": "spot_007",
+      "destination": "meghalaya-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_028",
+      "to_id": "spot_014",
+      "destination": "meghalaya-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_028",
+      "to_id": "spot_031",
+      "destination": "meghalaya-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_029",
+      "to_id": "spot_038",
+      "destination": "meghalaya-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_029",
+      "to_id": "spot_019",
+      "destination": "meghalaya-india",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_030",
+      "to_id": "spot_025",
+      "destination": "bali-indonesia",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_030",
+      "to_id": "spot_014",
+      "destination": "bali-indonesia",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_031",
+      "to_id": "spot_022",
+      "destination": "bali-indonesia",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_031",
+      "to_id": "spot_028",
+      "destination": "bali-indonesia",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_032",
+      "to_id": "spot_020",
+      "destination": "bali-indonesia",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_032",
+      "to_id": "spot_012",
+      "destination": "bali-indonesia",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_033",
+      "to_id": "spot_006",
+      "destination": "iceland",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_033",
+      "to_id": "spot_024",
+      "destination": "iceland",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_034",
+      "to_id": "spot_028",
+      "destination": "iceland",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_034",
+      "to_id": "spot_003",
+      "destination": "iceland",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_035",
+      "to_id": "spot_030",
+      "destination": "iceland",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_035",
+      "to_id": "spot_008",
+      "destination": "iceland",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_036",
+      "to_id": "spot_014",
+      "destination": "amalfi-coast-italy",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_036",
+      "to_id": "spot_031",
+      "destination": "amalfi-coast-italy",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_037",
+      "to_id": "spot_003",
+      "destination": "amalfi-coast-italy",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_037",
+      "to_id": "spot_028",
+      "destination": "amalfi-coast-italy",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_038",
+      "to_id": "spot_013",
+      "destination": "amalfi-coast-italy",
+      "distance_km": null,
+      "travel_min": null
+    },
+    {
+      "from_id": "spot_038",
+      "to_id": "spot_015",
+      "destination": "amalfi-coast-italy",
+      "distance_km": null,
+      "travel_min": null
+    }
+  ]
+}

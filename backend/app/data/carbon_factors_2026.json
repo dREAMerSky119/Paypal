@@ -1,0 +1,35 @@
+{
+  "source": "UK Department for Energy Security and Net Zero, Greenhouse gas reporting: conversion factors 2026 (flat file v1.2)",
+  "source_url": "https://www.gov.uk/government/publications/greenhouse-gas-reporting-conversion-factors-2026",
+  "factor_year": 2026,
+  "units": "kg CO2e per passenger-km for transport; kg CO2e per room-night for accommodation",
+  "factors": {
+    "flight_long_haul": {
+      "value": 0.11704,
+      "unit": "kg CO2e/passenger-km",
+      "basis": "2026 UK GHG long-haul economy flight with radiative forcing"
+    },
+    "rail": {
+      "value": 0.03549,
+      "unit": "kg CO2e/passenger-km",
+      "basis": "indicative rail proxy; UK national rail factor, not country-specific"
+    },
+    "road": {
+      "value": 0.17,
+      "unit": "kg CO2e/passenger-km",
+      "basis": "indicative average passenger car occupancy proxy"
+    },
+    "hotel": {
+      "value": 20.0,
+      "unit": "kg CO2e/room-night",
+      "basis": "fallback estimate; country/property-specific hotel factors should replace where available"
+    }
+  },
+  "country_coverage": {
+    "India": "approximate: transport and accommodation use proxies; not a verified country-specific factor set",
+    "Japan": "approximate: transport and accommodation use proxies; not a verified country-specific factor set",
+    "Morocco": "approximate: transport and accommodation use proxies; not a verified country-specific factor set",
+    "Indonesia": "approximate: transport and accommodation use proxies; not a verified country-specific factor set"
+  },
+  "disclaimer": "Indicative planning estimate, not a carbon inventory or offset claim. Only the long-haul flight factor is taken as a specific 2026 DESNZ factor here; other modes use disclosed proxies pending country/mode-specific workbook mapping."
+}

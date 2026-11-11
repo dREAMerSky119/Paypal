@@ -1,0 +1,1406 @@
+[
+  {
+    "id": "dolomites-italy-homestay",
+    "destination_slug": "dolomites-italy",
+    "destination": "The Dolomites",
+    "country": "Italy",
+    "name": "The Dolomites Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_001",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "dolomites-italy-guide",
+    "destination_slug": "dolomites-italy",
+    "destination": "The Dolomites",
+    "country": "Italy",
+    "name": "The Dolomites Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_001",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "dolomites-italy-community_experience",
+    "destination_slug": "dolomites-italy",
+    "destination": "The Dolomites",
+    "country": "Italy",
+    "name": "The Dolomites Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by Lago di Braies; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_002",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "kyoto-japan-homestay",
+    "destination_slug": "kyoto-japan",
+    "destination": "Kyoto",
+    "country": "Japan",
+    "name": "Kyoto Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_016",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "kyoto-japan-guide",
+    "destination_slug": "kyoto-japan",
+    "destination": "Kyoto",
+    "country": "Japan",
+    "name": "Kyoto Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_016",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "kyoto-japan-community_experience",
+    "destination_slug": "kyoto-japan",
+    "destination": "Kyoto",
+    "country": "Japan",
+    "name": "Kyoto Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by Fushimi Inari Shrine; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_025",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "marrakech-morocco-homestay",
+    "destination_slug": "marrakech-morocco",
+    "destination": "Marrakech",
+    "country": "Morocco",
+    "name": "Marrakech Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_031",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "marrakech-morocco-guide",
+    "destination_slug": "marrakech-morocco",
+    "destination": "Marrakech",
+    "country": "Morocco",
+    "name": "Marrakech Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_032",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "marrakech-morocco-community_experience",
+    "destination_slug": "marrakech-morocco",
+    "destination": "Marrakech",
+    "country": "Morocco",
+    "name": "Marrakech Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by Jemaa el-Fnaa; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_031",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "kashmir-india-homestay",
+    "destination_slug": "kashmir-india",
+    "destination": "Kashmir",
+    "country": "India",
+    "name": "Kashmir Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_046",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "kashmir-india-guide",
+    "destination_slug": "kashmir-india",
+    "destination": "Kashmir",
+    "country": "India",
+    "name": "Kashmir Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_048",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "kashmir-india-community_experience",
+    "destination_slug": "kashmir-india",
+    "destination": "Kashmir",
+    "country": "India",
+    "name": "Kashmir Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by Dal Lake; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_046",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "jaipur-india-homestay",
+    "destination_slug": "jaipur-india",
+    "destination": "Jaipur",
+    "country": "India",
+    "name": "Jaipur Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_060",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "jaipur-india-guide",
+    "destination_slug": "jaipur-india",
+    "destination": "Jaipur",
+    "country": "India",
+    "name": "Jaipur Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_062",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "jaipur-india-community_experience",
+    "destination_slug": "jaipur-india",
+    "destination": "Jaipur",
+    "country": "India",
+    "name": "Jaipur Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by Amber Fort; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_060",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "udaipur-india-homestay",
+    "destination_slug": "udaipur-india",
+    "destination": "Udaipur",
+    "country": "India",
+    "name": "Udaipur Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_074",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "udaipur-india-guide",
+    "destination_slug": "udaipur-india",
+    "destination": "Udaipur",
+    "country": "India",
+    "name": "Udaipur Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_075",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "udaipur-india-community_experience",
+    "destination_slug": "udaipur-india",
+    "destination": "Udaipur",
+    "country": "India",
+    "name": "Udaipur Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by City Palace; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_074",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "kerala-india-homestay",
+    "destination_slug": "kerala-india",
+    "destination": "Kerala",
+    "country": "India",
+    "name": "Kerala Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_088",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "kerala-india-guide",
+    "destination_slug": "kerala-india",
+    "destination": "Kerala",
+    "country": "India",
+    "name": "Kerala Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_088",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "kerala-india-community_experience",
+    "destination_slug": "kerala-india",
+    "destination": "Kerala",
+    "country": "India",
+    "name": "Kerala Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by Fort Kochi; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_092",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "ladakh-india-homestay",
+    "destination_slug": "ladakh-india",
+    "destination": "Ladakh",
+    "country": "India",
+    "name": "Ladakh Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_102",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "ladakh-india-guide",
+    "destination_slug": "ladakh-india",
+    "destination": "Ladakh",
+    "country": "India",
+    "name": "Ladakh Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_102",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "ladakh-india-community_experience",
+    "destination_slug": "ladakh-india",
+    "destination": "Ladakh",
+    "country": "India",
+    "name": "Ladakh Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by Leh Palace; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_104",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "meghalaya-india-homestay",
+    "destination_slug": "meghalaya-india",
+    "destination": "Meghalaya",
+    "country": "India",
+    "name": "Meghalaya Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_116",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "meghalaya-india-guide",
+    "destination_slug": "meghalaya-india",
+    "destination": "Meghalaya",
+    "country": "India",
+    "name": "Meghalaya Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_118",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "meghalaya-india-community_experience",
+    "destination_slug": "meghalaya-india",
+    "destination": "Meghalaya",
+    "country": "India",
+    "name": "Meghalaya Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by Living Root Bridges; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_116",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "bali-indonesia-homestay",
+    "destination_slug": "bali-indonesia",
+    "destination": "Bali",
+    "country": "Indonesia",
+    "name": "Bali Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_130",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "bali-indonesia-guide",
+    "destination_slug": "bali-indonesia",
+    "destination": "Bali",
+    "country": "Indonesia",
+    "name": "Bali Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_130",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "bali-indonesia-community_experience",
+    "destination_slug": "bali-indonesia",
+    "destination": "Bali",
+    "country": "Indonesia",
+    "name": "Bali Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by Ubud; sample directory record for product demonstration.",
+    "ownership": "cooperative",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_136",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "iceland-homestay",
+    "destination_slug": "iceland",
+    "destination": "Iceland",
+    "country": "Iceland",
+    "name": "Iceland Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_144",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "iceland-guide",
+    "destination_slug": "iceland",
+    "destination": "Iceland",
+    "country": "Iceland",
+    "name": "Iceland Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_145",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "iceland-community_experience",
+    "destination_slug": "iceland",
+    "destination": "Iceland",
+    "country": "Iceland",
+    "name": "Iceland Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by Þingvellir National Park; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_144",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "amalfi-coast-italy-homestay",
+    "destination_slug": "amalfi-coast-italy",
+    "destination": "Amalfi Coast",
+    "country": "Italy",
+    "name": "Amalfi Coast Community Homestay",
+    "type": "homestay",
+    "description": "Locally operated stay concept; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_158",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "amalfi-coast-italy-guide",
+    "destination_slug": "amalfi-coast-italy",
+    "destination": "Amalfi Coast",
+    "country": "Italy",
+    "name": "Amalfi Coast Independent Local Guide",
+    "type": "guide",
+    "description": "Independent guide concept; sample directory record for product demonstration.",
+    "ownership": "independent_local",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_159",
+    "data_origin": "synthetic_sample"
+  },
+  {
+    "id": "amalfi-coast-italy-community_experience",
+    "destination_slug": "amalfi-coast-italy",
+    "destination": "Amalfi Coast",
+    "country": "Italy",
+    "name": "Amalfi Coast Community-led Experience",
+    "type": "community_experience",
+    "description": "Community experience inspired by Amalfi Town; sample directory record for product demonstration.",
+    "ownership": "family_run",
+    "claims": [
+      {
+        "type": "local_ownership",
+        "value": "Locally owned / locally operated (sample claim)",
+        "evidence_url": "https://www.gstcouncil.org/",
+        "status": "self-reported"
+      },
+      {
+        "type": "community_benefit",
+        "value": "Local employment and community benefit (sample claim)",
+        "evidence_url": "https://www.fairtrade.travel/",
+        "status": "unverified"
+      },
+      {
+        "type": "environmental_practice",
+        "value": "Waste and resource-conscious operations (sample claim)",
+        "evidence_url": "https://www.greenkey.global/",
+        "status": "unverified"
+      }
+    ],
+    "certifications": [],
+    "independent": true,
+    "source_note": "Illustrative seed record, not a real vetted business. Replace with a real partner and verify evidence before publication.",
+    "brand_relationship": "independent_or_local",
+    "overture_brand_relation": "no_overture_match_in_current_seed",
+    "chain_brand": null,
+    "overture_id": null,
+    "inventory_seed_reference": "sup_158",
+    "data_origin": "synthetic_sample"
+  }
+]

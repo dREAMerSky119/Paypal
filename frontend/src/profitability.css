@@ -1,0 +1,353 @@
+
+/* =========================================
+   PROFITABILITY PAGE
+========================================= */
+
+.profitability-page {
+  width: 100%;
+  min-width: 0;
+  padding-bottom: 35px;
+}
+
+/* =========================================
+   FILTERS
+========================================= */
+
+.profitability-filters {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 18px;
+  padding: 18px 20px;
+  margin-bottom: 22px;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e8eaf2);
+  border-radius: 16px;
+  box-shadow: 0 4px 18px rgba(30, 41, 59, 0.035);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 190px;
+}
+
+.filter-group label {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #64748b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.filter-group label svg {
+  color: #6366f1;
+}
+
+.filter-group select {
+  width: 100%;
+  min-height: 39px;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #334155;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filter-group select:hover {
+  border-color: #a5b4fc;
+}
+
+.filter-group select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+/* =========================================
+   KPI CARDS
+========================================= */
+
+.profitability-metrics {
+  margin-top: 0;
+}
+
+/* =========================================
+   SECTION HEADINGS
+========================================= */
+
+.profitability-chart-section {
+  margin-top: 38px;
+}
+
+.profitability-section-heading {
+  margin-bottom: 18px;
+}
+
+.profitability-section-heading h2 {
+  font-size: 21px;
+  font-weight: 750;
+  color: var(--text-primary, #26324a);
+  margin: 0 0 7px;
+}
+
+.profitability-section-heading p {
+  font-size: 13px;
+  color: #94a3b8;
+  margin: 0;
+}
+
+/* =========================================
+   CHART CARDS
+========================================= */
+
+.profitability-chart-card {
+  width: 100%;
+  min-width: 0;
+  padding: 24px;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e8eaf2);
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(30, 41, 59, 0.035);
+}
+
+/* =========================================
+   TOOLTIP
+========================================= */
+
+.profitability-tooltip {
+  padding: 13px 16px;
+  background: #172033;
+  color: #ffffff;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.2);
+}
+
+.profitability-tooltip p {
+  margin: 5px 0;
+  font-size: 12px;
+}
+
+.profitability-tooltip .tooltip-title {
+  font-weight: 750;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+/* =========================================
+   TREEMAP
+========================================= */
+
+.profitability-page .recharts-treemap-depth-1 {
+  outline: none;
+}
+
+.profitability-page .recharts-treemap rect {
+  transition: opacity 0.2s ease;
+}
+
+.profitability-page .recharts-treemap rect:hover {
+  filter: brightness(1.08);
+}
+
+.profitability-page .recharts-wrapper {
+  outline: none;
+}
+
+/* =========================================
+   RADIAL GAUGE SECTION
+========================================= */
+
+.profitability-margin-overview {
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+}
+
+.profitability-margin-overview > div {
+  min-width: 0;
+}
+
+/* Gauge interaction */
+
+.profitability-page button {
+  font-family: inherit;
+}
+
+.profitability-page button:focus-visible {
+  outline: 3px solid rgba(99, 102, 241, 0.35);
+  outline-offset: 3px;
+}
+
+/* Individual gauge cards */
+
+.profitability-page button[aria-pressed] {
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.profitability-page button[aria-pressed]:hover {
+  transform: translateY(-3px);
+}
+
+/* =========================================
+   DONUT CHART
+========================================= */
+
+.profitability-donut-layout {
+  width: 100%;
+  min-width: 0;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.profitability-donut-layout > div {
+  min-width: 0;
+}
+
+.profitability-donut-layout .recharts-wrapper {
+  margin: 0 auto;
+}
+
+/* =========================================
+   SCROLLBARS
+========================================= */
+
+.profitability-page * {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.profitability-page *::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.profitability-page *::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.profitability-page *::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+/* =========================================
+   ERROR MESSAGES
+========================================= */
+
+.profitability-page .error-message {
+  padding: 13px 16px;
+  margin: 12px 0;
+  border: 1px solid #fecaca;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 13px;
+}
+
+/* =========================================
+   TABLET RESPONSIVENESS
+========================================= */
+
+@media (max-width: 900px) {
+  .profitability-filters {
+    justify-content: flex-start;
+  }
+
+  .filter-group {
+    flex: 1;
+    min-width: 160px;
+  }
+
+  .profitability-chart-card {
+    padding: 19px;
+  }
+}
+
+/* =========================================
+   MOBILE RESPONSIVENESS
+========================================= */
+
+@media (max-width: 650px) {
+  .profitability-page {
+    padding-bottom: 20px;
+  }
+
+  .profitability-filters {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    padding: 15px;
+  }
+
+  .filter-group {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .profitability-margin-overview,
+  .profitability-donut-layout {
+    grid-template-columns: 1fr !important;
+  }
+
+  .profitability-margin-overview {
+    gap: 18px !important;
+  }
+
+  .profitability-donut-layout {
+    gap: 15px !important;
+  }
+
+  .profitability-donut-layout > div:first-child {
+    height: 300px !important;
+  }
+
+  .profitability-donut-layout > div:last-child {
+    max-height: 260px !important;
+  }
+
+  .profitability-chart-card {
+    padding: 15px;
+    border-radius: 15px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 420px) {
+  .profitability-page {
+    overflow-x: hidden;
+  }
+
+  .profitability-filters {
+    padding: 13px;
+  }
+
+  .profitability-margin-overview {
+    padding: 13px !important;
+  }
+
+  .profitability-page h2 {
+    font-size: 19px !important;
+  }
+
+  .profitability-page button {
+    max-width: 100%;
+  }
+}
+.profit-currency-note{margin:-9px 0 18px;padding:10px 12px;background:#f5ecd9;border-left:2px solid #b98939;color:#756e62;font-size:10px;line-height:1.5}
