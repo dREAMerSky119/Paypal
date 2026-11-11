@@ -68,7 +68,15 @@ async def import_inventory(request: Request, dry_run: bool = False) -> dict:
     declared = request.headers.get("content-length")
     if declared and declared.isdigit() and int(declared) > inv.MAX_IMPORT_BYTES:
         raise HTTPException(status_code=413, detail="File is too large")
-    body = await request.body()
+    # Read in chunks and stop at the limit, so a chunked upload with no Content-Length
+    # cannot make the server buffer an arbitrarily large body.
+    chunks, size = [], 0
+    async for chunk in request.stream():
+        size += len(chunk)
+        if size > inv.MAX_IMPORT_BYTES:
+            raise HTTPException(status_code=413, detail="File is too large")
+        chunks.append(chunk)
+    body = b"".join(chunks)
     try:
         return inv.import_csv(body, dry_run=dry_run)
     except inv.InventoryError as e:

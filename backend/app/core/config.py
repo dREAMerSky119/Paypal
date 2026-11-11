@@ -50,7 +50,7 @@ class Settings:
     )
 
     gemini_api_key: str | None = field(default_factory=lambda: os.getenv("GEMINI_API_KEY") or None)
-    gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-3.6-flash"))
+    gemini_model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "gemini-2.5-flash"))
 
 
 def _float_env(name: str, default: float) -> float:
@@ -81,6 +81,9 @@ class GeminiSettings:
     api_key: str = field(default_factory=lambda: os.getenv("GEMINI_API_KEY", "").strip())
     # Change this if Google retires the default; no code change needed.
     model: str = field(default_factory=lambda: os.getenv("GEMINI_MODEL", "").strip() or "gemini-2.5-flash")
+    # NOTE: the advisor and AI Operations both read GEMINI_MODEL; when it is
+    # unset this default (gemini-2.5-flash) is the single source of truth so
+    # there is exactly one Gemini model default in the app.
     # Kept short: the advisor falls back to rules rather than making the user wait.
     timeout_s: float = field(default_factory=lambda: min(30.0, max(2.0, _float_env("GEMINI_TIMEOUT_S", 8.0))))
 
@@ -90,10 +93,27 @@ class GeminiSettings:
 
 
 @dataclass(frozen=True)
+class LLMLimits:
+    """Spend and abuse limits for the Gemini-backed advisor (Phase G). All from env, none secret."""
+    # Estimated spend ceiling per calendar month, in USD. 0 blocks every Gemini call (the rule-based
+    # planner still works). The estimate uses the token prices below, so check them against Google's
+    # current price list before trusting the number if billing is enabled.
+    monthly_cap_usd: float = field(default_factory=lambda: max(0.0, _float_env("LLM_MONTHLY_CAP", 5.0)))
+    price_in_per_m_usd: float = field(default_factory=lambda: max(0.0, _float_env("LLM_PRICE_IN_PER_M", 0.30)))
+    price_out_per_m_usd: float = field(default_factory=lambda: max(0.0, _float_env("LLM_PRICE_OUT_PER_M", 2.50)))
+    # Per-session advisor requests allowed in one window (the browser sends X-Session-Id).
+    session_limit: int = field(default_factory=lambda: max(1, int(_float_env("ADVISOR_SESSION_LIMIT", 20))))
+    session_window_s: int = field(default_factory=lambda: max(10, int(_float_env("ADVISOR_SESSION_WINDOW_S", 3600))))
+    usage_db: str = field(default_factory=lambda: os.getenv("LLM_USAGE_DB", "").strip())
+
+
+@dataclass(frozen=True)
 class DatabaseSettings:
     """Aiven PostgreSQL connection. Empty means no database: the app serves the committed
-    JSON seed and keeps bookings in a local SQLite file (the pre-database behaviour)."""
+    JSON seed and keeps bookings/packages in a local SQLite file (the pre-database behaviour)."""
     url: str = field(default_factory=lambda: os.getenv("DATABASE_URL", "").strip())
+    # SQLite file for saved packages when DATABASE_URL is empty. Empty means a file in the OS temp dir.
+    packages_db: str = field(default_factory=lambda: os.getenv("PACKAGES_DB", "").strip())
 
     @property
     def configured(self) -> bool:
@@ -104,3 +124,4 @@ settings = Settings()
 db_settings = DatabaseSettings()
 paypal_settings = PayPalSettings()
 gemini_settings = GeminiSettings()
+llm_limits = LLMLimits()

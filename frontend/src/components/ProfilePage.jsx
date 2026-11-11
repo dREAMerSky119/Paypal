@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Building2, Check, UserRound } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext.jsx";
+import { clearDemoSession } from "../lib/profileStorage.js";
+import { X } from "lucide-react";
+import { getInitials } from "../context/AuthContext.jsx";
 import { CURRENCY_OPTIONS, currencyForNationality } from "../lib/currency.js";
 import { useDisplayCurrency } from "../lib/useDisplayCurrency.js";
 import { Button, PageHeader, Status } from "./ui.jsx";
@@ -35,6 +39,7 @@ export default function ProfilePage() {
   const [errors, setErrors] = useState({});
   const [saving, setSaving] = useState(false);
   const [notice, setNotice] = useState("");
+  const [logoutOpen, setLogoutOpen] = useState(false);
 
   useEffect(() => {
     setValues(profileValues(email, profile));
@@ -85,8 +90,8 @@ export default function ProfilePage() {
   );
 
   return <div className="profile-page">
-    <PageHeader eyebrow="YOUR WAYFARE PROFILE" title={isProfileComplete ? <>Profile <em>details.</em></> : <>A little about <em>you.</em></>} description={isProfileComplete ? "Keep your agency details and professional profile up to date." : "Set up your professional profile before entering the agent workspace."} />
-    {!isProfileComplete && <div className="profile-demo-note"><Status tone="gold">Demo profile</Status><span>Saved in this browser and associated with your email. This is not a production account.</span></div>}
+    <PageHeader eyebrow="YOUR WAYFARE PROFILE" title={isProfileComplete ? <>Profile <em>details.</em></> : <>A little about <em>you.</em></>} description={isProfileComplete ? "Keep your agency details and professional profile up to date." : "Set up your professional profile before entering the agent workspace."} action={<Link className="profile-button" to="/app" aria-label={`Profile for ${(profile?.fullName || "").toLowerCase()}`}><span className="profile-avatar">{getInitials(profile?.fullName)}</span></Link>} />
+    {!isProfileComplete && <div className="profile-demo-note"><Status tone="gold">Demo profile</Status><span><strong>Wayfare workspace</strong> · Saved in this browser and associated with your email. This is not a production account.</span></div>}
     <form className="profile-form" onSubmit={submit} noValidate>
       <section className="profile-section"><div className="profile-section-heading"><span><UserRound size={17}/></span><div><p className="eyebrow">01 · PERSONAL INFORMATION</p><h2>The person behind the journeys</h2></div></div>
         <div className="profile-fields profile-fields-personal">{field("fullName", "Full name", true, "text", "e.g. Rain Sharma")}{field("phone", "Contact number", true, "tel", "+91 98765 43210")}{field("nationality", "Nationality", true, "text", "e.g. Indian")}
@@ -95,15 +100,28 @@ export default function ProfilePage() {
         </div>
       </section>
       <section className="profile-section"><div className="profile-section-heading"><span><Building2 size={17}/></span><div><p className="eyebrow">02 · PROFESSIONAL INFORMATION</p><h2>How do you work?</h2></div></div>
+        {isProfileComplete && values.organisationName && <p className="profile-org-line">{values.organisationName} <small>Agency workspace</small></p>}
         <fieldset className="profile-arrangements"><legend>What best describes your working arrangement?</legend>
           {[{ value: "organisation", title: "Organisation", description: "I work with a travel agency or company." }, { value: "self-employed", title: "Self-employed", description: "I work independently with my travellers." }].map((option) => <label className={`profile-choice ${values.agencyType === option.value ? "is-selected" : ""}`} key={option.value}><input type="radio" name="agencyType" value={option.value} checked={values.agencyType === option.value} onChange={() => { setField("agencyType", option.value); if (option.value === "self-employed") setValues((current) => ({ ...current, agencyType: option.value, organisationName: "", organisationAddress: "", organisationWebsite: "" })); }} /><span className="profile-choice-check"><Check size={13}/></span><strong>{option.title}</strong><small>{option.description}</small></label>)}
         </fieldset>
         {errors.agencyType && <small className="profile-error">{errors.agencyType}</small>}
       </section>
       {values.agencyType === "organisation" ? <section className="profile-section"><div className="profile-section-heading"><span><Building2 size={17}/></span><div><p className="eyebrow">03 · ORGANISATION DETAILS</p><h2>Your agency</h2></div></div><div className="profile-fields">{field("organisationName", "Organisation / agency name", true, "text", "Enter your agency name")}{field("organisationAddress", "Organisation address", true, "text", "Street, city, country")}{field("organisationWebsite", "Organisation website", false, "url", "https://example.com")}{field("designation", "Professional designation", false, "text", "e.g. Travel designer")}</div></section> : <section className="profile-section"><div className="profile-section-heading"><span><UserRound size={17}/></span><div><p className="eyebrow">03 · PROFESSIONAL DETAILS</p><h2>Your practice</h2></div></div><div className="profile-fields profile-fields-single">{field("designation", "Professional designation", false, "text", "e.g. Independent travel advisor")}</div></section>}
-      <div className="profile-submit-row"><p>DEMO ONLY · Profile data stays in this browser.</p><button className="button button-primary" type="submit" disabled={saving}>{saving ? "Saving profile…" : isProfileComplete ? "Save changes" : "Create Profile"}<ArrowRightIcon/></button></div>
+      <div className="profile-submit-row"><button type="button" className="button" aria-label="Log out" onClick={() => setLogoutOpen(true)}>Log out</button><p>DEMO ONLY · Profile data stays in this browser.</p><button className="button button-primary" type="submit" disabled={saving}>{saving ? "Saving profile…" : isProfileComplete ? "Save changes" : "Create Profile"}<ArrowRightIcon/></button></div>
       {notice && <p className={`profile-notice ${notice.includes("could not") || notice.includes("unavailable") ? "is-error" : ""}`} role="status">{notice}</p>}
     </form>
+    {logoutOpen && <div className="rt-modal-backdrop" role="presentation" onClick={() => setLogoutOpen(false)}>
+      <section className="rt-score-modal" role="dialog" aria-modal="true" aria-label="Leave your workspace" onClick={(e) => e.stopPropagation()}>
+        <button className="rt-modal-close" onClick={() => setLogoutOpen(false)} aria-label="Close"><X size={16}/></button>
+        <span className="rt-kicker">SEE YOU SOON</span>
+        <h2>Leave your workspace?</h2>
+        <p>Your profile stays saved in this browser, so you can pick up where you left off.</p>
+        <div className="profile-submit-row">
+          <button type="button" className="button" onClick={() => setLogoutOpen(false)}>Stay</button>
+          <button type="button" className="button button-primary" onClick={() => { clearDemoSession(); setLogoutOpen(false); navigate("/", { replace: true }); }}>Log out</button>
+        </div>
+      </section>
+    </div>}
   </div>;
 }
 

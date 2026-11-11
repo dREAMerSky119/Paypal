@@ -16,7 +16,7 @@ from functools import lru_cache
 from pathlib import Path
 
 from app.services import profitability
-from app.services.demand_forecast import get_demand_forecast, load_demand_data
+from app.services.demand_forecast import get_demand_forecast
 
 DATA_DIR = Path(__file__).resolve().parents[1] / "data"
 ASSUMPTIONS_FILE = DATA_DIR / "simulator_assumptions.json"
@@ -452,7 +452,7 @@ def _margin_summary(rows, basis):
     return {
         "basis": (f"Simulated bookings for this destination, {basis['first_month']} to {basis['last_month']} "
                   f"({basis['bookings']} bookings), spread over the window by the baseline demand shape. "
-                  "Moves to saved packages when the package builder ships."),
+                  "Saved packages can be tested separately with the package impact tool."),
         "currency": "USD",
         "baseline": {"sales": round(sales_b, 2), "profit": round(profit_b, 2), "margin_pct": round(margin_b, 2)},
         "scenario": {"sales": round(sales_s, 2), "profit": round(profit_s, 2), "margin_pct": round(margin_s, 2)},

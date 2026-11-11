@@ -399,7 +399,7 @@ export default function DemandForecastPage() {
 
               <div className="forecast-model-label">
                 <Activity size={15} />
-                Seasonal trend projection
+                {forecastData.model || "Seasonal trend projection"}
               </div>
             </div>
 
@@ -455,7 +455,7 @@ export default function DemandForecastPage() {
 
                 <div className="forecast-confidence">
                   <span className="confidence-indicator" />
-                  80% estimated interval
+                  {forecastData.confidence_level}% estimated interval · {forecastData.confidence} confidence
                 </div>
               </div>
 

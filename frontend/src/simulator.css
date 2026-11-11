@@ -137,3 +137,12 @@
   .sim-notice{align-items:flex-start;flex-direction:column;gap:6px}
 }
 @media(prefers-reduced-motion:reduce){.sim-stale,.sim-chip{transition:none}}
+
+/* ---- Phase F: package impact + short link ---- */
+.sim-pkg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:10px 0}
+.sim-pkg-grid div{display:flex;flex-direction:column;gap:2px}
+.sim-pkg-grid strong{font-size:1.25rem}
+.sim-pkg-table{width:100%;border-collapse:collapse;font-size:.85rem;margin:8px 0}
+.sim-pkg-table th,.sim-pkg-table td{text-align:left;padding:4px 6px;border-bottom:1px solid var(--line,#d9d4c7)}
+.sim-pkg-alt ul{margin:4px 0 8px;padding-left:18px}
+@media (max-width:560px){.sim-pkg-grid{grid-template-columns:1fr}}

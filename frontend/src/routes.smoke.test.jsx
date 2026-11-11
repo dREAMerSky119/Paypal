@@ -14,7 +14,7 @@ const overviewFixture = {
     { key: "margin", label: "Avg. gross margin", value: "3%", change: "1%", detail: "d" },
     { key: "suppliers", label: "Supplier partners", value: "4", change: "1", detail: "d" },
   ],
-  journeys: [{ id: "j1", place: "Test Journey", region: "Nowhere", initials: "TJ", traveller: "Test Person", departure_offset_days: 10, status: "In planning", tone: "blue", image: "photo-x" }],
+  journeys: [{ id: "PKG-1", package_id: "PKG-1", place: "Test Journey", destination: "kyoto-japan", start_date: "2026-12-10", travellers: 2, status: "Deposit paid", tone: "sage" }],
   trend: { labels: ["A", "B"], values: [10, 20], summary_value: "+1%", summary_text: "t", footnote: "f" },
   responsible_note: "note",
 };
@@ -67,8 +67,8 @@ describe("every route renders", () => {
     expect(screen.queryByText(/14 SEPTEMBER 2026/i)).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: /create an itinerary/i })).toHaveAttribute("href", "/app/packages");
     expect(screen.getByRole("link", { name: /view all/i })).toHaveAttribute("href", "/app/packages");
-    fireEvent.click(screen.getByRole("button", { name: /dismiss notice/i }));
     expect(screen.queryByText(/illustrative workspace preview/i)).not.toBeInTheDocument();
+    expect(screen.getByText("Deposit paid")).toBeInTheDocument();
   });
 
   it("Overview shows a retryable error when the API is down", async () => {

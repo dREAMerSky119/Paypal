@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { seedDemoSession } from "../test/demoSession.js";
 import { fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
@@ -63,7 +64,7 @@ function visit(path = "/app/simulator") {
   return render(<MotionConfig reducedMotion="always"><MemoryRouter initialEntries={[path]}><AppRoutes /></MemoryRouter></MotionConfig>);
 }
 
-beforeEach(() => { mockApi(); localStorage.clear(); });
+beforeEach(() => { mockApi(); localStorage.clear(); seedDemoSession(); });
 afterEach(() => vi.restoreAllMocks());
 
 describe("SimulatorPage", () => {

@@ -92,7 +92,13 @@ CREATE TABLE IF NOT EXISTS checkout_booking (
   capture_id VARCHAR(64), payer_email VARCHAR(200), created_at VARCHAR(32) NOT NULL, paid_at VARCHAR(32)
 );
 CREATE TABLE IF NOT EXISTS package (package_id VARCHAR(40) PRIMARY KEY, title VARCHAR(200), destination_slug VARCHAR(64), start_date DATE, end_date DATE,
-  travellers INTEGER, payload TEXT, quote TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+  travellers INTEGER, revision INTEGER NOT NULL DEFAULT 1, payload TEXT, quote TEXT, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE IF NOT EXISTS package_day (package_id VARCHAR(40), day_no INTEGER, stops_json TEXT,
+  PRIMARY KEY (package_id, day_no));
+CREATE TABLE IF NOT EXISTS package_line (package_id VARCHAR(40), line_no INTEGER, day_no INTEGER, item_id VARCHAR(16), name VARCHAR(220),
+  line_type VARCHAR(20), section VARCHAR(40), service_date DATE, unit VARCHAR(30), quantity DOUBLE PRECISION,
+  unit_net_usd DOUBLE PRECISION, net_usd DOUBLE PRECISION, sell_usd DOUBLE PRECISION,
+  PRIMARY KEY (package_id, line_no));
 CREATE TABLE IF NOT EXISTS anomaly_resolution (anomaly_key VARCHAR(80) PRIMARY KEY, status VARCHAR(12), note TEXT, resolved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP);
 CREATE TABLE IF NOT EXISTS advisor_session (session_id VARCHAR(40) PRIMARY KEY, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, request_count INTEGER DEFAULT 0, token_estimate INTEGER DEFAULT 0);
 

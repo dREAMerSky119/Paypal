@@ -10,6 +10,8 @@ from app.services.profitability import (
     calculate_breakdown,
     calculate_monthly_trend,
     calculate_markup_what_if,
+    calculate_supplier_ranking,
+    get_supplier_names,
 )
 
 router = APIRouter()
@@ -31,7 +33,7 @@ def get_filtered_bookings(from_date=None, to_date=None):
         )
 
 
-@router.get("/profitability/summary")
+@router.get("/analytics/profitability/summary")
 def profitability_summary(
     from_date: date | None = Query(default=None, alias="from"),
     to_date: date | None = Query(default=None, alias="to"),
@@ -45,7 +47,7 @@ def profitability_summary(
         )
 
 
-@router.get("/profitability/breakdown")
+@router.get("/analytics/profitability/breakdown")
 def profitability_breakdown(
     group_by: str = Query(
         default="destination",
@@ -63,6 +65,18 @@ def profitability_breakdown(
             group_by,
         )
 
+        if group_by == "supplier":
+            # Suppliers are grouped by id internally but shown by name.
+            names = get_supplier_names()
+            results = [
+                {
+                    **row,
+                    "supplier_id": row["name"],
+                    "name": names.get(row["name"], row["name"]),
+                }
+                for row in results
+            ]
+
         return {
             "group_by": group_by,
             "total_groups": len(results),
@@ -78,7 +92,7 @@ def profitability_breakdown(
         )
 
 
-@router.get("/profitability/monthly-trend")
+@router.get("/analytics/profitability/monthly-trend")
 def profitability_monthly_trend(
     from_date: date | None = Query(default=None, alias="from"),
     to_date: date | None = Query(default=None, alias="to"),
@@ -95,7 +109,40 @@ def profitability_monthly_trend(
     }
 
 
-@router.get("/profitability/markup-what-if")
+@router.get("/analytics/suppliers/ranking")
+def supplier_ranking(
+    by: str = Query(
+        default="gross_profit",
+        description="Rank by gross_profit or gross_margin",
+        pattern="^(gross_profit|gross_margin)$",
+    ),
+    limit: int = Query(
+        default=10,
+        ge=1,
+        le=100,
+        description="Maximum number of suppliers to return",
+    ),
+):
+    try:
+        return {
+            "by": by,
+            "limit": limit,
+            "results": calculate_supplier_ranking(
+                get_bookings(),
+                by,
+                limit,
+            ),
+            "currency": "USD",
+            "is_sample": True,
+        }
+    except ValueError as error:
+        raise HTTPException(
+            status_code=400,
+            detail=str(error),
+        )
+
+
+@router.get("/analytics/profitability/markup-what-if")
 def profitability_markup_what_if(
     markup_percentage: float = Query(
         default=15,

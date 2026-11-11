@@ -7,19 +7,22 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parents[1] / "data"
 
-# Load the saved ML model
-bundle = joblib.load(BASE_DIR / "anomaly_model.joblib")
-model = bundle["model"]
-features = bundle["features"]
+# Lazy singletons: the model (joblib) and the 155k-row CSV are loaded on first
+# use, not at import, so importing the app stays fast and test collection does
+# not pay the cost for routes that never touch anomaly detection.
+_bundle = None
+raw_data = None
+rate_data = None
+history = None
 
-# Load the original dataset
-raw_data = pd.read_csv(
-    BASE_DIR / "wayfare_master.csv",
-    low_memory=False
-)
 
-# Keep only room-night rate records
-rate_data = raw_data[raw_data["record_type"] == "rate"].copy()
+def _ensure_loaded():
+    global _bundle, raw_data, rate_data, history
+    if _bundle is not None:
+        return
+    _bundle = joblib.load(BASE_DIR / "anomaly_model.joblib")
+    raw_data = pd.read_csv(BASE_DIR / "wayfare_master.csv", low_memory=False)
+    rate_data = raw_data[raw_data["record_type"] == "rate"].copy()
 
 def get_unit(value):
     try:
@@ -27,26 +30,27 @@ def get_unit(value):
     except (TypeError, json.JSONDecodeError):
         return None
 
-rate_data["unit"] = rate_data["attrs_json"].apply(get_unit)
-history = rate_data[rate_data["unit"] == "per_room_night"].copy()
+    rate_data["unit"] = rate_data["attrs_json"].apply(get_unit)
+    room_nights = rate_data[rate_data["unit"] == "per_room_night"].copy()
 
-history["period"] = pd.to_datetime(
-    history["period"], format="%Y-%m", errors="coerce"
-)
-history["price_usd"] = pd.to_numeric(
-    history["price_net_usd"], errors="coerce"
-)
+    room_nights["period"] = pd.to_datetime(
+        room_nights["period"], format="%Y-%m", errors="coerce"
+    )
+    room_nights["price_usd"] = pd.to_numeric(
+        room_nights["price_net_usd"], errors="coerce"
+    )
 
-history = history.dropna(
-    subset=["parent_id", "period", "price_usd"]
-)
+    room_nights = room_nights.dropna(
+        subset=["parent_id", "period", "price_usd"]
+    )
 
-history = history[
-    ["parent_id", "period", "price_usd"]
-].copy()
+    history = room_nights[
+        ["parent_id", "period", "price_usd"]
+    ].copy()
 
 
 def detect_anomalies(new_records):
+    _ensure_loaded()
     new_data = pd.DataFrame(new_records)
 
     required = {"parent_id", "period", "price_usd"}
@@ -121,7 +125,7 @@ def detect_anomalies(new_records):
         combined["past_6m_mean"].abs()
     )
 
-    X = combined[features].replace(
+    X = combined[_bundle["features"]].replace(
         [np.inf, -np.inf], np.nan
     )
 
@@ -129,7 +133,7 @@ def detect_anomalies(new_records):
 
     combined["ml_flag"] = False
     combined.loc[valid, "ml_flag"] = (
-        model.predict(X.loc[valid]) == -1
+        _bundle["model"].predict(X.loc[valid]) == -1
     )
 
     combined["rule_flag"] = (
@@ -174,6 +178,7 @@ def detect_anomalies(new_records):
 
 
 def list_items():
+    _ensure_loaded()
     items = raw_data[raw_data["record_type"] == "item"]
 
     result = []

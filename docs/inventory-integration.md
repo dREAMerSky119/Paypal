@@ -5,7 +5,6 @@ The inventory page and API reserve slots so later features plug in without resha
 | Slot | Where it appears | Filled by | Contract |
 | --- | --- | --- | --- |
 | `margin` | `GET /api/inventory[/{id}]` item field; drawer "Margin" card | #2 Profitability | `null` now. Will be `{ "pct": number, "basis": "sample" }`. Show "n/a" for `null`, never 0 |
-| `responsible_badge` | item field; drawer "Responsible badge" card; a badge column in the table | #8 Responsible travel | `null` now. Only **verified** claims may produce a badge; self-reported claims show in the detail view with a visible label |
 | `anomaly_flag` | item field; drawer "Anomaly flag" card; a flag icon in table rows | #9 Anomaly watch | `null` now. Will be `{ "severity": "high"\|"medium"\|"low", "open": n }`. `null` means *not scanned*, not *clean* |
 
 How to fill one: add the field to `_public_item` in `backend/app/services/inventory.py` (compute

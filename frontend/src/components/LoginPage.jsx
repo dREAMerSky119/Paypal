@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Eye, EyeOff, Plane } from "lucide-react";
 import { reelSets } from "../data/loginReels.js";
 import { validateDemoCredentials } from "../lib/demoAuth.js";
+import { useAuth } from "../context/AuthContext.jsx";
 import "../login.css";
 
 function PhotoSequence({ images, duplicate = false }) {
@@ -29,6 +30,7 @@ function DestinationReels() {
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,7 +50,11 @@ export default function LoginPage() {
     processingRef.current = true;
     setIsProcessing(true);
     window.setTimeout(() => {
-      navigate("/home", { state: { demoOnly: true } });
+      // Demo session only: no password is stored or sent anywhere. Users with
+      // a complete profile land on the marketing home; new users go through
+      // onboarding first.
+      login(email);
+      navigate("/home", { replace: true });
     }, 350);
   }
 
@@ -68,9 +74,10 @@ export default function LoginPage() {
           <div className="password-input-wrap"><input id="login-password" name="password" type={showPassword ? "text" : "password"} autoComplete="current-password" placeholder="Enter your password" value={password} onChange={(event) => {setPassword(event.target.value); setErrors((current) => ({...current,password:""}));}} aria-invalid={Boolean(errors.password)} aria-describedby={errors.password ? "login-password-error" : undefined} disabled={isProcessing}/><button type="button" className="password-toggle" onClick={() => setShowPassword((visible) => !visible)} aria-label={showPassword ? "Hide password" : "Show password"} disabled={isProcessing}>{showPassword ? <EyeOff size={16}/> : <Eye size={16}/>}</button></div>
           {errors.password && <p id="login-password-error" className="login-field-error" role="alert">{errors.password}</p>}
           <button className="login-submit" type="submit" disabled={isProcessing}>{isProcessing ? "Opening demo workspace…" : "Sign in"} {!isProcessing && <ArrowRight size={16}/>}</button>
+          <button className="login-submit login-submit-alt" type="submit" disabled={isProcessing}>{isProcessing ? "Working…" : "Create profile"}</button>
           <div className="login-divider"><span>OR</span></div>
           <button className="google-signin" type="button" onClick={() => setNotice("Google OAuth is not configured yet. Use the demo email and password fields above.")} disabled={isProcessing}><span className="google-mark">G</span> Continue with Google</button>
-          <p className="oauth-caption">Google OAuth isn't configured yet.</p>
+          <p className="oauth-caption">Google OAuth is not configured. Use the demo email and password fields above.</p>
           {notice && <p className="login-preview-note" role="status">{notice}</p>}
         </form>
         <p className="demo-auth-disclaimer">DEMO ONLY · No credentials are sent or stored. This is not production authentication.</p>

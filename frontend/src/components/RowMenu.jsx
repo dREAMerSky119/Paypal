@@ -17,6 +17,8 @@ export default function RowMenu({ label, items }) {
 
   return <div className="row-menu" ref={ref}>
     <button type="button" className="row-more" aria-label={`More options for ${label}`} aria-haspopup="menu" aria-expanded={open} onClick={() => setOpen((o) => !o)}>···</button>
-    {open && <div className="row-menu-pop" role="menu">{items.map((item) => <Link key={item.to} role="menuitem" to={item.to} onClick={() => setOpen(false)}>{item.label}</Link>)}</div>}
+    {open && <div className="row-menu-pop" role="menu">{items.map((item) => item.onClick
+      ? <button key={item.label} type="button" role="menuitem" className={item.danger ? "row-menu-danger" : ""} onClick={() => { setOpen(false); item.onClick(); }}>{item.label}</button>
+      : <Link key={item.to} role="menuitem" to={item.to} onClick={() => setOpen(false)}>{item.label}</Link>)}</div>}
   </div>;
 }

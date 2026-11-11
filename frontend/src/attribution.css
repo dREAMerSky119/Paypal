@@ -1,0 +1,13 @@
+.attr-page{max-width:980px;margin:0 auto;padding:40px 24px 64px;color:var(--navy,#172b40)}
+.attr-page h1{font:400 38px/1.15 var(--serif,serif);margin:8px 0 14px}
+.attr-page h2{font:400 22px var(--serif,serif);margin:36px 0 10px}
+.attr-lead{font-size:14px;line-height:1.7;max-width:680px}
+.attr-scroll{overflow-x:auto;margin-top:24px}
+.attr-table{width:100%;border-collapse:collapse;font-size:13px;min-width:640px}
+.attr-table th,.attr-table td{text-align:left;vertical-align:top;padding:12px 10px;border-bottom:1px solid #e6e3dc}
+.attr-table thead th{font:11px var(--mono,monospace);letter-spacing:.08em;color:#5d6b73}
+.attr-table tbody th{font-weight:600}
+.attr-table tbody th small{display:block;font-weight:400;color:#5d6b73;margin-top:3px}
+.attr-table a,.attr-list a,.sample-data-banner a{color:#7a5a1f;text-decoration:underline}
+.attr-list{font-size:13px;line-height:1.8;padding-left:18px}
+.attr-foot{font-size:12px;color:#5d6b73;margin-top:28px;line-height:1.7}

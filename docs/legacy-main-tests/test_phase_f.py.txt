@@ -1,0 +1,234 @@
+"""Phase F acceptance: badges agree on all three surfaces, unverified claims can never raise a
+badge, package quotes fill the responsible-score / carbon / swap slots, and simulator scenarios
+apply to saved packages and stay inside sane bounds."""
+from dataclasses import replace
+
+import pytest
+from fastapi.testclient import TestClient
+
+from app import db
+from app.main import app
+from app.services import inventory, package_simulation, responsible, scenarios
+from app.services.quote import quote_package
+
+client = TestClient(app)
+
+# Seeded example: an unbadged Marrakech experience with a cheaper, badged like-for-like option.
+SWAP_FROM, SWAP_TO = "item_0041", "item_0042"
+
+
+@pytest.fixture(autouse=True)
+def _offline(monkeypatch, tmp_path):
+    monkeypatch.setattr(db, "db_settings", replace(db.db_settings, url="", packages_db=str(tmp_path / "p.sqlite3")))
+    inventory.reset()
+
+
+def _claim(status, score="40", category="certification"):
+    return {"record_id": "c", "category": category, "verification": status, "score": score, "text": "claim"}
+
+
+def _view(claims):
+    return responsible._supplier_view({"record_id": "s", "name": "S", "score": ""}, claims)
+
+
+def _experience_payload(item_id, **over):
+    item = next(i for i in inventory.state()["items"] if i["id"] == item_id)
+    payload = {"destination": item["destination"], "start_date": "2026-12-02", "nights": 2, "travellers": 2,
+               "days": [{"day": 1, "stops": [{"kind": "item", "item_id": item_id, "slot": "morning"}]}]}
+    payload.update(over)
+    return payload
+
+
+# ---------------------------------------------------------------- badges: verified claims only
+
+def test_unverified_and_self_reported_claims_can_never_raise_a_badge():
+    view = _view([_claim("self_reported", "99"), _claim("unverified", "99"), _claim("self_reported", "99", "local_ownership")])
+    assert view["score"] is None and view["badge"] is None
+    assert view["status"] == "not_yet_verified"
+    assert len(view["self_reported_claims"]) == 3  # shown as labelled text, counted as nothing
+
+
+def test_flipping_a_claim_to_verified_is_what_earns_the_badge():
+    below = _view([_claim("verified", "50"), _claim("self_reported", "50")])
+    assert below["badge"] is None and below["score"] == 50.0
+    above = _view([_claim("verified", "50"), _claim("verified", "30")])
+    assert above["badge"]["label"] == responsible.BADGE_LABEL and above["score"] == 80.0
+
+
+def test_badge_for_needs_a_verified_claim_even_with_a_high_score():
+    assert responsible.badge_for(95, 0) is None
+    assert responsible.badge_for(None, 3) is None
+    assert responsible.badge_for(responsible.badge_threshold() - 0.1, 2) is None
+    assert responsible.badge_for(responsible.badge_threshold(), 1) is not None
+
+
+def test_every_badge_in_the_dataset_rests_on_verified_claims():
+    for partner in responsible.overview()["partners"]:
+        if partner["badge"]:
+            assert partner["verified_claim_count"] >= 1
+            assert partner["score"] >= responsible.badge_threshold()
+            assert partner["score"] == pytest.approx(sum(c["points"] for c in partner["claims"] if c["status"] == "verified"))
+
+
+# ---------------------------------------------------------------- the three surfaces agree
+
+def test_inventory_responsible_page_and_package_agree_on_every_supplier():
+    partners = {p["id"]: p for p in responsible.overview()["partners"]}
+    for item in inventory.state()["items"]:
+        row = inventory.get_item(item["id"])
+        partner = partners[item["supplier_id"]]
+        assert bool(row["responsible_badge"]) == bool(partner["badge"]), item["id"]
+        assert row["responsible_detail"]["score"] == partner["score"]
+    # a package made only of badged suppliers reports a package badge, using the same score
+    badged = next(i for i in inventory.state()["items"] if i["type"] == "experience" and partners[i["supplier_id"]]["badge"])
+    quote = quote_package(_experience_payload(badged["id"]))
+    result = quote["checks"]["responsible_score"]
+    assert result["badge"] and result["score"] == partners[badged["supplier_id"]]["score"]
+
+
+def test_list_rows_carry_the_badge_but_not_self_reported_detail():
+    page = client.get("/api/inventory", params={"page_size": 100}).json()
+    assert all("responsible_badge" in row and "responsible_detail" not in row for row in page["items"])
+    detail = client.get(f"/api/inventory/{SWAP_FROM}").json()
+    assert detail["responsible_detail"]["self_reported_claims"] is not None
+
+
+# ---------------------------------------------------------------- package quote slots
+
+def test_quote_fills_responsible_and_carbon_slots():
+    stay = next(i for i in inventory.state()["items"] if i["type"] == "stay")
+    quote = quote_package({"destination": stay["destination"], "start_date": "2026-12-02", "nights": 3, "travellers": 4,
+                           "stays": [{"item_id": stay["id"], "check_in_night": 1, "nights": 3}]})
+    checks = quote["checks"]
+    assert checks["responsible_score"]["coverage_pct"] in (0.0, 100.0)
+    carbon = checks["carbon"]
+    rooms = quote["line_items"][0]["quantity"]
+    assert carbon["components_kg"]["accommodation"] == pytest.approx(rooms * 3 * responsible.CARBON_FACTORS["hotel"], abs=0.1)
+    assert "flights" in carbon["not_included"]
+    assert "not a measured or audited footprint" in carbon["assumptions"].lower()
+
+
+def test_unscored_supplier_is_not_yet_verified_never_zero():
+    unscored = next(i for i in inventory.state()["items"] if i["type"] == "experience"
+                    and responsible.supplier_summary(i["supplier_id"])["score"] is None)
+    result = quote_package(_experience_payload(unscored["id"]))["checks"]["responsible_score"]
+    assert result["score"] is None and result["status"] == "not_yet_verified" and result["badge"] is None
+
+
+def test_package_badge_needs_coverage_not_just_a_high_score():
+    items = inventory.state()["items"]
+    badged = next(i for i in items if i["type"] == "experience" and i["destination"] == "marrakech-morocco"
+                  and responsible.supplier_summary(i["supplier_id"])["badge"])
+    unscored = next(i for i in items if i["type"] == "experience" and i["destination"] == "marrakech-morocco"
+                    and responsible.supplier_summary(i["supplier_id"])["score"] is None)
+    payload = _experience_payload(badged["id"])
+    payload["days"][0]["stops"].append({"kind": "item", "item_id": unscored["id"], "slot": "afternoon"})
+    # make the unscored supplier dominate spend by taking it many times over different days
+    payload["nights"] = 4
+    payload["days"] += [{"day": d, "stops": [{"kind": "item", "item_id": unscored["id"], "slot": "morning"}]} for d in (2, 3, 4)]
+    result = quote_package(payload)["checks"]["responsible_score"]
+    assert result["coverage_pct"] < responsible.PACKAGE_BADGE_MIN_COVERAGE_PCT
+    assert result["badge"] is None and "No badge" in result["message"]
+
+
+def test_seeded_swap_example_suggests_the_badged_like_for_like_item():
+    quote = quote_package(_experience_payload(SWAP_FROM))
+    swaps = quote["checks"]["swap_suggestions"]
+    assert swaps, "expected a seeded swap"
+    swap = swaps[0]
+    assert swap["from"]["item_id"] == SWAP_FROM and swap["to"]["item_id"] == SWAP_TO and swap["to"]["badge"] is True
+    assert swap["delta_pct"] <= 25
+    assert "not a guarantee" in swap["reason"]
+    # advice only: the quote itself still prices the item the user chose
+    assert quote["line_items"][0]["item_id"] == SWAP_FROM
+
+
+def test_no_swap_is_offered_for_an_already_badged_line():
+    quote = quote_package(_experience_payload(SWAP_TO))
+    assert quote["checks"]["swap_suggestions"] == []
+
+
+def test_saved_package_exposes_its_impact_through_the_responsible_route():
+    saved = client.post("/api/packages", json=_experience_payload(SWAP_FROM, title="Swap demo")).json()
+    body = client.get(f"/api/responsible/package/{saved['package_id']}").json()
+    assert body["responsible_score"]["status"] in {"scored", "badge", "not_yet_verified"}
+    assert body["carbon"]["total_kg"] >= 0 and body["swap_suggestions"]
+    assert client.get("/api/responsible/package/nope").status_code == 404
+
+
+def test_score_explainer_is_served_and_names_what_the_score_is_not():
+    explainer = client.get("/api/responsible/partners").json()["score_explainer"]
+    assert any("count for zero" in step for step in explainer["steps"])
+    assert any("not an audit" in line.lower() for line in explainer["not_this"])
+
+
+# ---------------------------------------------------------------- simulator: packages and scenarios
+
+def _saved_package(**over):
+    payload = _experience_payload(SWAP_FROM, title="Sim demo", **over)
+    return client.post("/api/packages", json=payload).json()
+
+
+def test_scenario_applies_to_a_saved_package_month_by_month():
+    saved = _saved_package()
+    result = client.post("/api/simulator/package-impact", json={
+        "package_id": saved["package_id"],
+        "scenario": {"adjustments": {}, "events": ["evt_043"]},
+    }).json()
+    assert result["window"]["start"] == "2026-12" and result["is_sample"] is True
+    base, scen = result["baseline"], result["scenario"]
+    assert base["sell_usd"] == pytest.approx(saved["quote"]["totals"]["sell_usd"], abs=0.02)
+    month = result["months"][0]
+    assert scen["sell_usd"] == pytest.approx(base["sell_usd"] * month["sell_multiplier"], abs=0.02)
+    assert scen["net_usd"] == pytest.approx(base["net_usd"] * month["cost_multiplier"], abs=0.02)
+    assert result["delta"]["profit_usd"] == pytest.approx(scen["profit_usd"] - base["profit_usd"], abs=0.02)
+
+
+def test_neutral_scenario_leaves_the_package_unchanged():
+    saved = _saved_package()
+    result = client.post("/api/simulator/package-impact", json={"package_id": saved["package_id"], "scenario": {}}).json()
+    assert result["delta"]["profit_usd"] == 0 and result["delta"]["margin_points"] == 0
+
+
+def test_package_impact_errors_are_clear():
+    assert client.post("/api/simulator/package-impact", json={"package_id": "missing", "scenario": {}}).status_code == 404
+    assert client.post("/api/simulator/package-impact", json={"scenario": {}}).status_code == 400
+    saved = _saved_package()
+    bad = client.post("/api/simulator/package-impact", json={"package_id": saved["package_id"], "scenario": {"events": ["nope"]}})
+    assert bad.status_code == 400 and "Unknown event" in bad.json()["detail"]
+
+
+def test_spillover_alternatives_degrade_without_error():
+    assert package_simulation._alternatives([{"slug": "not-a-place", "name": "X", "uplift_pct": 1.0}]) == []
+    assert package_simulation._alternatives([]) == []
+
+
+def test_every_preset_and_stacked_events_stay_inside_the_safety_bounds():
+    from app.services import simulator
+    bounds = simulator.load_assumptions()["bounds"]
+    for slug in (d["slug"] for d in simulator.get_assumptions()["destinations"]):
+        events = [e["id"] for e in simulator.load_assumptions()["events"]
+                  if e["destination"] == slug or e["destination"] is None and e["country"] == simulator._destination(slug)["country"]]
+        result = simulator.run_simulation({"destination": slug, "months": 12, "events": [{"id": e, "strength": 200} for e in events]})
+        for row in result["months"]:
+            assert bounds["demand"][0] <= row["demand_multiplier"] <= bounds["demand"][1]
+            assert bounds["rate"][0] <= row["rate_multiplier"] <= bounds["rate"][1]
+            assert bounds["cost"][0] <= row["cost_multiplier"] <= bounds["cost"][1]
+
+
+def test_scenario_can_be_saved_and_reopened_from_its_link():
+    request = {"destination": "kyoto-japan", "start": "2026-12", "months": 3, "events": ["evt_001"], "junk": "dropped"}
+    created = client.post("/api/simulator/scenarios", json={"name": "Autumn leaves", "request": request})
+    assert created.status_code == 201
+    body = created.json()
+    assert "junk" not in body["request"] and body["share_path"].endswith(body["scenario_id"])
+    fetched = client.get(f"/api/simulator/scenarios/{body['scenario_id']}").json()
+    assert fetched["name"] == "Autumn leaves" and fetched["request"]["events"] == ["evt_001"]
+    assert client.get("/api/simulator/scenarios/missing").status_code == 404
+
+
+def test_saving_an_invalid_scenario_is_rejected():
+    assert client.post("/api/simulator/scenarios", json={"request": {"destination": "nowhere"}}).status_code == 400
+    assert client.post("/api/simulator/scenarios", json={"request": "text"}).status_code == 400
+    with pytest.raises(scenarios.ScenarioError):
+        scenarios.save("x", {"destination": "kyoto-japan", "months": 99})

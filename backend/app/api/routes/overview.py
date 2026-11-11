@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from app.services import inventory as inv
+from app.services import bookings, inventory as inv, packages
 from app.services.seed import load_json
 
 router = APIRouter(tags=["overview"])
@@ -22,4 +22,14 @@ def overview() -> dict:
             m = {**m, "value": str(len(st["suppliers"])), "change": "",
                  "detail": f"{len(st['items'])} bookable items across {n_dest} destinations"}
         metrics.append(m)
-    return {**body, "metrics": metrics, "is_sample": True}
+    journeys = []
+    for pkg in packages.list_packages()["items"][:8]:
+        paid = bookings.paid_for_package(pkg["package_id"])
+        journeys.append({
+            "id": pkg["package_id"], "package_id": pkg["package_id"], "place": pkg["title"],
+            "destination": pkg["destination_slug"], "start_date": pkg["start_date"], "end_date": pkg["end_date"],
+            "travellers": pkg["travellers"], "sell_usd": pkg["sell_usd"],
+            "status": "Deposit paid" if paid else "Saved", "tone": "sage" if paid else "blue",
+            "booking_id": paid["id"] if paid else None,
+        })
+    return {**body, "metrics": metrics, "journeys": journeys, "is_sample": True}

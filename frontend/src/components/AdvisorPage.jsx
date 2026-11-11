@@ -4,7 +4,8 @@ import { ArrowUp, RotateCcw, Sparkles } from "lucide-react";
 import { Button, PageHeader, Status } from "./ui.jsx";
 import ApproveAndPay from "./ApproveAndPay.jsx";
 import { api } from "../lib/api.js";
-import { formatMoney } from "../lib/format.js";
+import { useAuth } from "../context/AuthContext.jsx";
+import PriceDisplay from "./PriceDisplay.jsx";
 import { destinations } from "../data/destinations.js";
 import { featureInfo } from "../data/featureInfo.js";
 import "../advisor.css";
@@ -18,15 +19,16 @@ const SUGGESTIONS = [
 
 const TYPE_LABEL = { stay: "Stay", experience: "Experience", guide: "Guide", transport: "Transfer" };
 
-function Proposal({ p }) {
+function Proposal({ p, displayCurrency }) {
   const t = p.totals;
+  const money = (amount, sourceLabel = "USD itinerary estimate") => <PriceDisplay amount={amount} currency="USD" usdReference={amount} displayCurrency={displayCurrency} sourceLabel={sourceLabel} compact />;
   const days = [...new Set(p.lines.filter((l) => l.day).map((l) => l.day))].sort((a, b) => a - b);
   const base = p.lines.filter((l) => !l.day);
   const Row = ({ l }) => (
     <li className="adv-line">
       <span className="adv-line-type">{TYPE_LABEL[l.type] || l.type}</span>
       <span className="adv-line-name"><strong>{l.name}</strong><small>{l.qty_label} · {l.item_id}</small></span>
-      <span className="adv-line-price">{formatMoney(l.sell_usd)}</span>
+      <span className="adv-line-price">{money(l.sell_usd)}</span>
     </li>
   );
   return (
@@ -34,11 +36,11 @@ function Proposal({ p }) {
       <header>
         <p className="eyebrow">PROPOSAL · {p.nights} NIGHTS · {p.travellers} TRAVELLER{p.travellers === 1 ? "" : "S"}</p>
         <div className="adv-totals">
-          <div><span>Sell price</span><strong>{formatMoney(t.sell_usd)}</strong></div>
-          <div><span>Per person</span><strong>{formatMoney(t.per_person_usd)}</strong></div>
-          <div><span>Net cost</span><strong>{formatMoney(t.net_usd)}</strong></div>
-          <div><span>Margin</span><strong>{formatMoney(t.margin_usd)} <em>({t.margin_pct}%)</em></strong></div>
-          {p.budget_usd != null && <div><span>Budget</span><strong>{formatMoney(p.budget_usd)} <em>{p.within_budget ? "· within" : "· over"}</em></strong></div>}
+          <div><span>Sell price</span><strong>{money(t.sell_usd)}</strong></div>
+          <div><span>Per person</span><strong>{money(t.per_person_usd)}</strong></div>
+          <div><span>Net cost</span><strong>{money(t.net_usd)}</strong></div>
+          <div><span>Margin</span><strong>{money(t.margin_usd)} <em>({t.margin_pct}%)</em></strong></div>
+          {p.budget_usd != null && <div><span>Budget</span><strong>{money(p.budget_usd, "USD budget")} <em>{p.within_budget ? "· within" : "· over"}</em></strong></div>}
         </div>
       </header>
       <h3>Stay and transfers</h3>
@@ -67,6 +69,7 @@ export default function AdvisorPage() {
   const info = featureInfo["/app/ai-studio"];
   const [params] = useSearchParams();
   const hint = destinations.find((d) => d.slug === params.get("destination"));
+  const { preferredCurrency } = useAuth();
   const [messages, setMessages] = useState([]);
   const [constraints, setConstraints] = useState(null);
   const [input, setInput] = useState(hint ? `Plan a trip to ${hint.name} for 2 travellers, 4 nights` : "");
@@ -105,8 +108,8 @@ export default function AdvisorPage() {
   return (
     <>
       <PageHeader eyebrow={info.eyebrow} title={<>{info.title}<span className="title-period">.</span></>} description={info.description}
-        action={<Button to={info.action.to} variant="outline">{info.action.label}</Button>} />
-      <p className="inv-banner" role="note"><Status tone="gold">Sample data</Status> The AI plans, PayPal sandbox charges. Plans are built only from the generated sample inventory, so every price traces to an inventory item; the AI never sets a price, and nothing is charged until you approve it in PayPal. This is not live availability, and no real money moves.</p>
+        action={info.action ? <Button to={info.action.to} variant="outline">{info.action.label}</Button> : undefined} />
+      
       <div className="adv-shell">
         <div className="adv-chat" aria-live="polite">
           {messages.length === 0 && (
@@ -119,7 +122,7 @@ export default function AdvisorPage() {
           {messages.map((m, i) => (
             <div key={i} className={`adv-msg adv-${m.role}`}>
               <p>{m.text}</p>
-              {m.proposal && <Proposal p={m.proposal} />}
+              {m.proposal && <Proposal p={m.proposal} displayCurrency={preferredCurrency} />}
               <AgentSteps agent={m.agent} />
               {i === payableIndex && <ApproveAndPay key={m.checkout?.order_id || `c${i}`} proposal={m.proposal} constraints={m.constraints} checkout={m.checkout} />}
             </div>

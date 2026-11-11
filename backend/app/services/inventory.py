@@ -68,6 +68,12 @@ def reset() -> None:
     """Drop imported rows and reload the seed (used by tests)."""
     with _lock:
         _state.clear()
+    try:
+        from app.services import anomalies
+        anomalies.reset()
+        anomalies.forget_imports()
+    except Exception:
+        pass
 
 
 def meta() -> dict:
@@ -156,7 +162,7 @@ def search_items(destination=None, type=None, tier=None, price_band=None, q=None
     else:
         out.sort(key=lambda i: (i["name"].lower(), i["id"]))
     page_data = _paginate(out, page, page_size)
-    page_data["items"] = [_public_item(i, sup) for i in page_data["items"]]
+    page_data["items"] = [_public_item(i, sup, detail=False) for i in page_data["items"]]
     page_data["is_sample"] = True
     return page_data
 
@@ -173,11 +179,34 @@ def map_points(destination=None, type=None, tier=None, price_band=None, q=None) 
     return {"count": len(pts), "points": pts, "is_sample": True}
 
 
-def _public_item(i: dict, sup: dict) -> dict:
+def _public_item(i: dict, sup: dict, detail: bool = True) -> dict:
     sp = sup.get(i["supplier_id"], {})
+    summary = _responsible_summary(i["supplier_id"])
     return {**i, "supplier_name": sp.get("name"),
-            # Slots for later features. null means "not computed yet", not "clean".
-            "margin": None, "responsible_badge": None, "anomaly_flag": None}
+            # null means "nothing to report", not "verified clean".
+            "margin": None, "anomaly_flag": _anomaly_flag(i["id"]),
+            # Verified-only badge, same logic as the responsible page and package quotes.
+            "responsible_badge": summary["badge"] if summary else None,
+            # Detail-only: score and labelled self-reported lines. Never used for a badge.
+            **({"responsible_detail": summary} if detail else {})}
+
+
+def _responsible_summary(supplier_id):
+    try:
+        from app.services import responsible
+        return responsible.supplier_summary(supplier_id)
+    except Exception:
+        return None
+
+
+def _anomaly_flag(item_id: str):
+    """Open anomaly flags for one item (feature #9). The import is local so the
+    anomaly service stays free to read the inventory store itself."""
+    try:
+        from app.services import anomalies
+        return anomalies.item_flag(item_id)
+    except Exception:
+        return None
 
 
 def get_item(item_id: str) -> dict | None:
@@ -317,13 +346,36 @@ def import_csv(raw: bytes, dry_run: bool = False) -> dict:
         seen.add(key)
         clean.append(item)
 
-    imported = []
+    imported, flags = [], []
     if clean and not dry_run:
         with _lock:
             imported = _commit(clean)
+        flags = _scan_import(imported)
     return {"dry_run": dry_run, "rows_read": len(clean) + len(errors),
             "valid": len(clean), "imported": len(imported), "rejected": len(errors),
-            "errors": errors, "item_ids": [i["id"] for i in imported]}
+            "errors": errors, "item_ids": [i["id"] for i in imported],
+            # A bad CSV raises flags on the spot, so the importer sees them in the result.
+            "anomaly_flags": [{"item_id": f["item_id"], "name": f["item_name"],
+                               "severity": f["severity"], "codes": f["codes"]} for f in flags]}
+
+
+def _scan_import(imported: list[dict]) -> list[dict]:
+    """Run the anomaly detector over rows just imported (feature #9).
+
+    A failure here must never lose the import: the rows are already committed, so
+    the scan is best-effort and its outcome is reported separately.
+    """
+    if not imported:
+        return []
+    try:
+        from app.services import anomalies
+        anomalies.reset()
+        return anomalies.flag_imported(imported, {i["id"]: state()["rates"].get(i["id"], [])
+                                                  for i in imported})
+    except Exception:
+        import logging
+        logging.exception("Anomaly scan after import failed; the imported rows were kept")
+        return []
 
 
 def _commit(clean: list[dict]) -> list[dict]:

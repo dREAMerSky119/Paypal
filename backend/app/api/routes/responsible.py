@@ -1,46 +1,21 @@
-
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Query
 from app.services import responsible
 
-router = APIRouter(tags=["responsible travel"])
+router = APIRouter(prefix="/responsible", tags=["responsible-travel"])
 
 
-@router.get("/responsible/partners")
-def partners(destination: str | None = None, kind: str | None = None, q: str | None = None):
-    return responsible.overview(destination=destination, kind=kind, query=q)
+@router.get("/partners")
+def responsible_partners(
+    destination: str | None = None,
+    kind: str | None = None,
+    q: str | None = Query(None, max_length=100),
+) -> dict:
+    return responsible.list_stays(destination=destination, q=q, kind=kind)
 
 
-@router.get("/responsible/score/{item_id}")
-def score(item_id: str):
-    # Supplier ID returns a partner's scorecard; destination slug returns all
-    # partners and the destination average.
-    result = responsible.destination_detail(item_id)
-    if result is not None:
-        return result
-    all_data = responsible.overview()
-    partner = next((p for p in all_data["partners"] if p["id"] == item_id), None)
-    if partner is not None:
-        return partner
-    raise HTTPException(status_code=404, detail="No matching destination or partner was found.")
-
-
-@router.get("/responsible/package/{package_id}")
-def package_impact(package_id: str):
-    raise HTTPException(
-        status_code=404,
-        detail="This package has no saved transport and accommodation details to calculate an impact summary yet.",
-    )
-
-
-@router.post("/responsible/carbon")
-async def carbon(request: Request):
+@router.post("/carbon")
+def responsible_carbon(payload: dict) -> dict:
     try:
-        payload = await request.json()
-    except Exception:
-        raise HTTPException(status_code=400, detail="Please enter trip details using valid numbers.")
-    if not isinstance(payload, dict):
-        raise HTTPException(status_code=400, detail="Trip details must be submitted as a JSON object.")
-    try:
-        return responsible.calculate_carbon(payload)
+        return responsible.carbon_estimate(payload)
     except ValueError as exc:
-        raise HTTPException(status_code=400, detail=str(exc))
+        raise HTTPException(status_code=400, detail=str(exc)) from None

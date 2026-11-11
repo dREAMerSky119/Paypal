@@ -1,217 +1,117 @@
+"""Responsible-travel stay discovery and indicative carbon estimates.
 
-"""Responsible travel scoring from the project's supplied master CSV.
-
-Supplier scores are calculated as the sum of claim points whose status is
-`verified`. Self-reported and unverified claims are visible but contribute 0.
-The supplier.score column is retained as a cross-check; in the supplied sample
-CSV it matches this calculation for all 171 suppliers.
+The bundled accommodation records are synthetic demo listings. Copy and imagery
+are editorial presentation only; they do not assert property-specific benefits.
 """
-import csv
-import json
 import math
-from collections import defaultdict
-from functools import lru_cache
-from pathlib import Path
+from app.services.seed import load_json
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-CSV_PATH = DATA_DIR / "wayfare_master.csv"
-DESTINATIONS_PATH = DATA_DIR / "destinations.json"
+# Curated photographs of real accommodation buildings (homestays, cottages,
+# guesthouses and resort villas). The supplier records in this demo are synthetic,
+# so these are illustrative category images, not photographs of the named listings.
+HOMESTAY_IMAGES = [
+    "https://assets.cntraveller.in/photos/62b97e586494f32523f7516a/master/w_1600%2Cc_limit/Casa-galgibaga-6.jpg",
+    "https://static.toiimg.com/photo/49720744.cms",
+    "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/04/9e/8d/09/cottage.jpg?h=-1&s=1&w=700",
+    "https://www.raahghar.com/public/storage/image/stay/gallery/parijaat/1754475005_7.webp",
+    "https://pix6.agoda.net/hotelImages/36838135/0/605d0a2651299a9a9583aeb0a4bc45cb.jpg?ce=0&s=1024x768",
+    "https://cf.bstatic.com/xdata/images/hotel/max1024x768/389777262.jpg?hp=1&k=607e0e114e926327571cbda48c4c181936a023841909bf7734132fc867837fd0&o=",
+]
 
-WEIGHTS = {
-    "local_ownership": 35,
-    "certification": 30,
-    "community_benefit": 20,
-    "environmental": 15,
+RESORT_IMAGES = [
+    "https://r2imghtlak.mmtcdn.com/r2-mmt-htl-image/htl-imgs/202304051228171615-47ea524d-3056-438c-9f6c-c8fb4a69e50a.jpg",
+    "https://r1imghtlak.mmtcdn.com/66a3699c-f50a-48e6-afda-aea188a852fa.jpg",
+    "https://pix10.agoda.net/hotelImages/78059040/0/5ba2d861f5c02654536ee71302a1bf92.jpg?ce=2&s=1024x768",
+    "https://thelotusresort.vn/admin/app/webroot/img/upload/11711187168500.jpg",
+    "https://images.trvl-media.com/lodging/116000000/115560000/115559200/115559167/06547c0b.jpg?impolicy=resizecrop&ra=fill&rh=575&rw=575",
+]
+
+LODGING_IMAGES = HOMESTAY_IMAGES + RESORT_IMAGES
+
+
+def image_for_stay(kind: str, index: int) -> tuple[str, str]:
+    if kind in {"homestay", "guesthouse"}:
+        return HOMESTAY_IMAGES[index % len(HOMESTAY_IMAGES)], "Illustrative photograph of a real homestay or guesthouse"
+    if kind in {"boutique_hotel", "heritage_hotel"}:
+        return RESORT_IMAGES[index % len(RESORT_IMAGES)], "Illustrative photograph of a real resort or hotel property"
+    return LODGING_IMAGES[index % len(LODGING_IMAGES)], "Illustrative photograph of a real lodge, cottage or resort property"
+
+
+STAY_COPY = {
+    "guesthouse": "A relaxed base for exploring the destination at your own pace.",
+    "homestay": "Settle in, slow down, and let the neighbourhood set the rhythm.",
+    "community_host": "A welcoming starting point for a day of discovery.",
+    "boutique_hotel": "Make this your base for a memorable escape.",
+    "heritage_hotel": "A stay to anchor your days of discovery.",
+    "rifugio_or_lodge": "An inviting base for days spent exploring the outdoors.",
 }
-VERIFICATION_STATUSES = {"verified", "self_reported", "unverified"}
 
-# Transparent planning estimates, kg CO2e per passenger-km / room-night.
-# These are explicitly presented as approximate proxies, not official country factors.
-CARBON_FACTORS = {
-    "flight_short": 0.15,
-    "flight_long": 0.11,
-    "rail": 0.035,
-    "road": 0.17,
-    "hotel": 18.0,
+DESTINATION_LABELS = {
+    "dolomites-italy": "The Dolomites",
+    "kyoto-japan": "Kyoto",
+    "marrakech-morocco": "Marrakech",
+    "kashmir-india": "Kashmir",
+    "jaipur-india": "Jaipur",
+    "udaipur-india": "Udaipur",
+    "kerala-india": "Kerala",
+    "ladakh-india": "Ladakh",
+    "meghalaya-india": "Meghalaya",
+    "bali-indonesia": "Bali",
+    "iceland": "Iceland",
+    "amalfi-coast-italy": "Amalfi Coast",
 }
 
-
-def _json_object(raw):
-    try:
-        value = json.loads(raw or "{}")
-        return value if isinstance(value, dict) else {}
-    except (TypeError, json.JSONDecodeError):
-        return {}
-
-
-@lru_cache(maxsize=1)
-def _load_rows():
-    with CSV_PATH.open("r", encoding="utf-8-sig", newline="") as file:
-        return list(csv.DictReader(file))
-
-
-@lru_cache(maxsize=1)
-def _load_destinations():
-    with DESTINATIONS_PATH.open("r", encoding="utf-8") as file:
-        return json.load(file)
-
-
-def _num(value, default=0.0):
-    try:
-        number = float(value)
-        return number if math.isfinite(number) else default
-    except (TypeError, ValueError):
-        return default
-
-
-def _data():
-    rows = _load_rows()
-    suppliers = {
-        row["record_id"]: row
-        for row in rows
-        if row.get("record_type") == "supplier"
-    }
-    claims_by_supplier = defaultdict(list)
-    for row in rows:
-        if row.get("record_type") == "responsible_claim":
-            parent_id = row.get("parent_id")
-            if parent_id:
-                claims_by_supplier[parent_id].append(row)
-    return suppliers, claims_by_supplier
-
-
-def _claim_view(claim):
-    status = (claim.get("verification") or "unverified").lower()
-    if status not in VERIFICATION_STATUSES:
-        status = "unverified"
-    category = claim.get("category") or "other"
-    raw_score = max(0.0, _num(claim.get("score")))
-    points = raw_score if status == "verified" else 0.0
-    return {
-        "id": claim.get("record_id"),
-        "category": category,
-        "label": category.replace("_", " ").title(),
-        "claim": claim.get("text") or claim.get("source_note") or category.replace("_", " "),
-        "status": status,
-        "points": round(points, 1),
-        "possible_points": round(raw_score, 1),
-        "data_origin": claim.get("data_origin") or "unknown",
-        "evidence_url": _json_object(claim.get("attrs_json")).get("evidence_url"),
-    }
-
-
-def _supplier_view(supplier, claims):
-    attrs = _json_object(supplier.get("attrs_json"))
-    claim_views = [_claim_view(claim) for claim in claims]
-    verified_claims = [claim for claim in claim_views if claim["status"] == "verified"]
-    score = min(100.0, sum(claim["points"] for claim in claim_views))
-    # Existing supplier.score is a stored copy of this exact verified-claims sum.
-    stored_score = _num(supplier.get("score"), default=-1)
-    score_consistent = stored_score < 0 or abs(stored_score - score) < 0.01
-    has_verified_evidence = bool(verified_claims)
-    return {
-        "id": supplier.get("record_id"),
-        "name": supplier.get("name") or "Unnamed sample partner",
-        "destination_slug": supplier.get("destination_slug"),
-        "kind": attrs.get("supplier_kind") or supplier.get("subtype") or "partner",
-        "ownership": attrs.get("ownership") or "not specified",
-        "locality": attrs.get("locality") or "",
-        "chain_brand": attrs.get("chain_brand"),
-        "score": round(score, 1) if has_verified_evidence else None,
-        "status": "scored" if has_verified_evidence else "not_yet_verified",
-        "verified_claim_count": len(verified_claims),
-        "pending_claim_count": sum(1 for claim in claim_views if claim["status"] != "verified"),
-        "claims": claim_views,
-        "category_breakdown": {
-            category: round(sum(c["points"] for c in claim_views if c["category"] == category), 1)
-            for category in WEIGHTS
-        },
-        "stored_score": round(stored_score, 1) if stored_score >= 0 else None,
-        "score_consistent_with_csv": score_consistent,
-        "data_origin": supplier.get("data_origin") or "unknown",
-        "is_sample": (supplier.get("data_origin") or "").startswith("synthetic"),
-    }
-
-
-def overview(destination=None, kind=None, query=None):
-    suppliers, claims_by_supplier = _data()
-    all_partners = [
-        _supplier_view(supplier, claims_by_supplier.get(supplier_id, []))
-        for supplier_id, supplier in suppliers.items()
-    ]
-    if destination:
-        all_partners = [p for p in all_partners if p["destination_slug"] == destination]
-    if kind:
-        all_partners = [p for p in all_partners if p["kind"].lower() == kind.lower()]
-    if query:
-        needle = query.strip().lower()
-        all_partners = [
-            p for p in all_partners
-            if needle in p["name"].lower() or needle in p["locality"].lower()
-        ]
-
-    destinations_data = []
-    for destination_row in _load_destinations():
-        slug = destination_row["slug"]
-        dest_partners = [p for p in all_partners if p["destination_slug"] == slug]
-        scored = [p for p in dest_partners if p["score"] is not None]
-        average = (
-            round(sum(p["score"] for p in scored) / len(scored), 1)
-            if scored else None
-        )
-        destinations_data.append({
-            "slug": slug,
-            "name": destination_row["name"],
-            "country": destination_row["country"],
-            "average_score": average,
-            "supplier_count": len(dest_partners),
-            "scored_supplier_count": len(scored),
-            "not_yet_verified_count": len(dest_partners) - len(scored),
-            "coverage_pct": round(len(scored) / len(dest_partners) * 100, 1) if dest_partners else 0,
+def list_stays(destination: str | None = None, q: str | None = None, kind: str | None = None) -> dict:
+    items = load_json("inventory_items.json")
+    suppliers = {s["id"]: s for s in load_json("inventory_suppliers.json")}
+    stays = [i for i in items if i.get("type") == "stay"]
+    out = []
+    for item in stays:
+        supplier = suppliers.get(item.get("supplier_id"), {})
+        dest = item.get("destination", "")
+        supplier_kind = supplier.get("kind", "guesthouse")
+        name = item.get("name") or supplier.get("name") or "Sample stay"
+        if destination and dest != destination:
+            continue
+        if kind and supplier_kind != kind:
+            continue
+        haystack = f"{name} {supplier.get('name', '')} {supplier.get('locality', '')} {DESTINATION_LABELS.get(dest, dest)}".lower()
+        if q and not all(token in haystack for token in q.lower().split()):
+            continue
+        idx = int(item.get("id", "item_0001").split("_")[-1]) - 1
+        image, image_alt = image_for_stay(supplier_kind, idx)
+        out.append({
+            "id": item["id"],
+            "supplier_id": item["supplier_id"],
+            "name": name,
+            "supplier_name": supplier.get("name"),
+            "destination": dest,
+            "destination_name": DESTINATION_LABELS.get(dest, dest.replace("-", " ").title()),
+            "locality": supplier.get("locality") or item.get("responsible", {}).get("locality"),
+            "kind": supplier_kind,
+            "kind_label": supplier_kind.replace("_", " ").title(),
+            "tier": item.get("tier"),
+            "price": item.get("base_net_price"),
+            "price_usd": item.get("base_net_price_usd"),
+            "currency": item.get("currency"),
+            "unit": item.get("unit"),
+            "capacity": item.get("capacity"),
+            "image_url": image,
+            "image_alt": image_alt,
+            "editorial_note": STAY_COPY.get(supplier_kind, "A considered base for exploring somewhere new."),
+            "is_sample": True,
         })
+    out.sort(key=lambda row: (row["destination_name"], row["name"].lower()))
     return {
-        "destinations": destinations_data,
-        "partners": all_partners,
-        "total_suppliers": len(all_partners),
-        "scored_suppliers": sum(1 for p in all_partners if p["score"] is not None),
-        "not_yet_verified_suppliers": sum(1 for p in all_partners if p["score"] is None),
-        "scoring_weights": WEIGHTS,
-        "scoring_logic": "Supplier score = sum of claim points with verification=verified. Self-reported and unverified claims contribute 0. Destination average includes only suppliers with at least one verified claim.",
-        "sample_data_notice": "These are illustrative sample-data scores generated from the supplied CSV, not independent real-world sustainability certifications or audits.",
-    }
+        "count": len(out),
+        "items": out,
+        "destinations": sorted({(x["destination"], x["destination_name"]) for x in out}, key=lambda x: x[1]),
+        "is_sample": True,
+            }
 
 
-def destination_detail(slug):
-    destinations = {d["slug"]: d for d in _load_destinations()}
-    destination = destinations.get(slug)
-    if not destination:
-        return None
-    result = overview(destination=slug)
-    scored = [p for p in result["partners"] if p["score"] is not None]
-    return {
-        "destination": {
-            "slug": slug,
-            "name": destination["name"],
-            "country": destination["country"],
-        },
-        "average_score": (
-            round(sum(p["score"] for p in scored) / len(scored), 1)
-            if scored else None
-        ),
-        "supplier_count": len(result["partners"]),
-        "scored_supplier_count": len(scored),
-        "partners": result["partners"],
-        "scoring_weights": WEIGHTS,
-        "message": "Destination average is calculated from scored suppliers only; suppliers without verified claims are excluded, not treated as zero.",
-    }
-
-
-def package_impact(package_id):
-    # The master CSV does not contain persisted package-level composition records.
-    return None
-
-
-def calculate_carbon(payload):
+def carbon_estimate(payload: dict) -> dict:
+    """Keep the existing Feature 8 carbon calculator's proxy factors and response contract."""
     limits = {
         "flight_km": (0, 50000),
         "rail_km": (0, 50000),
@@ -227,7 +127,7 @@ def calculate_carbon(payload):
         try:
             number = float(raw)
         except (TypeError, ValueError):
-            raise ValueError(f"Enter a valid number for {field.replace('_', ' ')}.")
+            raise ValueError(f"Enter a valid number for {field.replace('_', ' ')}.") from None
         if not math.isfinite(number):
             raise ValueError(f"{field.replace('_', ' ').title()} must be a finite number.")
         if number < minimum or number > maximum:
@@ -236,12 +136,19 @@ def calculate_carbon(payload):
             )
         values[field] = number
 
-    flight_factor = CARBON_FACTORS["flight_long"] if values["flight_km"] >= 3700 else CARBON_FACTORS["flight_short"]
+    flight_factor = 0.11 if values["flight_km"] >= 3700 else 0.15
+    factors = {
+        "flight_short": 0.15,
+        "flight_long": 0.11,
+        "rail": 0.035,
+        "road": 0.17,
+        "hotel": 18.0,
+    }
     components = {
         "flights": values["flight_km"] * flight_factor,
-        "rail": values["rail_km"] * CARBON_FACTORS["rail"],
-        "road": values["road_km"] * CARBON_FACTORS["road"],
-        "accommodation": values["hotel_nights"] * CARBON_FACTORS["hotel"],
+        "rail": values["rail_km"] * factors["rail"],
+        "road": values["road_km"] * factors["road"],
+        "accommodation": values["hotel_nights"] * factors["hotel"],
     }
     total = sum(components.values())
     travellers = values["travellers"]
@@ -249,6 +156,10 @@ def calculate_carbon(payload):
         "total_kg": round(total, 1),
         "per_traveller_kg": round(total / travellers, 1),
         "components_kg": {key: round(value, 1) for key, value in components.items()},
-        "assumptions": "Approximate trip-planning estimate, not an audited footprint. Factors are proxy averages; flight class, occupancy, vehicle type, electricity mix and hotel country can materially change results.",
-        "factors": CARBON_FACTORS,
+        "assumptions": (
+            "Approximate trip-planning estimate, not an audited footprint. Factors are proxy "
+            "averages; flight class, occupancy, vehicle type, electricity mix and hotel country "
+            "can materially change results."
+        ),
+        "factors": factors,
     }

@@ -37,7 +37,7 @@ def test_overview_shape():
     assert body["is_sample"] is True
     assert len(body["metrics"]) == 4
     assert len(body["trend"]["labels"]) == len(body["trend"]["values"])
-    assert all("departure_offset_days" in j for j in body["journeys"])
+    assert body["journeys"] == []  # journeys come from saved packages, none in a fresh store
 
 
 def test_cors_allows_local_frontend():

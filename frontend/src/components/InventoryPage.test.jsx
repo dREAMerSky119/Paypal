@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor, within } from "@testing-library/rea
 import { MemoryRouter, useLocation } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
 import { AppRoutes } from "../App.jsx";
+import { PROFILE_STORAGE_KEY } from "../lib/profileStorage.js";
 
 const mk = (n, over = {}) => ({
   id: `item_${n}`, name: `Sample Stay ${n}`, supplier_name: `Supplier ${n}`, destination: "kyoto-japan",
@@ -48,8 +49,36 @@ describe("InventoryPage", () => {
     await screen.findByRole("button", { name: "Sample Stay 1" });
     const q = new URLSearchParams(calls.find((c) => c.startsWith("/api/inventory?")).split("?")[1]);
     expect(Object.fromEntries(q)).toMatchObject({ destination: "kyoto-japan", type: "stay", tier: "mid", price_band: "30_75", q: "gion", sort: "price_desc", page: "2", page_size: "25" });
-    expect(screen.getByLabelText("Type")).toHaveValue("stay");
+    expect(screen.getByRole("tab", { name: /stays/i })).toHaveAttribute("aria-selected", "true");
     expect(screen.getByLabelText("Sort")).toHaveValue("price_desc");
+  });
+
+  it("browses categories from the same filtered inventory and keeps accurate server counts", async () => {
+    mockApi((u) => {
+      const type = u.searchParams.get("type") || "all";
+      const counts = { all: 9, stay: 3, guide: 2, transport: 1, experience: 3 };
+      return listBody(type === "stay" ? [mk(1)] : [], { count: counts[type], pages: 1 });
+    });
+    visit("/app/inventory?destination=kyoto-japan&tier=mid&q=local");
+    await waitFor(() => expect(screen.getByRole("tab", { name: /transport/i })).toHaveTextContent("1"));
+    expect(screen.getByRole("tab", { name: /all/i })).toHaveTextContent("9");
+    expect(screen.getByRole("tab", { name: /guides/i })).toHaveTextContent("2");
+    fireEvent.click(screen.getByRole("tab", { name: /transport/i }));
+    await waitFor(() => expect(where()).toContain("type=transport"));
+    const query = new URLSearchParams(calls.find((call) => call.includes("type=transport"))?.split("?")[1]);
+    expect(Object.fromEntries(query)).toMatchObject({ destination: "kyoto-japan", type: "transport", tier: "mid", q: "local" });
+  });
+
+  it("converts prices into the preferred display currency at the shared exchange rate", async () => {
+    localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify({ "demo@agency.com": { email: "demo@agency.com", fullName: "Rain Sharma", nationality: "Indian", preferredCurrency: "INR", designation: "Designer" } }));
+    mockApi(() => listBody([mk(1, { currency: "EUR", base_net_price: 75, base_net_price_usd: 80 })]));
+    visit("/app/inventory");
+    await screen.findByRole("button", { name: "Sample Stay 1" });
+    expect(screen.getByText("Preferred display price")).toBeInTheDocument();
+    // USD reference 80 x reference rate 88 INR/USD, labelled as a reference (not live) rate.
+    expect(screen.getByText("INR 7,040")).toBeInTheDocument();
+    expect(screen.getByText(/converted at reference rate/i)).toBeInTheDocument();
+    expect(screen.getByText(/USD 80/)).toBeInTheDocument();
   });
 
   it("writes filter changes to the URL and returns to page 1", async () => {

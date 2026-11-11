@@ -1,0 +1,90 @@
+/* Wayfare warm theme: beige canvas, white surfaces, soft depth. Loaded last so it refines every page. */
+:root{
+  --bg:#f4efe6; --bg-deep:#ece5d8; --surface:#ffffff; --surface-warm:#fbf8f2;
+  --line:#e6dfd1; --line-strong:#d8cfbc;
+  --ink:#1f2f3f; --ink-soft:#5d6a76;
+  --accent:#9a7433; --accent-soft:#f1e6cd;
+  --radius:14px; --radius-sm:9px;
+  --shadow-sm:0 1px 2px rgba(60,45,20,.05),0 2px 8px rgba(60,45,20,.05);
+  --shadow-md:0 8px 28px rgba(60,45,20,.09);
+}
+:root,:root body,:root .app-shell{background:var(--bg)}
+:root body{color:var(--ink)}
+:root .sidebar{background:#faf6ee;border-right-color:var(--line)}
+:root .workspace-switch{background:var(--surface);border-color:var(--line);border-radius:var(--radius-sm)}
+:root .side-link{border-radius:var(--radius-sm)}
+:root .side-link-active{background:var(--accent-soft);color:#3a2f14}
+:root .side-link-active:before{border-radius:2px}
+:root .help-card{background:var(--accent-soft);border-radius:var(--radius-sm)}
+:root .topbar{background:rgba(244,239,230,.88);border-bottom-color:var(--line)}
+:root .topbar-search{background:var(--surface);border-color:var(--line);border-radius:999px}
+:root .workspace-content{max-width:1280px}
+/* Surfaces */
+:root .panel,:root .metric-card,:root .pb-panel,:root .pb-aside-card,:root .pb-quote,:root .itinerary-brand-editor,:root .itinerary-paper,:root .api-state,:root .rt-stay-card,:root .rt-carbon-section,:root .inv-card,:root .adv-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+:root .metric-card{transition:box-shadow .2s,transform .2s}
+:root .metric-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+:root .itinerary-paper{overflow:hidden}
+:root .page-header h1{color:var(--ink)}
+:root .eyebrow:not(.eyebrow-light){color:var(--accent)}
+
+
+/* Buttons */
+:root .button,:root .pb-button{border-radius:999px}
+:root .button-primary,:root .pb-button-primary{background:#2a3b4c;border-color:#2a3b4c;color:#fff;box-shadow:var(--shadow-sm)}
+:root .button-primary:hover,:root .pb-button-primary:hover{background:#1f2f3f}
+:root .button-outline,:root .pb-button{background:var(--surface);border:1px solid var(--line-strong);color:var(--ink)}
+:root .button-outline:hover,:root .pb-button:hover{background:var(--accent-soft)}
+:root .pb-button-primary:hover{background:#1f2f3f}
+:root .pb-button-quiet{background:transparent;border-color:transparent}
+:root .pb-button-danger{background:#fff;border:1px solid #e3b9b2;color:#9a3b2e}
+:root .pb-button-danger:hover{background:#fbeeeb}
+:root .pb-button:disabled{opacity:.55;cursor:not-allowed}
+
+
+/* Form fields */
+:root input,:root select,:root textarea{border-radius:var(--radius-sm)}
+:root .pb-field input,:root .pb-field select,:root .pb-field textarea{background:var(--surface);border:1px solid var(--line-strong);border-radius:var(--radius-sm);padding:10px 12px}
+:root input:focus-visible,:root select:focus-visible,:root textarea:focus-visible,:root button:focus-visible,:root a:focus-visible{outline:2px solid #c9a35a;outline-offset:2px}
+:root .pb-toolbar{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px}
+
+
+/* Overview journeys */
+:root .booking-row{border-bottom-color:var(--line)}
+:root .booking-destination img,:root .booking-destination-fallback{width:44px;height:44px;border-radius:10px;object-fit:cover;flex:none}
+:root .booking-destination-fallback{display:grid;place-items:center;background:var(--accent-soft);color:var(--accent);font-weight:700;font-size:12px}
+:root .journeys-empty{display:grid;justify-items:center;text-align:center;gap:8px;padding:44px 20px;border:1px dashed var(--line-strong);border-radius:var(--radius);background:var(--surface-warm);color:var(--ink-soft)}
+:root .journeys-empty svg{color:var(--accent)}
+:root .journeys-empty strong{font:400 22px var(--serif);color:var(--ink)}
+:root .journeys-empty p{margin:0 0 8px;max-width:340px;font-size:12px;line-height:1.7}
+:root .row-menu-pop{border-radius:var(--radius-sm);background:var(--surface);border-color:var(--line)}
+:root .row-menu-pop button{border:0;background:transparent;text-align:left;padding:9px 10px;font-size:9px;color:#4a5f6d;cursor:pointer}
+:root .row-menu-pop button:hover{background:#f5ecd9}
+:root .row-menu-pop .row-menu-danger{color:#9a3b2e}
+:root .row-menu-pop .row-menu-danger:hover{background:#fbeeeb}
+
+
+/* Itinerary payment */
+:root .itinerary-payment{max-width:820px;margin:28px auto 0;padding:26px 28px;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow-sm);display:grid;gap:16px}
+:root .itinerary-payment-head{display:flex;gap:14px;align-items:flex-start}
+:root .itinerary-payment-head .eyebrow{margin:0 0 6px}
+:root .itinerary-payment-head h3{margin:0 0 6px;font:400 24px var(--serif)}
+:root .itinerary-payment-head p:last-child{margin:0;font-size:12px;line-height:1.7;color:var(--ink-soft)}
+:root .itinerary-payment-icon{flex:none;width:40px;height:40px;border-radius:50%;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent)}
+:root .itinerary-payment .adv-pay{border-radius:var(--radius);border-color:var(--line-strong);background:var(--surface-warm)}
+:root .adv-pay-buttons{max-width:460px}
+:root .itinerary-brand-editor{position:static;top:auto}
+:root .itinerary-workspace{align-items:start}
+@media(max-width:700px){:root .itinerary-payment{padding:20px 16px}}
+
+/* Itinerary studio payment: full width, laid out horizontally, scrolls with the page. */
+:root .itinerary-payment{grid-column:1/-1;width:100%;max-width:none;margin:8px 0 0;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);align-items:center;gap:20px 40px;position:static}
+:root .itinerary-payment .adv-pay-error,:root .itinerary-payment>.adv-pay-note{grid-column:1/-1}
+:root .itinerary-payment .adv-pay{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:14px 28px}
+:root .itinerary-payment .adv-pay>header{grid-column:1;grid-row:1/span 3}
+:root .itinerary-payment .adv-pay>*:not(header){grid-column:2}
+:root .itinerary-payment .adv-pay-done{grid-template-columns:1fr}
+:root .itinerary-payment .adv-pay-buttons{max-width:none;width:100%}
+@media(max-width:900px){
+  :root .itinerary-payment,:root .itinerary-payment .adv-pay{grid-template-columns:1fr}
+  :root .itinerary-payment .adv-pay>header,:root .itinerary-payment .adv-pay>*:not(header){grid-column:1;grid-row:auto}
+}

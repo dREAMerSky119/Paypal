@@ -3,6 +3,8 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Area, CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { ArrowDownRight, ArrowRight, ArrowUpRight, Link2, Minus, RotateCcw, Save, Trash2 } from "lucide-react";
 import { ApiState, Button, PageHeader, Status } from "./ui.jsx";
+import { PackageImpactPanel, ShortLink } from "./SimulatorExtras.jsx";
+import { api } from "../lib/api.js";
 import { useApi } from "../lib/useApi.js";
 import { useSimulation } from "../lib/useSimulation.js";
 import { formatMoney, formatPeriod } from "../lib/format.js";
@@ -298,10 +300,23 @@ export default function SimulatorPage() {
   const request = useMemo(() => (assumptions ? buildRequest(scenario, assumptions) : null), [scenario, assumptions]);
   const run = useSimulation(request, { enabled: Boolean(request) });
 
+  // A short link (?saved=id) loads the stored inputs once the assumptions are ready.
+  const savedId = params.get("saved");
+  const [loadedId, setLoadedId] = useState("");
+  const [savedError, setSavedError] = useState("");
+  useEffect(() => {
+    if (!assumptions || !savedId || loadedId === savedId) return;
+    setLoadedId(savedId);
+    api(`/simulator/scenarios/${encodeURIComponent(savedId)}`)
+      .then((found) => setRaw((current) => fitScenario({ ...current, ...found.request, preset: null }, assumptions)))
+      .catch((error) => setSavedError(error.status === 404 ? "That saved scenario link was not found." : "Could not load that saved scenario."));
+  }, [assumptions, savedId]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // Keep the address bar in step so the page URL is always a shareable link.
   const encoded = encodeScenario(scenario);
   useEffect(() => {
     if (!assumptions || params.get("scenario") === encoded) return;
+    if (savedId && loadedId !== savedId) return; // let the saved scenario load first
     setParams(new URLSearchParams({ scenario: encoded }), { replace: true });
     // `params` is read only to skip a redundant write; `encoded` is what changes.
   }, [encoded, assumptions]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -327,6 +342,7 @@ export default function SimulatorPage() {
       action={assumptions && <Button variant="outline" onClick={copyLink}><Link2 size={14} aria-hidden="true" />Copy link</Button>} />
     <div className="sim-notice" role="note"><Status tone="gold">Sample data</Status><p>Scenarios are illustrations built from editable assumptions on top of a synthetic demand forecast. They are not predictions of real demand, prices or profit.</p></div>
     {copied && <p className="sim-muted" role="status">{copied}</p>}
+    {savedError && <p className="sim-muted" role="alert">{savedError}</p>}
 
     <ApiState api={assumptionsApi} label="the simulator" />
     {invalidShape && <div className="api-state api-state-error" role="alert"><div><strong>Could not load the simulator</strong><p>The server sent an unexpected response. Try again in a moment.</p></div><Button variant="outline" onClick={assumptionsApi.reload}>Try again</Button></div>}
@@ -335,12 +351,14 @@ export default function SimulatorPage() {
       <div className="sim-side">
         <Controls scenario={scenario} assumptions={assumptions} update={update} result={run.data} applyPreset={applyPreset} presets={presets} />
         <SavedScenarios scenario={scenario} assumptions={assumptions} onLoad={loadScenario} />
+        <ShortLink request={request} />
       </div>
       <div className="sim-main" aria-busy={run.loading}>
         {run.waking && <div className="api-state" role="status"><span className="api-state-pulse" /><div><strong>Waking the server</strong><p>The free hosting plan sleeps when idle, so the first run can take up to a minute.</p></div></div>}
         {run.error && <div className="api-state api-state-error" role="alert"><div><strong>Could not run this scenario</strong><p>{run.error.detail ?? (run.error.kind === "network" ? "We could not reach the server." : "The server returned an error.")}</p></div><Button variant="outline" onClick={run.retry}>Try again</Button></div>}
         {!run.data && run.loading && !run.waking && <div className="api-state" role="status"><span className="api-state-pulse" /><div><strong>Running the scenario</strong></div></div>}
         {run.data && <div className={run.loading ? "sim-stale" : ""}><Results result={run.data} /></div>}
+        {run.data && <PackageImpactPanel request={request} />}
         <AssumptionsPanel assumptions={assumptions} scenario={scenario} update={update} />
         <p className="sim-foot"><ArrowRight size={12} aria-hidden="true" /> Baseline comes from the <Link to="/app/forecast">demand forecast</Link>. Margin uses simulated bookings from the <Link to="/app/analytics">profitability analysis</Link>.</p>
       </div>

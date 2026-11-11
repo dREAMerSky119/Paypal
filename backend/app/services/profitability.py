@@ -11,6 +11,15 @@ def get_bookings():
     return load_json("bookings.json")
 
 
+def get_supplier_names():
+    """Map supplier id to display name; falls back to the raw id."""
+    try:
+        suppliers = load_json("inventory_suppliers.json")
+        return {s["id"]: s.get("name") or s["id"] for s in suppliers}
+    except Exception:
+        return {}
+
+
 def filter_bookings_by_date(bookings, from_date=None, to_date=None):
     """Filter bookings using an inclusive date range."""
 
@@ -84,6 +93,7 @@ def calculate_summary(bookings):
     total_net_cost = 0.0
     completed_profit = 0.0
     cancellation_leakage = 0.0
+    margin_forgone_on_cancelled = 0.0
 
     completed_bookings = 0
     cancelled_bookings = 0
@@ -98,6 +108,9 @@ def calculate_summary(bookings):
         if booking["is_canceled"]:
             cancelled_bookings += 1
             cancellation_leakage += cancel_penalty
+            # Margin the deal would have earned had it completed. Kept out of
+            # gross_profit on purpose: a cancelled booking never counts as sales.
+            margin_forgone_on_cancelled += sell_amount - net_amount - fees
 
         else:
             completed_bookings += 1
@@ -122,6 +135,7 @@ def calculate_summary(bookings):
         "gross_profit": round(gross_profit, 2),
         "gross_margin": round(gross_margin, 2),
         "cancellation_leakage": round(cancellation_leakage, 2),
+        "margin_forgone_on_cancelled": round(margin_forgone_on_cancelled, 2),
         "completed_bookings": completed_bookings,
         "cancelled_bookings": cancelled_bookings,
         "total_bookings": len(bookings),
@@ -137,6 +151,74 @@ def get_profitability_summary(from_date=None, to_date=None):
     bookings = filter_bookings_by_date(bookings, from_date, to_date)
 
     return calculate_summary(bookings)
+
+
+def calculate_supplier_ranking(bookings, by="gross_profit", limit=10):
+    """Rank suppliers by gross profit or gross margin, best first."""
+
+    if by not in ("gross_profit", "gross_margin"):
+        raise ValueError("by must be 'gross_profit' or 'gross_margin'")
+
+    limit = int(limit)
+    if limit < 1:
+        raise ValueError("limit must be at least 1")
+
+    suppliers = {}
+
+    for booking in bookings:
+        supplier_id = booking.get("supplier_id") or "Unknown"
+        supplier = suppliers.setdefault(supplier_id, {
+            "supplier_id": supplier_id,
+            "name": booking.get("supplier_name") or supplier_id,
+            "gross_sales": 0.0,
+            "total_net_cost": 0.0,
+            "completed_profit": 0.0,
+            "cancellation_leakage": 0.0,
+            "completed_bookings": 0,
+            "cancelled_bookings": 0,
+        })
+
+        sell_amount = float(booking["sell_amount"])
+        net_amount = float(booking["net_amount"])
+        fees = float(booking["fees"])
+        penalty = float(booking.get("cancel_penalty", 0))
+
+        if booking["is_canceled"]:
+            supplier["cancelled_bookings"] += 1
+            supplier["cancellation_leakage"] += penalty
+        else:
+            supplier["completed_bookings"] += 1
+            supplier["gross_sales"] += sell_amount
+            supplier["total_net_cost"] += net_amount
+            supplier["completed_profit"] += sell_amount - net_amount - fees
+
+    results = []
+    for supplier in suppliers.values():
+        gross_profit = supplier["completed_profit"] - supplier["cancellation_leakage"]
+        gross_margin = (
+            (gross_profit / supplier["gross_sales"]) * 100
+            if supplier["gross_sales"] > 0
+            else 0
+        )
+        results.append({
+            "name": supplier["name"],
+            "supplier_id": supplier["supplier_id"],
+            "gross_sales": round(supplier["gross_sales"], 2),
+            "total_net_cost": round(supplier["total_net_cost"], 2),
+            "gross_profit": round(gross_profit, 2),
+            "gross_margin": round(gross_margin, 2),
+            "cancellation_leakage": round(supplier["cancellation_leakage"], 2),
+            "completed_bookings": supplier["completed_bookings"],
+            "cancelled_bookings": supplier["cancelled_bookings"],
+        })
+
+    key = "gross_profit" if by == "gross_profit" else "gross_margin"
+    results.sort(key=lambda item: item[key], reverse=True)
+
+    for rank, row in enumerate(results, start=1):
+        row["rank"] = rank
+
+    return results[:limit]
 
 
 def calculate_breakdown(bookings, group_by):

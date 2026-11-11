@@ -10,7 +10,10 @@ import {
 import { MotionConfig } from "framer-motion";
 
 import LoginPage from "./components/LoginPage.jsx";
+import ProfilePage from "./components/ProfilePage.jsx";
+import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 import { featureInfo } from "./data/featureInfo.js";
+import ErrorBoundary from "./components/ErrorBoundary.jsx";
 
 // Everything except login is lazy-loaded.
 const LandingPage = lazy(() =>
@@ -19,6 +22,10 @@ const LandingPage = lazy(() =>
 
 const DestinationDetails = lazy(() =>
   import("./components/DestinationDetails.jsx")
+);
+
+const AttributionPage = lazy(() =>
+  import("./components/AttributionPage.jsx")
 );
 
 const DashboardLayout = lazy(() =>
@@ -115,7 +122,9 @@ function ScrollManager() {
 
 export function AppRoutes() {
   return (
-    <Suspense fallback={<RouteFallback />}>
+    <AuthProvider>
+      <ErrorBoundary resetKey={useLocation().pathname}>
+      <Suspense fallback={<RouteFallback />}>
       <Routes>
         <Route
           path="/"
@@ -129,7 +138,7 @@ export function AppRoutes() {
 
         <Route
           path="/home"
-          element={<LandingPage />}
+          element={<ProtectedHome />}
         />
 
         <Route
@@ -138,8 +147,18 @@ export function AppRoutes() {
         />
 
         <Route
+          path="/attribution"
+          element={<AttributionPage />}
+        />
+
+        <Route
+          path="/profile"
+          element={<ProfilePage />}
+        />
+
+        <Route
           path="/app"
-          element={<DashboardLayout />}
+          element={<ProtectedDashboard />}
         >
           <Route
             index
@@ -162,19 +181,6 @@ export function AppRoutes() {
             );
           })}
 
-          {/*
-            Explicit fallback route for Anomaly Watch.
-            This also handles the page if featureInfo does
-            not contain /app/anomalies.
-          */}
-          {!featureInfo["/app/anomalies"] && (
-            <Route
-              path="anomalies"
-              element={
-                <ReactAnomalyPage />
-              }
-            />
-          )}
         </Route>
 
         <Route
@@ -182,8 +188,26 @@ export function AppRoutes() {
           element={<Navigate to="/" replace />}
         />
       </Routes>
-    </Suspense>
+      </Suspense>
+      </ErrorBoundary>
+    </AuthProvider>
   );
+}
+
+// Demo auth gate: a signed-in user without a complete profile goes through
+// onboarding first; anyone else sees the sign-in page.
+function ProtectedDashboard() {
+  const { isLoggedIn, isProfileComplete } = useAuth();
+  if (!isLoggedIn) return <Navigate to="/login" replace />;
+  if (!isProfileComplete) return <Navigate to="/profile" replace />;
+  return <DashboardLayout />;
+}
+
+function ProtectedHome() {
+  const { isLoggedIn, isProfileComplete } = useAuth();
+  if (!isLoggedIn) return <LoginPage />;
+  if (!isProfileComplete) return <Navigate to="/profile" replace />;
+  return <LandingPage />;
 }
 
 // Use the lazy-loaded component directly for the fallback.

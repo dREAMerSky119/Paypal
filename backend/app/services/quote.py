@@ -55,6 +55,22 @@ def _haversine_km(a, b):
     return 6371 * 2 * asin(sqrt(h))
 
 
+def _travel_warnings(day_coords: dict[int, list[dict]]) -> list[str]:
+    """Estimated transfer time between consecutive stops in a day, from stop coordinates.
+    Modes: 60 km/h when either stop is a transport leg, 35 km/h for local road travel."""
+    out = []
+    for day_no, stops in sorted(day_coords.items()):
+        for a, b in zip(stops, stops[1:]):
+            km = _haversine_km(a, b)
+            if km is None or km < 0.5:
+                continue  # same place, or coordinates missing on either stop
+            speed = 60 if "transport" in (a.get("type"), b.get("type")) else 35
+            minutes = round(km / speed * 60)
+            if minutes >= 90:
+                out.append(f"Day {day_no}: about {minutes} min transfer between {a['name']} and {b['name']}")
+    return out
+
+
 def quote_package(payload: dict) -> dict:
     """Validate and price a package payload; never trust client-supplied totals."""
     if not isinstance(payload, dict):
@@ -90,6 +106,8 @@ def quote_package(payload: dict) -> dict:
     peer_medians = {k: _median(v) for k, v in peer_values.items()}
 
     errors, warnings, lines, used_months = [], [], [], set()
+    slot_usage: dict[int, dict[str, str]] = {}
+    day_coords: dict[int, list[dict]] = {}
     def add_item(item_id, service_day, quantity, section, label=None):
         item = items.get(item_id)
         if not item:
@@ -171,6 +189,12 @@ def quote_package(payload: dict) -> dict:
             duplicate_key = (day_no, item_id)
             if duplicate_key in seen: warnings.append(f"Duplicate {item['name']} on day {day_no}")
             seen.add(duplicate_key)
+            if slot in slot_usage.setdefault(day_no, {}):
+                warnings.append(f"Two stops share the {slot} slot on day {day_no}")
+            else:
+                slot_usage[day_no][slot] = item_id
+            if item.get("lat") is not None and item.get("lon") is not None:
+                day_coords.setdefault(day_no, []).append(item)
             add_item(item_id, service_day, qty, f"day_{day_no}:{slot}")
 
     transfers = payload.get("transfers") or {}
@@ -191,6 +215,9 @@ def quote_package(payload: dict) -> dict:
     if errors:
         raise PackageQuoteError("; ".join(dict.fromkeys(errors)))
 
+    travel = _travel_warnings(day_coords)
+    warnings.extend(travel)
+
     fees_cfg = _read_json("package_fees.json", {"fee_rate": 0})
     fee_rate = float(fees_cfg.get("fee_rate", 0) or 0)
     net_total = sum(x["net_usd"] for x in lines)
@@ -200,10 +227,21 @@ def quote_package(payload: dict) -> dict:
     margin = profit / sell_total if sell_total else 0
     if margin < 0: warnings.append("Package has a negative margin")
     elif margin < 0.10: warnings.append("Package margin is below 10%")
+    duplicate_warnings = [w for w in warnings if w.startswith(("Duplicate ", "Two stops share"))]
     return {"destination": destination, "start_date": start.isoformat(), "nights": nights,
         "travellers": travellers, "line_items": lines, "totals": {
             "net_usd": round(net_total, 2), "sell_usd": round(sell_total, 2),
             "fees_usd": round(fees, 2), "profit_usd": round(profit, 2),
             "margin_pct": round(margin*100, 2), "per_person_usd": round(sell_total/travellers, 2)},
         "fee_rate": fee_rate, "rate_months": sorted(used_months),
-        "warnings": list(dict.fromkeys(warnings)), "is_sample": True}
+        "warnings": list(dict.fromkeys(warnings)),
+        "checks": {
+            "travel_time": travel,
+            "duplicates": duplicate_warnings,
+            "anomaly_flags": [],  # filled by the anomaly service in Phase C
+            "margin": {"margin_pct": round(margin*100, 2),
+                       "level": "negative" if margin < 0 else "low" if margin < 0.10 else "ok"},
+            "responsible_score": None,  # filled in Phase F
+            "carbon": None,  # filled in Phase F
+        },
+        "is_sample": True}

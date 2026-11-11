@@ -122,7 +122,8 @@ describe("demo profile and session flow", () => {
     expect((await screen.findAllByText("Horizon Journeys", {}, { timeout: 3000 })).length).toBeGreaterThan(0);
     expect(screen.getAllByText("Agency workspace").length).toBeGreaterThan(0);
 
-    fireEvent.click(screen.getByRole("link", { name: /edit profile for mira sen/i }));
+    // Creation navigates to /app after a short delay; wait for the sidebar link.
+    fireEvent.click(await screen.findByRole("link", { name: /edit profile for mira sen/i }, { timeout: 3000 }));
     fireEvent.change(screen.getByLabelText(/organisation \/ agency name/i), { target: { value: "Horizon Travel Co." } });
     fireEvent.click(screen.getByRole("button", { name: /save changes/i }));
     expect((await screen.findAllByText("Horizon Travel Co.")).length).toBeGreaterThan(0);

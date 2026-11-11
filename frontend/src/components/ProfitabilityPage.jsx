@@ -413,7 +413,7 @@ export default function ProfitabilityPage() {
         setError("");
 
         const data = await api(
-          `/profitability/summary${getPeriodQuery(period)}`
+          `/analytics/profitability/summary${getPeriodQuery(period)}`
         );
         setSummary(data);
       } catch (err) {
@@ -445,7 +445,7 @@ export default function ProfitabilityPage() {
         setSelectedDonutItem(null);
 
         const data = await api(
-          `/profitability/breakdown?group_by=${groupBy}${getPeriodQuery(period).replace("?", "&")}`
+          `/analytics/profitability/breakdown?group_by=${groupBy}${getPeriodQuery(period).replace("?", "&")}`
         );
 
         setBreakdown(data.results || []);
@@ -476,7 +476,7 @@ export default function ProfitabilityPage() {
         setMonthlyError("");
 
         const data = await api(
-          `/profitability/monthly-trend${getPeriodQuery(period)}`
+          `/analytics/profitability/monthly-trend${getPeriodQuery(period)}`
         );
 
         const results = data.results || [];
@@ -515,7 +515,7 @@ export default function ProfitabilityPage() {
         setMarkupError("");
 
         const data = await api(
-          `/profitability/markup-what-if?markup_percentage=${markupPercentage}${getPeriodQuery(period).replace("?", "&")}`
+          `/analytics/profitability/markup-what-if?markup_percentage=${markupPercentage}${getPeriodQuery(period).replace("?", "&")}`
         );
 
         if (isActive) {
@@ -711,22 +711,24 @@ export default function ProfitabilityPage() {
 
       {/* PAGE HEADER */}
 
-      <PageHeader
-        eyebrow="KNOW YOUR NUMBERS"
-        title={
-          <>
-            Profitability analysis
-            <span className="title-period">.</span>
-          </>
-        }
-        description="Understand the shape and performance of your travel business."
-        action={
-          <Button to="/app" variant="outline">
-            <ArrowRight size={15} />
-            Back to overview
-          </Button>
-        }
-      />
+        <PageHeader
+          eyebrow="KNOW YOUR NUMBERS"
+          title={
+            <>
+              Profitability analysis
+              <span className="title-period">.</span>
+            </>
+          }
+          description="Understand the shape and performance of your travel business."
+          action={
+            <Button to="/app" variant="outline">
+              <ArrowRight size={15} />
+              Back to overview
+            </Button>
+          }
+        />
+
+      <p className="sample-note" role="note"><span /> Sample data · bookings shown are illustrative seed data</p>
 
       {/* FILTERS */}
 

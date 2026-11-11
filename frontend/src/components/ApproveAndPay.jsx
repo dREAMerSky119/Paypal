@@ -19,7 +19,7 @@ function errorText(e, fallback) {
  *
  * `checkout` is the order the agent already opened, if any. Without it, the button creates the order on click.
  */
-export default function ApproveAndPay({ proposal, constraints, checkout }) {
+export default function ApproveAndPay({ proposal, constraints, checkout, packageId, onPaid, layout = "vertical" }) {
   const config = useApi("/payments/config");
   const [state, setState] = useState({ phase: "ready", booking: null, error: null });
   const orderRef = useRef(checkout || null); // reuse one order across cancelled attempts
@@ -46,7 +46,9 @@ export default function ApproveAndPay({ proposal, constraints, checkout }) {
   async function createOrder() {
     setState((s) => ({ ...s, error: null }));
     try {
-      if (!orderRef.current) orderRef.current = await api("/payments/orders", { method: "POST", body: JSON.stringify({ constraints }) });
+      if (!orderRef.current) orderRef.current = packageId
+        ? await api("/payments/package-orders", { method: "POST", body: JSON.stringify({ package_id: packageId }) })
+        : await api("/payments/orders", { method: "POST", body: JSON.stringify({ constraints }) });
       return orderRef.current.order_id;
     } catch (e) {
       orderRef.current = null;
@@ -60,6 +62,7 @@ export default function ApproveAndPay({ proposal, constraints, checkout }) {
     try {
       const booking = await api(`/payments/orders/${data.orderID}/capture`, { method: "POST" });
       setState({ phase: "paid", booking, error: null });
+      onPaid?.(booking);
     } catch (e) {
       // The order stays open on the server and capture is idempotent, so retrying is safe.
       setState({ phase: "ready", booking: null, error: errorText(e, "The payment could not be confirmed.") + " You have not been charged twice; you can try again." });
@@ -85,7 +88,7 @@ export default function ApproveAndPay({ proposal, constraints, checkout }) {
           <div className="adv-pay-buttons">
             <PayPalScriptProvider options={{ clientId, currency, intent: "capture", components: "buttons" }}>
               <PayPalButtons
-                style={{ layout: "vertical", label: "pay", height: 40 }}
+                style={{ layout, label: "pay", height: 40, ...(layout === "horizontal" ? { tagline: false } : {}) }}
                 disabled={state.phase === "capturing"}
                 forceReRender={[clientId, currency]}
                 createOrder={createOrder}

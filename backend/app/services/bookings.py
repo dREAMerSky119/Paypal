@@ -89,6 +89,17 @@ def get_by_order(order_id: str) -> dict | None:
         return _row(conn.one("SELECT * FROM checkout_booking WHERE paypal_order_id = ?", (order_id,)))
 
 
+def paid_for_package(package_id: str) -> dict | None:
+    """Most recent paid booking made from a saved package, if any."""
+    with _connect() as conn:
+        rows = conn.all("SELECT * FROM checkout_booking WHERE status = ? ORDER BY paid_at DESC", (STATUS_PAID,))
+    for r in rows:
+        b = _row(r)
+        if b["constraints"].get("package_id") == package_id:
+            return b
+    return None
+
+
 def mark_paid(booking_id: str, capture_id: str, payer_email: str | None) -> dict:
     with _connect() as conn:
         conn.execute(

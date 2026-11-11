@@ -18,6 +18,11 @@ class OrderRequest(BaseModel):
     constraints: dict
 
 
+class PackageOrderRequest(BaseModel):
+    """Only the package id: the amount is read from the stored, server-priced quote."""
+    package_id: str
+
+
 def _rate_limit(request: Request) -> None:
     now = time.monotonic()
     q = _hits[request.client.host if request.client else "anon"]
@@ -53,6 +58,23 @@ def create_order(body: OrderRequest, request: Request) -> dict:
         return checkout.start_checkout(body.constraints)
     except checkout.CheckoutError as e:
         raise HTTPException(status_code=e.status, detail=e.detail)
+
+
+@router.post("/payments/package-orders")
+def create_package_order(body: PackageOrderRequest, request: Request) -> dict:
+    """Open a PayPal order for the deposit on a saved package."""
+    _rate_limit(request)
+    try:
+        return checkout.start_package_checkout(body.package_id)
+    except checkout.CheckoutError as e:
+        raise HTTPException(status_code=e.status, detail=e.detail)
+
+
+@router.get("/payments/packages/{package_id}/booking")
+def package_booking(package_id: str) -> dict:
+    """The paid booking for a package, or null."""
+    booking = bookings.paid_for_package(package_id)
+    return {"booking": bookings.public_view(booking) if booking else None}
 
 
 @router.post("/payments/orders/{order_id}/capture")
