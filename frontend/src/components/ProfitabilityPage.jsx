@@ -41,6 +41,8 @@ import {
 } from "recharts";
 
 import { api } from "../lib/api.js";
+import { formatDisplayCompact, formatDisplayWhole } from "../lib/fx.js";
+import { useDisplayCurrency } from "../lib/useDisplayCurrency.js";
 
 import "../profitability.css";
 
@@ -63,26 +65,11 @@ const GROUP_LABELS = {
   season: "seasons",
 };
 
-const formatMoney = (value, currency = "USD") =>
-  new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency,
-    maximumFractionDigits: 0,
-  }).format(Number(value) || 0);
+// Figures are reported in `currency` (USD for the sample data) and shown in the user's preferred
+// display currency via the shared exchange-rate layer. With a USD preference the output is unchanged.
+const formatMoney = (value, currency = "USD") => formatDisplayWhole(value, currency);
 
-const formatShortMoney = (value) => {
-  const amount = Number(value) || 0;
-
-  if (Math.abs(amount) >= 1000000) {
-    return `$${(amount / 1000000).toFixed(1)}M`;
-  }
-
-  if (Math.abs(amount) >= 1000) {
-    return `$${(amount / 1000).toFixed(1)}k`;
-  }
-
-  return `$${amount.toFixed(0)}`;
-};
+const formatShortMoney = (value) => formatDisplayCompact(value, "USD");
 
 // ==========================================
 // TREEMAP TILE
@@ -371,6 +358,8 @@ function getPeriodQuery(period) {
 // ==========================================
 
 export default function ProfitabilityPage() {
+  // Subscribing here re-renders the whole page when the preferred currency or exchange rates change.
+  const { currency: displayCurrency, rateLabel: fxRateLabel } = useDisplayCurrency();
   const [period, setPeriod] = useState("all");
   const [groupBy, setGroupBy] = useState("destination");
 
@@ -727,6 +716,13 @@ export default function ProfitabilityPage() {
           </Button>
         }
       />
+
+      {summary?.is_sample && <p className="profit-sample-note" role="note">Illustrative sample data · no real bookings or transactions</p>}
+      <p className="profit-currency-note" role="note">
+        {(summary?.currency || "USD") === displayCurrency
+          ? `Reporting figures are in ${summary?.currency || "USD"}.`
+          : `Reporting figures are in ${summary?.currency || "USD"} and shown in your preferred display currency, ${displayCurrency}, at a ${fxRateLabel}. Margins and percentages are unaffected.`}
+      </p>
 
       {/* FILTERS */}
 

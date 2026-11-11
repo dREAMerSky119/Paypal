@@ -1,6 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import { AuthProvider } from "../context/AuthContext.jsx";
+import { seedDemoSession } from "../test/demoSession.js";
 import AdvisorPage from "./AdvisorPage.jsx";
 
 const proposal = {
@@ -23,7 +25,10 @@ beforeEach(() => {
   });
 });
 
-const view = (path = "/app/ai-studio") => render(<MemoryRouter initialEntries={[path]}><AdvisorPage /></MemoryRouter>);
+const view = (path = "/app/ai-studio") => {
+  seedDemoSession();
+  return render(<AuthProvider><MemoryRouter initialEntries={[path]}><AdvisorPage /></MemoryRouter></AuthProvider>);
+};
 
 describe("AdvisorPage", () => {
   it("shows a proposal with item ids and totals", async () => {

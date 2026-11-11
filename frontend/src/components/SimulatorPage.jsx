@@ -5,7 +5,8 @@ import { ArrowDownRight, ArrowRight, ArrowUpRight, Link2, Minus, RotateCcw, Save
 import { ApiState, Button, PageHeader, Status } from "./ui.jsx";
 import { useApi } from "../lib/useApi.js";
 import { useSimulation } from "../lib/useSimulation.js";
-import { formatMoney, formatPeriod } from "../lib/format.js";
+import { formatPeriod } from "../lib/format.js";
+import { useDisplayCurrency } from "../lib/useDisplayCurrency.js";
 import { featureInfo } from "../data/featureInfo.js";
 import {
   COEFFICIENT_KEYS, DEFAULT_SCENARIO, SLIDER_ORDER,
@@ -147,6 +148,7 @@ function Controls({ scenario, assumptions, update, result, applyPreset, presets 
 }
 
 function Results({ result }) {
+  const { format: formatMoney } = useDisplayCurrency(); // profit figures shown in the preferred display currency
   const { summary, margin, spillover, factors, months, window: win } = result;
   const margin_text = margin ? `, margin ${formatPct(margin.delta.margin_points)} points` : "";
   return <>
@@ -157,7 +159,7 @@ function Results({ result }) {
       <Kpi label="Occupancy (proxy)" value={`${formatShare(summary.occupancy_baseline)} to ${formatShare(summary.occupancy_scenario)}`} change={(summary.occupancy_scenario - summary.occupancy_baseline) * 100} sub="Estimated from the demand index" />
       {margin
         ? <Kpi label="Margin impact" value={`${formatPct(margin.delta.margin_points)} pts`.replace("%", "")} change={margin.delta.margin_points}
-          sub={`${formatMoney(margin.delta.profit, "USD")} profit, ${margin.baseline.margin_pct.toFixed(1)}% to ${margin.scenario.margin_pct.toFixed(1)}%`} />
+          sub={`${formatMoney(margin.delta.profit, margin.currency || "USD")} profit, ${margin.baseline.margin_pct.toFixed(1)}% to ${margin.scenario.margin_pct.toFixed(1)}%`} />
         : <Kpi label="Margin impact" value="Not available" sub="No simulated bookings for this destination" />}
     </div>
 
@@ -174,7 +176,7 @@ function Results({ result }) {
           <tbody>{months.map((m) => <tr key={m.period}>
             <th scope="row">{formatPeriod(m.period)}</th><td>{m.baseline.toFixed(1)}</td><td>{m.scenario.toFixed(1)}</td>
             <td>{formatPct((m.rate_multiplier - 1) * 100)}</td><td>{formatShare(m.occupancy_baseline)} to {formatShare(m.occupancy_scenario)}</td>
-            <td>{m.profit_scenario != null ? formatMoney(m.profit_scenario - m.profit_baseline, "USD") : "\u2014"}</td>
+            <td>{m.profit_scenario != null ? formatMoney(m.profit_scenario - m.profit_baseline, margin?.currency || "USD") : "\u2014"}</td>
           </tr>)}</tbody>
         </table></div>
       </details>

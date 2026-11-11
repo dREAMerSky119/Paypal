@@ -8,6 +8,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import { MotionConfig } from "framer-motion";
+import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
 
 import LoginPage from "./components/LoginPage.jsx";
 import { featureInfo } from "./data/featureInfo.js";
@@ -32,6 +33,16 @@ const OverviewPage = lazy(() =>
 const FeaturePage = lazy(() =>
   import("./components/FeaturePage.jsx")
 );
+
+const ProfilePage = lazy(() => import("./components/ProfilePage.jsx"));
+
+function DashboardAccess({ children }) {
+  const { isLoggedIn, isProfileComplete } = useAuth();
+  const location = useLocation();
+  if (!isLoggedIn) return <Navigate to="/" replace state={{ from: location.pathname }} />;
+  if (!isProfileComplete && location.pathname !== "/app/profile") return <Navigate to="/app/profile" replace />;
+  return children;
+}
 
 // Feature pages.
 const featurePages = {
@@ -140,12 +151,14 @@ export function AppRoutes() {
 
         <Route
           path="/app"
-          element={<DashboardLayout />}
+          element={<DashboardAccess><DashboardLayout /></DashboardAccess>}
         >
           <Route
             index
             element={<OverviewPage />}
           />
+
+          <Route path="profile" element={<ProfilePage />} />
 
           {Object.keys(featureInfo).map((path) => {
             const Page = featurePages[path];
@@ -196,10 +209,12 @@ function ReactAnomalyPage() {
 export default function App() {
   return (
     <MotionConfig reducedMotion="user">
-      <BrowserRouter>
-        <ScrollManager />
-        <AppRoutes />
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <ScrollManager />
+          <AppRoutes />
+        </BrowserRouter>
+      </AuthProvider>
     </MotionConfig>
   );
 }

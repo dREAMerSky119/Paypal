@@ -1,8 +1,10 @@
 import "@testing-library/jest-dom/vitest";
 import { afterEach, vi } from "vitest";
-import { cleanup } from "@testing-library/react";
+import { cleanup, configure } from "@testing-library/react";
+import { setDisplayCurrency } from "../lib/fx.js";
 
-afterEach(() => cleanup());
+afterEach(() => { cleanup(); setDisplayCurrency("USD"); }); // display currency is shared module state
+configure({ asyncUtilTimeout: 5000 });
 
 // jsdom lacks these; framer-motion and the router's scroll handling need them.
 class IntersectionObserverStub {

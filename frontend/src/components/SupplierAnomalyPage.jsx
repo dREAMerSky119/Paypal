@@ -1,5 +1,6 @@
 
 import { useEffect, useRef, useState } from "react";
+import { useDisplayCurrency } from "../lib/useDisplayCurrency.js";
 import {
   AlertTriangle,
   CheckCircle2,
@@ -131,6 +132,8 @@ function MonthPicker({ value, onChange }) {
 }
 
 export default function SupplierAnomalyPage() {
+  // The model works in USD. Prices are typed and shown in the preferred display currency.
+  const fx = useDisplayCurrency();
   const [items, setItems] = useState([]);
   const [parentId, setParentId] = useState("");
   const [period, setPeriod] = useState("2028-01");
@@ -190,6 +193,12 @@ export default function SupplierAnomalyPage() {
       return;
     }
 
+    const priceUsd = fx.toUsd(numericPrice);
+    if (priceUsd == null) {
+      setError(`No exchange rate is available for ${fx.currency}. Switch your display currency to USD in your profile.`);
+      return;
+    }
+
     setChecking(true);
     setError("");
     setResult(null);
@@ -200,7 +209,7 @@ export default function SupplierAnomalyPage() {
         body: JSON.stringify({
           parent_id: parentId,
           period,
-          price_usd: numericPrice,
+          price_usd: Math.round(priceUsd * 100) / 100,
         }),
       });
 
@@ -301,9 +310,9 @@ export default function SupplierAnomalyPage() {
               </label>
 
               <label className="anomaly-field">
-                <span>Supplier price (USD)</span>
+                <span>Supplier price ({fx.currency})</span>
                 <div className="anomaly-input-wrap price-input-wrap">
-                  <span className="anomaly-currency">$</span>
+                  <span className="anomaly-currency">{fx.currency}</span>
                   <input
                     type="number"
                     min="0"
@@ -314,7 +323,11 @@ export default function SupplierAnomalyPage() {
                     required
                   />
                 </div>
-                <small>Enter the quoted price in US dollars.</small>
+                <small>
+                  {fx.currency === "USD"
+                    ? "Enter the quoted price in US dollars."
+                    : `Enter the quoted price in ${fx.currency}. It is converted to USD at a ${fx.rateLabel} for the model.`}
+                </small>
               </label>
 
               <button
@@ -365,7 +378,8 @@ export default function SupplierAnomalyPage() {
               <div className="anomaly-result-grid">
                 <div>
                   <span>Supplier price</span>
-                  <strong>${Number(result.price_usd).toFixed(2)}</strong>
+                  <strong>{fx.format(result.price_usd, "USD")}</strong>
+                  {fx.currency !== "USD" && <small>{`USD ${Number(result.price_usd).toFixed(2)} analysed`}</small>}
                 </div>
                 <div>
                   <span>Machine learning</span>
