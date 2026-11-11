@@ -121,6 +121,7 @@ Phase-wise plan: [`docs/paypal-ai-plan.md`](docs/paypal-ai-plan.md). The server 
 | `POST /api/payments/orders` | Body `{"constraints": {...}}` (same shape the advisor returns). Plans the trip, opens a PayPal order for the deposit |
 | `POST /api/payments/orders/{order_id}/capture` | Captures an approved order we created; verifies amount and currency; safe to retry |
 | `GET /api/payments/bookings/{booking_id}` | Booking and proposal snapshot |
+| `POST /api/advisor/agent` | Same body as `/advisor/plan`. Gemini calls `search_inventory`, `build_proposal` and `create_checkout`; the response adds `checkout` (an open, unpaid order or `null`) and `agent` (mode and steps). The agent never captures a payment: the buyer approves in the chat's "Approve and pay" card. Without a Gemini key it behaves like `/advisor/plan` |
 
 ## Gemini in the advisor (hackathon work)
 

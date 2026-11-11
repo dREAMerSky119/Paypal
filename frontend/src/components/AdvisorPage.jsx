@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { ArrowUp, RotateCcw, Sparkles } from "lucide-react";
 import { Button, PageHeader, Status } from "./ui.jsx";
+import ApproveAndPay from "./ApproveAndPay.jsx";
 import { api } from "../lib/api.js";
 import { formatMoney } from "../lib/format.js";
 import { destinations } from "../data/destinations.js";
@@ -50,6 +51,18 @@ function Proposal({ p }) {
   );
 }
 
+const TOOL_LABEL = { search_inventory: "Searched inventory", build_proposal: "Built proposal", create_checkout: "Opened deposit checkout" };
+
+function AgentSteps({ agent }) {
+  if (!agent || agent.mode !== "gemini" || !agent.steps?.length) return null;
+  return (
+    <details className="adv-steps">
+      <summary>Agent steps ({agent.steps.length})</summary>
+      <ol>{agent.steps.map((st, i) => <li key={i} className={st.ok ? "" : "adv-step-skipped"}>{TOOL_LABEL[st.tool] || st.tool}: {st.note}{st.ok ? "" : " (not done)"}</li>)}</ol>
+    </details>
+  );
+}
+
 export default function AdvisorPage() {
   const info = featureInfo["/app/ai-studio"];
   const [params] = useSearchParams();
@@ -71,12 +84,12 @@ export default function AdvisorPage() {
     setInput(""); setBusy(true); setError(null); setWaking(false);
     const timer = setTimeout(() => setWaking(true), 3500);
     try {
-      const res = await api("/advisor/plan", {
+      const res = await api("/advisor/agent", {
         method: "POST",
         body: JSON.stringify({ message, constraints, destination: hint?.slug ?? null }),
       });
       setConstraints(res.constraints);
-      setMessages((m) => [...m, { role: "advisor", text: res.reply, proposal: res.proposal }]);
+      setMessages((m) => [...m, { role: "advisor", text: res.reply, proposal: res.proposal, constraints: res.constraints, checkout: res.checkout ?? null, agent: res.agent ?? null }]);
     } catch (e) {
       setError(e.detail || (e.kind === "network" ? "We could not reach the server." : e.kind === "timeout" ? "The server did not respond in time." : "Something went wrong."));
     } finally {
@@ -84,13 +97,16 @@ export default function AdvisorPage() {
     }
   }
 
+  // Only the newest proposal can be paid for: an older one has been superseded by a revision.
+  const payableIndex = messages.reduce((last, m, i) => (m.role === "advisor" && m.proposal ? i : last), -1);
+
   function reset() { setMessages([]); setConstraints(null); setError(null); setInput(""); }
 
   return (
     <>
       <PageHeader eyebrow={info.eyebrow} title={<>{info.title}<span className="title-period">.</span></>} description={info.description}
         action={<Button to={info.action.to} variant="outline">{info.action.label}</Button>} />
-      <p className="inv-banner" role="note"><Status tone="gold">Sample data</Status> Plans are built only from the generated sample inventory, so every price traces to an inventory item. This is not live availability, and no AI model is guessing prices.</p>
+      <p className="inv-banner" role="note"><Status tone="gold">Sample data</Status> The AI plans, PayPal sandbox charges. Plans are built only from the generated sample inventory, so every price traces to an inventory item; the AI never sets a price, and nothing is charged until you approve it in PayPal. This is not live availability, and no real money moves.</p>
       <div className="adv-shell">
         <div className="adv-chat" aria-live="polite">
           {messages.length === 0 && (
@@ -104,6 +120,8 @@ export default function AdvisorPage() {
             <div key={i} className={`adv-msg adv-${m.role}`}>
               <p>{m.text}</p>
               {m.proposal && <Proposal p={m.proposal} />}
+              <AgentSteps agent={m.agent} />
+              {i === payableIndex && <ApproveAndPay key={m.checkout?.order_id || `c${i}`} proposal={m.proposal} constraints={m.constraints} checkout={m.checkout} />}
             </div>
           ))}
           {busy && <div className="adv-msg adv-advisor" role="status"><p>{waking ? "Waking the server — the free host sleeps when idle, this can take up to a minute…" : "Planning…"}</p></div>}

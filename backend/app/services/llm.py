@@ -35,14 +35,8 @@ def model_name() -> str:
     return settings.model
 
 
-def _generate(system: str, user: str, *, schema: dict | None, max_tokens: int) -> str:
-    body: dict = {
-        "systemInstruction": {"parts": [{"text": system}]},
-        "contents": [{"role": "user", "parts": [{"text": user}]}],
-        "generationConfig": {"temperature": 0.2 if schema is None else 0, "maxOutputTokens": max_tokens},
-    }
-    if schema is not None:
-        body["generationConfig"].update(responseMimeType="application/json", responseSchema=schema)
+def _post(body: dict) -> dict:
+    """POST one generateContent request and return the first candidate."""
     try:
         with httpx.Client(timeout=settings.timeout_s, transport=_transport) as client:
             resp = client.post(
@@ -58,9 +52,38 @@ def _generate(system: str, user: str, *, schema: dict | None, max_tokens: int) -
         cand = resp.json()["candidates"][0]
         if cand.get("finishReason") not in (None, "STOP"):
             raise LLMError(f"Gemini stopped early: {cand.get('finishReason')}")
-        return "".join(p.get("text", "") for p in cand["content"]["parts"]).strip()
+        cand["content"]["parts"]  # must exist
+        return cand
     except (KeyError, IndexError, TypeError, ValueError) as e:
         raise LLMError("Gemini returned an unreadable response") from e
+
+
+def _generate(system: str, user: str, *, schema: dict | None, max_tokens: int) -> str:
+    body: dict = {
+        "systemInstruction": {"parts": [{"text": system}]},
+        "contents": [{"role": "user", "parts": [{"text": user}]}],
+        "generationConfig": {"temperature": 0.2 if schema is None else 0, "maxOutputTokens": max_tokens},
+    }
+    if schema is not None:
+        body["generationConfig"].update(responseMimeType="application/json", responseSchema=schema)
+    cand = _post(body)
+    return "".join(p.get("text", "") for p in cand["content"]["parts"]).strip()
+
+
+def generate_turn(system: str, contents: list[dict], declarations: list[dict], *, max_tokens: int = 1024) -> dict:
+    """One function-calling turn. Returns the model's content ({role, parts}) untouched so the
+    caller can replay it verbatim on the next turn (Gemini requires that for tool use).
+    Raises LLMError on any failure; the agent then falls back to the rule-based advisor."""
+    if not is_configured():
+        raise LLMError("Gemini is not configured")
+    body = {
+        "systemInstruction": {"parts": [{"text": system}]},
+        "contents": contents,
+        "tools": [{"functionDeclarations": declarations}],
+        "toolConfig": {"functionCallingConfig": {"mode": "AUTO"}},
+        "generationConfig": {"temperature": 0.2, "maxOutputTokens": max_tokens},
+    }
+    return _post(body)["content"]
 
 
 # ------------------------------------------------------------------ constraint extraction

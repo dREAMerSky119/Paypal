@@ -12,6 +12,7 @@
     "report:images": "node scripts/report-duplicate-images.mjs"
   },
   "dependencies": {
+    "@paypal/react-paypal-js": "^10.6.1",
     "framer-motion": "^14.10.1",
     "leaflet": "^1.9.4",
     "lucide-react": "^1.70.0",

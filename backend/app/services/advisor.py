@@ -164,13 +164,14 @@ def _allowed_amounts(proposal: dict) -> list[float]:
     return vals
 
 
-def narrative_is_faithful(text: str, proposal: dict) -> bool:
+def narrative_is_faithful(text: str, proposal: dict | None, extra_amounts: list[float] | None = None) -> bool:
     """True only if the text is plain, short, and every money amount it states is a figure
     from the proposal (cents-exact, or rounded to a whole unit). Net cost and margin are
-    internal, so quoting them fails the check too."""
+    internal, so quoting them fails the check too. `extra_amounts` lets the agent also allow
+    figures it was handed by a tool (the deposit, a searched unit price)."""
     if not text or len(text) > _MAX_NARRATIVE_CHARS or re.search(r"[*#`]|\n\s*[-•]", text):
         return False
-    allowed = _allowed_amounts(proposal)
+    allowed = (_allowed_amounts(proposal) if proposal else []) + list(extra_amounts or [])
     for m in _MONEY_RE.finditer(text):
         raw = m.group(1).replace(",", "").rstrip(".")
         try:

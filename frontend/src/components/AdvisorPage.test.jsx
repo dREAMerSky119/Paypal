@@ -1,7 +1,16 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import AdvisorPage from "./AdvisorPage.jsx";
+
+// The real SDK would try to load paypal.com; a stub keeps these tests about the advisor page.
+vi.mock("@paypal/react-paypal-js", async () => {
+  const React = await import("react");
+  return {
+    PayPalScriptProvider: ({ children }) => React.createElement("div", null, children),
+    PayPalButtons: () => React.createElement("button", { type: "button" }, "PayPal"),
+  };
+});
 
 const proposal = {
   destination: "kyoto-japan", nights: 3, travellers: 2, budget_usd: 1500, within_budget: true,
@@ -13,15 +22,26 @@ const proposal = {
   checks: [{ level: "info", message: "Sample data. Prices are generated, not live availability." }],
 };
 
+const CONFIG = { configured: true, client_id: "sandbox-client", environment: "sandbox", currency: "USD", deposit_pct: 30 };
+const AGENT = { mode: "gemini", steps: [{ tool: "build_proposal", ok: true, note: "$1,400.00 total" }, { tool: "create_checkout", ok: false, note: "customer has not asked to pay" }] };
+let agentExtras;
+
 beforeEach(() => {
-  vi.spyOn(globalThis, "fetch").mockImplementation(async (url, init) => {
+  agentExtras = {};
+  vi.spyOn(globalThis, "fetch").mockImplementation(async (url, init = {}) => {
+    if (new URL(url).pathname === "/api/payments/config") return new Response(JSON.stringify(CONFIG), { status: 200 });
     const body = JSON.parse(init.body);
     return new Response(JSON.stringify(
       /kyoto/i.test(body.message)
-        ? { reply: "Here is a plan.", constraints: { destination: "kyoto-japan" }, missing: [], proposal }
-        : { reply: "Which destination?", constraints: {}, missing: ["destination"], proposal: null }), { status: 200 });
+        ? { reply: "Here is a plan.", constraints: { destination: "kyoto-japan" }, missing: [], proposal, checkout: null, ...agentExtras }
+        : { reply: "Which destination?", constraints: {}, missing: ["destination"], proposal: null, checkout: null }), { status: 200 });
   });
 });
+
+const ask = (text) => {
+  fireEvent.change(screen.getByLabelText(/describe your trip/i), { target: { value: text } });
+  fireEvent.click(screen.getByRole("button", { name: /send/i }));
+};
 
 const view = (path = "/app/ai-studio") => render(<MemoryRouter initialEntries={[path]}><AdvisorPage /></MemoryRouter>);
 
@@ -54,5 +74,56 @@ describe("AdvisorPage", () => {
   it("pre-fills from ?destination=", () => {
     view("/app/ai-studio?destination=kyoto-japan");
     expect(screen.getByLabelText(/describe your trip/i).value).toMatch(/kyoto/i);
+  });
+
+  it("talks to the agent endpoint", async () => {
+    view();
+    ask("3 nights in Kyoto");
+    await screen.findByText("Test stay");
+    const [url, init] = globalThis.fetch.mock.calls.find(([u]) => new URL(u).pathname.startsWith("/api/advisor"));
+    expect(new URL(url).pathname).toBe("/api/advisor/agent");
+    expect(JSON.parse(init.body).message).toBe("3 nights in Kyoto");
+  });
+
+  it("offers approve-and-pay under a proposal, and not under a clarifying question", async () => {
+    view();
+    ask("plan something");
+    await screen.findByText("Which destination?");
+    expect(screen.queryByRole("region", { name: /approve and pay/i })).not.toBeInTheDocument();
+    ask("3 nights in Kyoto");
+    expect(await screen.findByRole("region", { name: /approve and pay/i })).toBeInTheDocument();
+    expect(await screen.findByText("PayPal")).toBeInTheDocument();
+  });
+
+  it("keeps the pay card on the newest proposal only", async () => {
+    view();
+    ask("3 nights in Kyoto");
+    await screen.findByText("Test stay");
+    ask("make it 4 nights in Kyoto");
+    await waitFor(() => expect(screen.getAllByRole("region", { name: /proposed itinerary/i })).toHaveLength(2));
+    expect(screen.getAllByRole("region", { name: /approve and pay/i })).toHaveLength(1);
+  });
+
+  it("shows what the agent did, including a step it was not allowed to take", async () => {
+    agentExtras = { agent: AGENT };
+    view();
+    ask("3 nights in Kyoto");
+    const summary = await screen.findByText(/agent steps \(2\)/i);
+    fireEvent.click(summary);
+    expect(screen.getByText(/built proposal: \$1,400\.00 total/i)).toBeInTheDocument();
+    expect(screen.getByText(/opened deposit checkout: customer has not asked to pay \(not done\)/i)).toBeInTheDocument();
+  });
+
+  it("hides the agent trace in rule-based mode", async () => {
+    agentExtras = { agent: { mode: "rules", steps: [] } };
+    view();
+    ask("3 nights in Kyoto");
+    await screen.findByText("Test stay");
+    expect(screen.queryByText(/agent steps/i)).not.toBeInTheDocument();
+  });
+
+  it("states that the AI plans and PayPal charges", () => {
+    view();
+    expect(screen.getByRole("note")).toHaveTextContent(/AI plans, PayPal sandbox charges/i);
   });
 });

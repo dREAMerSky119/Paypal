@@ -30,3 +30,12 @@
 .adv-send{min-height:44px;padding:0 16px}.adv-send:disabled{opacity:.5;cursor:not-allowed}
 .adv-reset{min-height:44px;padding:0 14px;font-size:11px;gap:6px}
 @media(max-width:760px){.adv-line{grid-template-columns:1fr auto}.adv-line-type{grid-column:1/-1}.adv-chat{padding:14px}}
+
+/* Agent trace and approve-and-pay card */
+.adv-steps{font-size:10px;color:#566676}.adv-steps summary{cursor:pointer;font:500 9px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.adv-steps ol{margin:8px 0 0;padding-left:18px;display:grid;gap:4px;line-height:1.5}.adv-step-skipped{color:#8a969d}
+.adv-pay{border:1px solid #d6ad62;background:#fffdf7;padding:16px;display:grid;gap:12px}
+.adv-pay-done{border-color:#9cb89f;background:#f3f8f3}.adv-pay-done h3{margin:6px 0 0;font:500 12px var(--mono);letter-spacing:.04em}.adv-pay-done p{margin:4px 0 0;font-size:11px;line-height:1.6}
+.adv-pay-note{margin:0;font-size:10px;line-height:1.6;color:#6f6247;display:flex;gap:6px;align-items:flex-start}.adv-pay-note svg{flex:none;margin-top:2px}
+.adv-pay-buttons{max-width:420px;min-height:48px}
+.adv-pay-error{margin:0;font-size:11px;line-height:1.6;padding:8px 10px;border-left:2px solid #b5543a;background:#fbefe9;color:#7a3a28}

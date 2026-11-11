@@ -36,7 +36,11 @@ Known limit: the rule parser reads "weekend" as 2 nights and wins over Gemini, s
 
 Exit criteria: advisor works with and without a key; no price in text that is not in the proposal.
 
-## Phase 3 — Frontend checkout
+## Phase 3 — Frontend checkout (partly done, inside Phase 4)
+
+Status: the PayPal button now lives in the advisor chat as the "Approve and pay" card (see Phase 4). Still open: the
+`PackagesPage` entry point and the printable itinerary view. The button uses the public client id from `GET /payments/config`,
+so `VITE_PAYPAL_CLIENT_ID` is not needed.
 
 - `npm i @paypal/react-paypal-js`, add `VITE_PAYPAL_CLIENT_ID`.
 - `PackagesPage` (currently a placeholder) shows the proposal and `<PayPalButtons>`: `createOrder` calls `/payments/orders`, `onApprove` calls `/capture`.
@@ -45,12 +49,25 @@ Exit criteria: advisor works with and without a key; no price in text that is no
 
 Exit criteria: full sandbox purchase from the UI with a sandbox buyer account.
 
-## Phase 4 — Agentic layer
+## Phase 4 — Agentic layer (built, verified with mocks only)
 
 - Gemini function-calling tools over existing services: `search_inventory`, `build_proposal`, `create_checkout`.
 - Chat shows an "Approve and pay" card; the agent can create an order but never captures it, a human approves.
 - Optional: PayPal agent toolkit / MCP as a second route (verify its current API first).
 - Stretch: margin view from `net_usd`; PayPal Payouts to suppliers (check sandbox support first).
+
+Built: `services/agent.py` (tool loop), `services/checkout.py` (shared by the agent and `POST /payments/orders`),
+`llm.generate_turn` (Gemini function calling over REST), `POST /api/advisor/agent`, `ApproveAndPay.jsx`, an agent-steps trace in the chat,
+`tests/test_agent.py` (22), `ApproveAndPay.test.jsx` (9).
+Design rules, enforced in code and covered by tests:
+- The agent module never imports the PayPal client, so it cannot capture. Only the buyer approving in PayPal plus `/capture` moves money.
+- `create_checkout` takes no arguments (no amount from the model) and is refused unless the customer's message asks to book or pay.
+- Search results carry sell prices only: no net cost, margin, supplier or item id reaches the model.
+- A reply quoting a figure no tool returned is replaced by the deterministic text. Any Gemini error, timeout or runaway loop falls back to the rule-based advisor, keeping an order that was already opened.
+- A revised trip drops the open checkout, and the chat shows the pay card only on the newest proposal.
+- Without `GEMINI_API_KEY`, `/advisor/agent` behaves like `/advisor/plan` and the card still lets the buyer pay.
+
+Not yet verified: a real Gemini function-calling round trip and a real sandbox payment. Every test mocks both. Do this with real keys before the demo (Phase 5).
 
 Exit criteria: a trip can go from one chat message to an approved sandbox payment.
 

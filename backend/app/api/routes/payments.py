@@ -4,7 +4,7 @@ from collections import defaultdict, deque
 from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 
-from app.services import advisor, bookings, paypal
+from app.services import bookings, checkout, paypal
 
 router = APIRouter(tags=["payments"])
 
@@ -49,36 +49,10 @@ def payments_config() -> dict:
 def create_order(body: OrderRequest, request: Request) -> dict:
     """Plan the trip from inventory, then open a PayPal order for the deposit."""
     _rate_limit(request)
-    _require_paypal()
     try:
-        constraints = advisor.validate(dict(body.constraints))
-        missing = advisor.missing_fields(constraints)
-        if missing:
-            raise HTTPException(status_code=422, detail=f"Missing trip details: {', '.join(missing)}")
-        proposal = advisor.plan(constraints)
-    except advisor.AdvisorError as e:
-        raise HTTPException(status_code=422, detail=str(e))
-
-    sell = proposal["totals"]["sell_usd"]
-    if sell <= 0:
-        raise HTTPException(status_code=422, detail="This trip has no payable amount")
-    deposit = paypal.deposit_for(sell)
-    booking_id = bookings.new_id()
-    try:
-        order = paypal.create_order(
-            deposit,
-            reference_id=booking_id,
-            custom_id=booking_id,
-            description=f"Wayfare deposit: {proposal['nights']} nights, {proposal['destination']}",
-        )
-    except paypal.PayPalError as e:
-        raise HTTPException(status_code=502, detail=str(e))
-    booking = bookings.create(booking_id, order["id"], constraints, proposal, sell, float(deposit))
-    return {
-        "booking_id": booking["id"], "order_id": order["id"], "currency": paypal.CURRENCY,
-        "sell_usd": sell, "deposit_usd": float(deposit), "balance_usd": booking["balance_usd"],
-        "is_sample": True,
-    }
+        return checkout.start_checkout(body.constraints)
+    except checkout.CheckoutError as e:
+        raise HTTPException(status_code=e.status, detail=e.detail)
 
 
 @router.post("/payments/orders/{order_id}/capture")
