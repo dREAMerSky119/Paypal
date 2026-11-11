@@ -1,0 +1,1074 @@
+{
+  "version": 1,
+  "is_sample": true,
+  "data_origin": "assumption",
+  "disclaimer": "Scenario results are illustrations built from editable assumptions. They are not forecasts of real demand, prices or profit.",
+  "bounds": {
+    "demand": [
+      0.35,
+      2.5
+    ],
+    "rate": [
+      0.6,
+      1.6
+    ],
+    "cost": [
+      0.6,
+      1.6
+    ]
+  },
+  "effect_types": {
+    "festival": {
+      "label": "Festival and seasonal events",
+      "driver": "events",
+      "unit": "strength of each chosen event (%)",
+      "note": "Multipliers live on each event row below (editable per event). Choose events instead of a slider.",
+      "source_note": "Hand-curated events table; dates from the `holidays` package where available. Assumption, not a measurement."
+    },
+    "weather": {
+      "label": "Weather shock",
+      "driver": "slider",
+      "unit": "severity (0 to 100)",
+      "min": 0,
+      "max": 100,
+      "default": 0,
+      "step": 1,
+      "demand_per_unit": -0.3,
+      "rate_per_unit": -0.15,
+      "cost_per_unit": 0.0,
+      "source_note": "Calibrated so severity 67 gives x0.80 demand, matching the 'Heavy monsoon' preset row (evt_047). Assumption, not a measurement."
+    },
+    "fuel": {
+      "label": "Fuel price",
+      "driver": "slider",
+      "unit": "change in fuel price (%)",
+      "min": -30,
+      "max": 100,
+      "default": 0,
+      "step": 1,
+      "demand_per_unit": -0.3,
+      "rate_per_unit": 0.4,
+      "cost_per_unit": 0.4,
+      "source_note": "Calibrated so +20% gives x0.94 demand and x1.08 rates and costs (evt_048). Transport costs pass through. Assumption, not a measurement."
+    },
+    "currency": {
+      "label": "Local currency vs USD",
+      "driver": "slider",
+      "unit": "change in local currency (%); negative = weaker",
+      "min": -20,
+      "max": 20,
+      "default": 0,
+      "step": 1,
+      "demand_per_unit": -0.8,
+      "rate_per_unit": 1.0,
+      "cost_per_unit": 1.0,
+      "source_note": "A weaker local currency makes the destination cheaper for USD travellers. Calibrated to evt_049 and evt_050 within rounding. Assumption, not a measurement."
+    },
+    "visa": {
+      "label": "Visa and entry policy",
+      "driver": "slider",
+      "unit": "change in ease of entry (%); negative = harder",
+      "min": -50,
+      "max": 50,
+      "default": 0,
+      "step": 1,
+      "demand_per_unit": 0.3,
+      "rate_per_unit": 0.09,
+      "cost_per_unit": 0.0,
+      "source_note": "Calibrated so +33 gives x1.10 demand (evt_051). Assumption, not a measurement."
+    },
+    "disruption": {
+      "label": "Disruption (strikes, closures, unrest)",
+      "driver": "slider",
+      "unit": "severity (0 to 100)",
+      "min": 0,
+      "max": 100,
+      "default": 0,
+      "step": 1,
+      "demand_per_unit": -0.55,
+      "rate_per_unit": -0.15,
+      "cost_per_unit": 0.05,
+      "source_note": "Calibrated so severity 100 gives x0.45 demand (evt_052). Assumption, not a measurement."
+    }
+  },
+  "globals": {
+    "demand_to_rate": {
+      "value": 0.35,
+      "label": "Rate response to demand",
+      "note": "Rates move by demand multiplier to this power (0 = rates ignore demand, 1 = fully proportional)."
+    },
+    "sell_pass_through": {
+      "value": 0.9,
+      "label": "Sell price follows market rates",
+      "note": "Share of a rate move the agency passes into sell prices (power on the rate multiplier)."
+    },
+    "cost_follows_rate": {
+      "value": 0.5,
+      "label": "Supplier cost follows rates",
+      "note": "Share of a market rate move that reaches supplier net cost."
+    },
+    "occupancy_at_peak": {
+      "value": 0.85,
+      "label": "Occupancy in the busiest historical month",
+      "note": "Proxy only. Used to turn the demand index into an occupancy estimate."
+    },
+    "occupancy_ceiling": {
+      "value": 0.98,
+      "label": "Occupancy ceiling",
+      "note": "Demand above this is turned away and can spill to similar destinations."
+    },
+    "spill_share": {
+      "value": 0.3,
+      "label": "Displaced demand that moves elsewhere",
+      "note": "Rest is assumed lost to the wider market."
+    },
+    "spill_cap_pct": {
+      "value": 25,
+      "label": "Largest uplift a neighbour can receive (%)",
+      "note": "Keeps spillover from producing implausible jumps."
+    }
+  },
+  "events": [
+    {
+      "id": "evt_043",
+      "name": "Ramadan 2026 (approx)",
+      "type": "religious",
+      "destination": "marrakech-morocco",
+      "country": "Morocco",
+      "start": "2026-02-18",
+      "end": "2026-03-19",
+      "demand_multiplier": 0.8,
+      "rate_multiplier": 0.9,
+      "source_note": "approximate lunar dates; verify | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_035",
+      "name": "Holi 2026",
+      "type": "festival",
+      "destination": null,
+      "country": "India",
+      "start": "2026-03-02",
+      "end": "2026-03-06",
+      "demand_multiplier": 1.15,
+      "rate_multiplier": 1.1,
+      "source_note": "date from `holidays` package; multipliers assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_037",
+      "name": "Nyepi 2026",
+      "type": "holiday",
+      "destination": "bali-indonesia",
+      "country": "Indonesia",
+      "start": "2026-03-18",
+      "end": "2026-03-20",
+      "demand_multiplier": 0.4,
+      "rate_multiplier": 0.9,
+      "source_note": "Day of Silence: island-wide shutdown; assumption multipliers | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_045",
+      "name": "Eid al-Fitr 2026 (approx)",
+      "type": "holiday",
+      "destination": "marrakech-morocco",
+      "country": "Morocco",
+      "start": "2026-03-18",
+      "end": "2026-03-24",
+      "demand_multiplier": 1.2,
+      "rate_multiplier": 1.15,
+      "source_note": "approximate lunar date; verify | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_001",
+      "name": "Cherry blossom peak 2026",
+      "type": "festival",
+      "destination": "kyoto-japan",
+      "country": "Japan",
+      "start": "2026-03-25",
+      "end": "2026-04-10",
+      "demand_multiplier": 1.35,
+      "rate_multiplier": 1.25,
+      "source_note": "dates vary with bloom forecast; multipliers are assumptions | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_017",
+      "name": "Kashmir tulip season 2026",
+      "type": "seasonal",
+      "destination": "kashmir-india",
+      "country": "India",
+      "start": "2026-04-01",
+      "end": "2026-04-25",
+      "demand_multiplier": 1.35,
+      "rate_multiplier": 1.2,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_041",
+      "name": "Golden Week 2026",
+      "type": "holiday",
+      "destination": "kyoto-japan",
+      "country": "Japan",
+      "start": "2026-04-29",
+      "end": "2026-05-05",
+      "demand_multiplier": 1.25,
+      "rate_multiplier": 1.2,
+      "source_note": "Japan national holidays, fixed dates | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_009",
+      "name": "Kerala monsoon onset 2026",
+      "type": "weather",
+      "destination": "kerala-india",
+      "country": "India",
+      "start": "2026-06-01",
+      "end": "2026-08-31",
+      "demand_multiplier": 0.7,
+      "rate_multiplier": 0.8,
+      "source_note": "Ayurveda/monsoon packages partly offset; assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_011",
+      "name": "Ladakh passes open 2026",
+      "type": "seasonal",
+      "destination": "ladakh-india",
+      "country": "India",
+      "start": "2026-06-01",
+      "end": "2026-09-30",
+      "demand_multiplier": 1.3,
+      "rate_multiplier": 1.2,
+      "source_note": "Manali-Leh and Srinagar-Leh roads typically open; assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_007",
+      "name": "Midnight-sun peak 2026",
+      "type": "seasonal",
+      "destination": "iceland",
+      "country": "Iceland",
+      "start": "2026-06-15",
+      "end": "2026-07-15",
+      "demand_multiplier": 1.15,
+      "rate_multiplier": 1.1,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_010",
+      "name": "Meghalaya monsoon 2026",
+      "type": "weather",
+      "destination": "meghalaya-india",
+      "country": "India",
+      "start": "2026-06-15",
+      "end": "2026-09-15",
+      "demand_multiplier": 0.55,
+      "rate_multiplier": 0.75,
+      "source_note": "assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_012",
+      "name": "Marrakech summer heat 2026",
+      "type": "weather",
+      "destination": "marrakech-morocco",
+      "country": "Morocco",
+      "start": "2026-06-15",
+      "end": "2026-08-31",
+      "demand_multiplier": 0.7,
+      "rate_multiplier": 0.85,
+      "source_note": "assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_013",
+      "name": "Bali dry-season peak 2026",
+      "type": "seasonal",
+      "destination": "bali-indonesia",
+      "country": "Indonesia",
+      "start": "2026-07-01",
+      "end": "2026-08-31",
+      "demand_multiplier": 1.2,
+      "rate_multiplier": 1.15,
+      "source_note": "assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_002",
+      "name": "Gion Matsuri 2026",
+      "type": "festival",
+      "destination": "kyoto-japan",
+      "country": "Japan",
+      "start": "2026-07-10",
+      "end": "2026-07-24",
+      "demand_multiplier": 1.25,
+      "rate_multiplier": 1.15,
+      "source_note": "main processions 17 and 24 July; assumption multipliers | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_006",
+      "name": "Summer hiking peak 2026",
+      "type": "seasonal",
+      "destination": "dolomites-italy",
+      "country": "Italy",
+      "start": "2026-07-15",
+      "end": "2026-08-20",
+      "demand_multiplier": 1.15,
+      "rate_multiplier": 1.12,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_004",
+      "name": "Ferragosto week 2026",
+      "type": "holiday",
+      "destination": "amalfi-coast-italy",
+      "country": "Italy",
+      "start": "2026-08-10",
+      "end": "2026-08-20",
+      "demand_multiplier": 1.2,
+      "rate_multiplier": 1.18,
+      "source_note": "Italian national holiday 15 Aug | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_008",
+      "name": "Northern-lights season 2026",
+      "type": "seasonal",
+      "destination": "iceland",
+      "country": "Iceland",
+      "start": "2026-09-15",
+      "end": "2026-10-31",
+      "demand_multiplier": 1.1,
+      "rate_multiplier": 1.05,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_036",
+      "name": "Diwali 2026",
+      "type": "festival",
+      "destination": null,
+      "country": "India",
+      "start": "2026-11-04",
+      "end": "2026-11-11",
+      "demand_multiplier": 1.3,
+      "rate_multiplier": 1.25,
+      "source_note": "date from `holidays` package; multipliers assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_016",
+      "name": "Shillong cherry-blossom festival 2026",
+      "type": "festival",
+      "destination": "meghalaya-india",
+      "country": "India",
+      "start": "2026-11-10",
+      "end": "2026-11-20",
+      "demand_multiplier": 1.2,
+      "rate_multiplier": 1.1,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_003",
+      "name": "Autumn leaves peak 2026",
+      "type": "seasonal",
+      "destination": "kyoto-japan",
+      "country": "Japan",
+      "start": "2026-11-15",
+      "end": "2026-12-05",
+      "demand_multiplier": 1.35,
+      "rate_multiplier": 1.25,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_015",
+      "name": "Udaipur/Jaipur wedding season 2026",
+      "type": "seasonal",
+      "destination": "udaipur-india",
+      "country": "India",
+      "start": "2026-11-15",
+      "end": "2027-02-28",
+      "demand_multiplier": 1.25,
+      "rate_multiplier": 1.3,
+      "source_note": "assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_005",
+      "name": "Ski season opening 2026",
+      "type": "seasonal",
+      "destination": "dolomites-italy",
+      "country": "Italy",
+      "start": "2026-12-15",
+      "end": "2026-12-31",
+      "demand_multiplier": 1.3,
+      "rate_multiplier": 1.25,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_014",
+      "name": "Bali Christmas-NY peak 2026",
+      "type": "holiday",
+      "destination": "bali-indonesia",
+      "country": "Indonesia",
+      "start": "2026-12-20",
+      "end": "2027-01-05",
+      "demand_multiplier": 1.3,
+      "rate_multiplier": 1.3,
+      "source_note": "assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_044",
+      "name": "Ramadan 2027 (approx)",
+      "type": "religious",
+      "destination": "marrakech-morocco",
+      "country": "Morocco",
+      "start": "2027-02-08",
+      "end": "2027-03-09",
+      "demand_multiplier": 0.8,
+      "rate_multiplier": 0.9,
+      "source_note": "approximate lunar dates; verify | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_040",
+      "name": "Nyepi 2027",
+      "type": "holiday",
+      "destination": "bali-indonesia",
+      "country": "Indonesia",
+      "start": "2027-03-07",
+      "end": "2027-03-09",
+      "demand_multiplier": 0.4,
+      "rate_multiplier": 0.9,
+      "source_note": "Day of Silence: island-wide shutdown; assumption multipliers | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_046",
+      "name": "Eid al-Fitr 2027 (approx)",
+      "type": "holiday",
+      "destination": "marrakech-morocco",
+      "country": "Morocco",
+      "start": "2027-03-08",
+      "end": "2027-03-14",
+      "demand_multiplier": 1.2,
+      "rate_multiplier": 1.15,
+      "source_note": "approximate lunar date; verify | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_038",
+      "name": "Holi 2027",
+      "type": "festival",
+      "destination": null,
+      "country": "India",
+      "start": "2027-03-20",
+      "end": "2027-03-24",
+      "demand_multiplier": 1.15,
+      "rate_multiplier": 1.1,
+      "source_note": "date from `holidays` package; multipliers assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_018",
+      "name": "Cherry blossom peak 2027",
+      "type": "festival",
+      "destination": "kyoto-japan",
+      "country": "Japan",
+      "start": "2027-03-25",
+      "end": "2027-04-10",
+      "demand_multiplier": 1.35,
+      "rate_multiplier": 1.25,
+      "source_note": "dates vary with bloom forecast; multipliers are assumptions | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_034",
+      "name": "Kashmir tulip season 2027",
+      "type": "seasonal",
+      "destination": "kashmir-india",
+      "country": "India",
+      "start": "2027-04-01",
+      "end": "2027-04-25",
+      "demand_multiplier": 1.35,
+      "rate_multiplier": 1.2,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_042",
+      "name": "Golden Week 2027",
+      "type": "holiday",
+      "destination": "kyoto-japan",
+      "country": "Japan",
+      "start": "2027-04-29",
+      "end": "2027-05-05",
+      "demand_multiplier": 1.25,
+      "rate_multiplier": 1.2,
+      "source_note": "Japan national holidays, fixed dates | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_026",
+      "name": "Kerala monsoon onset 2027",
+      "type": "weather",
+      "destination": "kerala-india",
+      "country": "India",
+      "start": "2027-06-01",
+      "end": "2027-08-31",
+      "demand_multiplier": 0.7,
+      "rate_multiplier": 0.8,
+      "source_note": "Ayurveda/monsoon packages partly offset; assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_028",
+      "name": "Ladakh passes open 2027",
+      "type": "seasonal",
+      "destination": "ladakh-india",
+      "country": "India",
+      "start": "2027-06-01",
+      "end": "2027-09-30",
+      "demand_multiplier": 1.3,
+      "rate_multiplier": 1.2,
+      "source_note": "Manali-Leh and Srinagar-Leh roads typically open; assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_024",
+      "name": "Midnight-sun peak 2027",
+      "type": "seasonal",
+      "destination": "iceland",
+      "country": "Iceland",
+      "start": "2027-06-15",
+      "end": "2027-07-15",
+      "demand_multiplier": 1.15,
+      "rate_multiplier": 1.1,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_027",
+      "name": "Meghalaya monsoon 2027",
+      "type": "weather",
+      "destination": "meghalaya-india",
+      "country": "India",
+      "start": "2027-06-15",
+      "end": "2027-09-15",
+      "demand_multiplier": 0.55,
+      "rate_multiplier": 0.75,
+      "source_note": "assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_029",
+      "name": "Marrakech summer heat 2027",
+      "type": "weather",
+      "destination": "marrakech-morocco",
+      "country": "Morocco",
+      "start": "2027-06-15",
+      "end": "2027-08-31",
+      "demand_multiplier": 0.7,
+      "rate_multiplier": 0.85,
+      "source_note": "assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_030",
+      "name": "Bali dry-season peak 2027",
+      "type": "seasonal",
+      "destination": "bali-indonesia",
+      "country": "Indonesia",
+      "start": "2027-07-01",
+      "end": "2027-08-31",
+      "demand_multiplier": 1.2,
+      "rate_multiplier": 1.15,
+      "source_note": "assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_019",
+      "name": "Gion Matsuri 2027",
+      "type": "festival",
+      "destination": "kyoto-japan",
+      "country": "Japan",
+      "start": "2027-07-10",
+      "end": "2027-07-24",
+      "demand_multiplier": 1.25,
+      "rate_multiplier": 1.15,
+      "source_note": "main processions 17 and 24 July; assumption multipliers | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_023",
+      "name": "Summer hiking peak 2027",
+      "type": "seasonal",
+      "destination": "dolomites-italy",
+      "country": "Italy",
+      "start": "2027-07-15",
+      "end": "2027-08-20",
+      "demand_multiplier": 1.15,
+      "rate_multiplier": 1.12,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_021",
+      "name": "Ferragosto week 2027",
+      "type": "holiday",
+      "destination": "amalfi-coast-italy",
+      "country": "Italy",
+      "start": "2027-08-10",
+      "end": "2027-08-20",
+      "demand_multiplier": 1.2,
+      "rate_multiplier": 1.18,
+      "source_note": "Italian national holiday 15 Aug | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_025",
+      "name": "Northern-lights season 2027",
+      "type": "seasonal",
+      "destination": "iceland",
+      "country": "Iceland",
+      "start": "2027-09-15",
+      "end": "2027-10-31",
+      "demand_multiplier": 1.1,
+      "rate_multiplier": 1.05,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_039",
+      "name": "Diwali 2027",
+      "type": "festival",
+      "destination": null,
+      "country": "India",
+      "start": "2027-10-25",
+      "end": "2027-11-01",
+      "demand_multiplier": 1.3,
+      "rate_multiplier": 1.25,
+      "source_note": "date from `holidays` package; multipliers assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_033",
+      "name": "Shillong cherry-blossom festival 2027",
+      "type": "festival",
+      "destination": "meghalaya-india",
+      "country": "India",
+      "start": "2027-11-10",
+      "end": "2027-11-20",
+      "demand_multiplier": 1.2,
+      "rate_multiplier": 1.1,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_020",
+      "name": "Autumn leaves peak 2027",
+      "type": "seasonal",
+      "destination": "kyoto-japan",
+      "country": "Japan",
+      "start": "2027-11-15",
+      "end": "2027-12-05",
+      "demand_multiplier": 1.35,
+      "rate_multiplier": 1.25,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_032",
+      "name": "Udaipur/Jaipur wedding season 2027",
+      "type": "seasonal",
+      "destination": "udaipur-india",
+      "country": "India",
+      "start": "2027-11-15",
+      "end": "2028-02-28",
+      "demand_multiplier": 1.25,
+      "rate_multiplier": 1.3,
+      "source_note": "assumption | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_022",
+      "name": "Ski season opening 2027",
+      "type": "seasonal",
+      "destination": "dolomites-italy",
+      "country": "Italy",
+      "start": "2027-12-15",
+      "end": "2027-12-31",
+      "demand_multiplier": 1.3,
+      "rate_multiplier": 1.25,
+      "source_note": "approximate | editable assumption, not a measurement"
+    },
+    {
+      "id": "evt_031",
+      "name": "Bali Christmas-NY peak 2027",
+      "type": "holiday",
+      "destination": "bali-indonesia",
+      "country": "Indonesia",
+      "start": "2027-12-20",
+      "end": "2028-01-05",
+      "demand_multiplier": 1.3,
+      "rate_multiplier": 1.3,
+      "source_note": "assumption | editable assumption, not a measurement"
+    }
+  ],
+  "fx": [
+    {
+      "currency": "EUR",
+      "per_usd": 0.92,
+      "annual_volatility": 0.06,
+      "source_note": "units of local currency per 1 USD (reference assumption, NOT live). score = annual volatility used by simulator. Refresh from Frankfurter/ECB when network allows."
+    },
+    {
+      "currency": "JPY",
+      "per_usd": 150.0,
+      "annual_volatility": 0.1,
+      "source_note": "units of local currency per 1 USD (reference assumption, NOT live). score = annual volatility used by simulator. Refresh from Frankfurter/ECB when network allows."
+    },
+    {
+      "currency": "MAD",
+      "per_usd": 9.9,
+      "annual_volatility": 0.04,
+      "source_note": "units of local currency per 1 USD (reference assumption, NOT live). score = annual volatility used by simulator. Refresh from Frankfurter/ECB when network allows."
+    },
+    {
+      "currency": "INR",
+      "per_usd": 88.0,
+      "annual_volatility": 0.04,
+      "source_note": "units of local currency per 1 USD (reference assumption, NOT live). score = annual volatility used by simulator. Refresh from Frankfurter/ECB when network allows."
+    },
+    {
+      "currency": "IDR",
+      "per_usd": 16300.0,
+      "annual_volatility": 0.06,
+      "source_note": "units of local currency per 1 USD (reference assumption, NOT live). score = annual volatility used by simulator. Refresh from Frankfurter/ECB when network allows."
+    },
+    {
+      "currency": "ISK",
+      "per_usd": 138.0,
+      "annual_volatility": 0.07,
+      "source_note": "units of local currency per 1 USD (reference assumption, NOT live). score = annual volatility used by simulator. Refresh from Frankfurter/ECB when network allows."
+    }
+  ],
+  "destinations": [
+    {
+      "slug": "dolomites-italy",
+      "name": "The Dolomites",
+      "country": "Italy",
+      "currency": "EUR"
+    },
+    {
+      "slug": "kyoto-japan",
+      "name": "Kyoto",
+      "country": "Japan",
+      "currency": "JPY"
+    },
+    {
+      "slug": "marrakech-morocco",
+      "name": "Marrakech",
+      "country": "Morocco",
+      "currency": "MAD"
+    },
+    {
+      "slug": "kashmir-india",
+      "name": "Kashmir",
+      "country": "India",
+      "currency": "INR"
+    },
+    {
+      "slug": "jaipur-india",
+      "name": "Jaipur",
+      "country": "India",
+      "currency": "INR"
+    },
+    {
+      "slug": "udaipur-india",
+      "name": "Udaipur",
+      "country": "India",
+      "currency": "INR"
+    },
+    {
+      "slug": "kerala-india",
+      "name": "Kerala",
+      "country": "India",
+      "currency": "INR"
+    },
+    {
+      "slug": "ladakh-india",
+      "name": "Ladakh",
+      "country": "India",
+      "currency": "INR"
+    },
+    {
+      "slug": "meghalaya-india",
+      "name": "Meghalaya",
+      "country": "India",
+      "currency": "INR"
+    },
+    {
+      "slug": "bali-indonesia",
+      "name": "Bali",
+      "country": "Indonesia",
+      "currency": "IDR"
+    },
+    {
+      "slug": "iceland",
+      "name": "Iceland",
+      "country": "Iceland",
+      "currency": "ISK"
+    },
+    {
+      "slug": "amalfi-coast-italy",
+      "name": "Amalfi Coast",
+      "country": "Italy",
+      "currency": "EUR"
+    }
+  ],
+  "similar_destinations": {
+    "dolomites-italy": [
+      {
+        "slug": "kashmir-india",
+        "score": 0.2571
+      },
+      {
+        "slug": "ladakh-india",
+        "score": 0.15
+      },
+      {
+        "slug": "udaipur-india",
+        "score": 0.0933
+      }
+    ],
+    "kyoto-japan": [
+      {
+        "slug": "jaipur-india",
+        "score": 0.2006
+      },
+      {
+        "slug": "marrakech-morocco",
+        "score": 0.155
+      },
+      {
+        "slug": "udaipur-india",
+        "score": 0.15
+      }
+    ],
+    "marrakech-morocco": [
+      {
+        "slug": "jaipur-india",
+        "score": 0.3429
+      },
+      {
+        "slug": "udaipur-india",
+        "score": 0.225
+      },
+      {
+        "slug": "kyoto-japan",
+        "score": 0.155
+      }
+    ],
+    "kashmir-india": [
+      {
+        "slug": "dolomites-italy",
+        "score": 0.2571
+      },
+      {
+        "slug": "ladakh-india",
+        "score": 0.15
+      },
+      {
+        "slug": "amalfi-coast-italy",
+        "score": 0.15
+      }
+    ],
+    "jaipur-india": [
+      {
+        "slug": "marrakech-morocco",
+        "score": 0.3429
+      },
+      {
+        "slug": "udaipur-india",
+        "score": 0.2824
+      },
+      {
+        "slug": "kyoto-japan",
+        "score": 0.2006
+      }
+    ],
+    "udaipur-india": [
+      {
+        "slug": "jaipur-india",
+        "score": 0.2824
+      },
+      {
+        "slug": "marrakech-morocco",
+        "score": 0.225
+      },
+      {
+        "slug": "kyoto-japan",
+        "score": 0.15
+      }
+    ],
+    "kerala-india": [
+      {
+        "slug": "amalfi-coast-italy",
+        "score": 0.15
+      },
+      {
+        "slug": "iceland",
+        "score": 0.15
+      },
+      {
+        "slug": "bali-indonesia",
+        "score": 0.0921
+      }
+    ],
+    "ladakh-india": [
+      {
+        "slug": "dolomites-italy",
+        "score": 0.15
+      },
+      {
+        "slug": "kashmir-india",
+        "score": 0.15
+      },
+      {
+        "slug": "kyoto-japan",
+        "score": 0.0865
+      }
+    ],
+    "meghalaya-india": [
+      {
+        "slug": "kerala-india",
+        "score": 0.0667
+      },
+      {
+        "slug": "iceland",
+        "score": 0.0667
+      },
+      {
+        "slug": "jaipur-india",
+        "score": 0.0216
+      }
+    ],
+    "bali-indonesia": [
+      {
+        "slug": "kyoto-japan",
+        "score": 0.0984
+      },
+      {
+        "slug": "kerala-india",
+        "score": 0.0921
+      },
+      {
+        "slug": "udaipur-india",
+        "score": 0.0914
+      }
+    ],
+    "iceland": [
+      {
+        "slug": "kerala-india",
+        "score": 0.15
+      },
+      {
+        "slug": "meghalaya-india",
+        "score": 0.0667
+      },
+      {
+        "slug": "bali-indonesia",
+        "score": 0.0667
+      }
+    ],
+    "amalfi-coast-italy": [
+      {
+        "slug": "kashmir-india",
+        "score": 0.15
+      },
+      {
+        "slug": "kerala-india",
+        "score": 0.15
+      },
+      {
+        "slug": "kyoto-japan",
+        "score": 0.0667
+      }
+    ]
+  },
+  "presets": [
+    {
+      "id": "heavy-monsoon",
+      "label": "Heavy monsoon",
+      "destination": "kerala-india",
+      "start": "2027-06",
+      "months": 3,
+      "adjustments": {
+        "weather": 67
+      },
+      "event_types": [],
+      "expect": "Demand and rates fall.",
+      "detail": "Severity 67 of 100, from the monsoon preset in the events table."
+    },
+    {
+      "id": "fuel-plus-20",
+      "label": "Fuel +20%",
+      "destination": "bali-indonesia",
+      "start": "2027-01",
+      "months": 3,
+      "adjustments": {
+        "fuel": 20
+      },
+      "event_types": [],
+      "expect": "Demand dips, costs and rates rise.",
+      "detail": "Transport costs pass through to supplier net cost and market rates."
+    },
+    {
+      "id": "inr-minus-5",
+      "label": "INR −5%",
+      "destination": "jaipur-india",
+      "start": "2027-01",
+      "months": 3,
+      "adjustments": {
+        "currency": -5
+      },
+      "event_types": [],
+      "expect": "Demand up slightly, USD rates and costs down.",
+      "detail": "A weaker rupee makes India cheaper for USD travellers."
+    },
+    {
+      "id": "eur-plus-5",
+      "label": "EUR +5%",
+      "destination": "amalfi-coast-italy",
+      "start": "2027-01",
+      "months": 3,
+      "adjustments": {
+        "currency": 5
+      },
+      "event_types": [],
+      "expect": "Demand dips, USD rates and costs up.",
+      "detail": "A stronger euro makes Italy dearer for USD travellers."
+    },
+    {
+      "id": "visa-easing",
+      "label": "Visa easing",
+      "destination": "udaipur-india",
+      "start": "2027-01",
+      "months": 6,
+      "adjustments": {
+        "visa": 33
+      },
+      "event_types": [],
+      "expect": "Demand and rates rise.",
+      "detail": "Easier entry for inbound travellers."
+    },
+    {
+      "id": "regional-disruption",
+      "label": "Regional disruption",
+      "destination": "kashmir-india",
+      "start": "2027-04",
+      "months": 3,
+      "adjustments": {
+        "disruption": 100
+      },
+      "event_types": [],
+      "expect": "Large demand drop, some spillover to similar destinations.",
+      "detail": "Severe disruption over a quarter."
+    },
+    {
+      "id": "airline-strike",
+      "label": "Airline strike week",
+      "destination": "amalfi-coast-italy",
+      "start": "2027-06",
+      "months": 1,
+      "adjustments": {
+        "disruption": 27
+      },
+      "event_types": [],
+      "expect": "Short, mild dip.",
+      "detail": "One month, moderate severity."
+    },
+    {
+      "id": "festival-shift",
+      "label": "Festival season boost",
+      "destination": "kyoto-japan",
+      "start": "2027-03",
+      "months": 3,
+      "adjustments": {},
+      "event_types": [
+        "festival",
+        "seasonal"
+      ],
+      "expect": "Demand and rates rise in event months.",
+      "detail": "Switches on the festival and seasonal events that fall inside the window."
+    }
+  ]
+}

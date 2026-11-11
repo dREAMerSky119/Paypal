@@ -1,0 +1,12 @@
+fastapi>=0.115
+uvicorn[standard]>=0.30
+httpx>=0.27
+psycopg[binary]>=3.2
+# AI Operations assistant (services/ai_travel_agent.py, unified_assistant.py)
+google-genai>=1.0.0
+# Supplier price anomaly detection (services/supplier_anomaly.py + data/anomaly_model.joblib).
+# Pinned: the committed joblib model was trained with these versions.
+pandas==2.2.3
+numpy==2.1.3
+scikit-learn==1.6.1
+joblib==1.6.0
