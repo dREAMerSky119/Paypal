@@ -1,0 +1,579 @@
+{
+ "spot_001": {
+  "spot_id": "spot_001",
+  "name": "Lago di Braies",
+  "fetched_at": "2026-11-11",
+  "wikipedia": {
+   "title": "Pragser Wildsee",
+   "url": "https://en.wikipedia.org/wiki/Pragser_Wildsee",
+   "extract": "The Pragser Wildsee, or Lake Prags, Lake Braies is a natural lake in the Prags Dolomites in South Tyrol, Italy. It belongs to the municipality of Prags which is located in the Prags Valley.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 43582
+ },
+ "spot_002": {
+  "spot_id": "spot_002",
+  "name": "Tre Cime di Lavaredo",
+  "wikipedia": {
+   "title": "Tre Cime di Lavaredo",
+   "url": "https://en.wikipedia.org/wiki/Tre_Cime_di_Lavaredo",
+   "extract": "The Tre Cime di Lavaredo, also called the Drei Zinnen, are three distinctive battlement-like peaks, in the Sexten Dolomites of northeastern Italy. They are one of the best-known mountain groups in the Alps. The three peaks, from east to west, are:Cima Piccola / Kleine Zinne \nCima Grande / Große Zinne \nCima Ovest / Westliche Zinne.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 70997,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_003": {
+  "spot_id": "spot_003",
+  "name": "Alpe di Siusi",
+  "fetched_at": "2026-11-11",
+  "wikipedia": {
+   "title": "Seiser Alm",
+   "url": "https://en.wikipedia.org/wiki/Seiser_Alm",
+   "extract": "Seiser Alm is a Dolomite plateau and the largest high-elevation Alpine meadow in Europe. Located in Italy's South Tyrol province in the Dolomites mountain range, it is a major tourist attraction, notably for skiing and hiking.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 25150
+ },
+ "spot_004": {
+  "spot_id": "spot_004",
+  "name": "Fushimi Inari Shrine",
+  "wikipedia": {
+   "title": "Fushimi Inari-taisha",
+   "url": "https://en.wikipedia.org/wiki/Fushimi_Inari-taisha",
+   "extract": "Fushimi Inari-taisha  is the head shrine of the kami Inari, located in Fushimi-ku, Kyoto, Japan. The shrine sits at the base of a mountain, also named Inari, which is 233 metres (764 ft) above sea level, and includes trails up the mountain to many smaller shrines which span 4 kilometres (2.5 mi) and take approximately 2 hours to walk up. It is unclear whether the mountain's name, Inariyama, or the shrine's name came first.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 207242,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_005": {
+  "spot_id": "spot_005",
+  "name": "Arashiyama Bamboo Grove",
+  "wikipedia": {
+   "title": "Bamboo Forest (Kyoto)",
+   "url": "https://en.wikipedia.org/wiki/Bamboo_Forest_(Kyoto)",
+   "extract": "The Bamboo Forest, Arashiyama Bamboo Grove, or Sagano Bamboo Forest is a natural bamboo forest in Arashiyama, Kyoto, Japan. It is known for its mōsō bamboo and has several pathways for tourists and visitors. The Ministry of the Environment considers it a part of the soundscape of Japan.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 25000,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_006": {
+  "spot_id": "spot_006",
+  "name": "Kinkaku-ji",
+  "wikipedia": {
+   "title": "Kinkaku-ji",
+   "url": "https://en.wikipedia.org/wiki/Kinkaku-ji",
+   "extract": "Kinkaku-ji , officially named Rokuon-ji , is a Zen Buddhist temple in Kyoto, Japan and a tourist attraction. It is designated as a World Heritage Site, a National Special Historic Site, a National Special Landscape, and one of the 17 Historic Monuments of Ancient Kyoto. The temple is nicknamed after its reliquary (shariden), the Golden Pavilion , whose top two floors are coated in 0.5 μm gold leaf. The current pavilion was rebuilt in 1955 after being destroyed in an arson attack.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 143478,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_007": {
+  "spot_id": "spot_007",
+  "name": "Gion District",
+  "wikipedia": {
+   "title": "Gion",
+   "url": "https://en.wikipedia.org/wiki/Gion",
+   "extract": "Gion (祇園) is a district of Higashiyama-ku, Kyoto, Japan, originating as an entertainment district in the Sengoku period, in front of Yasaka Shrine. The district was built to accommodate the needs of travellers and visitors to the shrine. It eventually evolved to become one of the most exclusive and well-known geisha districts in all of Japan. Gion is the Japanese translation of the Buddhist term Jetavana. Yasaka Shrine, located in this district is the center of the Gion faith.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 47338,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_008": {
+  "spot_id": "spot_008",
+  "name": "Nishiki Market",
+  "wikipedia": {
+   "title": "Nishiki Market",
+   "url": "https://en.wikipedia.org/wiki/Nishiki_Market",
+   "extract": "Nishiki Market  is a marketplace in downtown Kyoto, located on the east end of Nishikikōji Street, one block north and parallel to Shijō Street  and west of Teramachi Street . Rich with history and tradition, the market is renowned as the place to obtain many of Kyoto's famous foods and goods.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 13239,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_009": {
+  "spot_id": "spot_009",
+  "name": "Jemaa el-Fnaa",
+  "wikipedia": {
+   "title": "Jemaa el-Fnaa",
+   "url": "https://en.wikipedia.org/wiki/Jemaa_el-Fnaa",
+   "extract": "Jemaa el-Fnaa, also Jemaa el-Fna, Djema el-Fna or Djemaa el-Fnaa, is a square and market place in the medina quarter of Marrakesh, Morocco. It remains the main square of Marrakesh, used by locals and tourists.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 48128,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_010": {
+  "spot_id": "spot_010",
+  "name": "Bahia Palace",
+  "wikipedia": {
+   "title": "Bahia Palace",
+   "url": "https://en.wikipedia.org/wiki/Bahia_Palace",
+   "extract": "The Bahia Palace is a mid to late 19th-century palace in Marrakesh, Morocco. The palace was first begun by Si Musa, grand vizier under the Alawi sultan Muhammad ibn Abd al-Rahman, in the 1860s. It was expanded by his son Si Ba Ahmed ibn Musa, grand vizier of Sultan Moulay Abdelaziz, between 1894 and 1900. Today it is a well-known historic monument and tourist attraction in the city.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 40875,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_011": {
+  "spot_id": "spot_011",
+  "name": "Jardin Majorelle",
+  "wikipedia": {
+   "title": "Majorelle Garden",
+   "url": "https://en.wikipedia.org/wiki/Majorelle_Garden",
+   "extract": "The Majorelle Garden is a one-hectare (two-acre) botanical garden and artist's landscape garden in Marrakesh, Morocco. It was created by the French Orientalist artist Jacques Majorelle over almost forty years, starting in 1923, and features a Cubist villa designed by French architect Paul Sinoir in the 1930s. The property was the residence of the artist and his wife from 1923 until their divorce in the 1950s.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 63444,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_012": {
+  "spot_id": "spot_012",
+  "name": "Dal Lake",
+  "wikipedia": {
+   "title": "Dal Lake",
+   "url": "https://en.wikipedia.org/wiki/Dal_Lake",
+   "extract": "Dal is a freshwater lake in Srinagar, the summer capital of Jammu and Kashmir in Indian-administered Kashmir. It is an urban lake, the second largest lake in Jammu and Kashmir, and the most visited place in Srinagar by tourists and locals. It is integral to tourism and recreation in the Kashmir Valley and is variously known as the \"Lake of Flowers\", \"Jewel in the crown of Kashmir\" or \"Srinagar's Jewel\". The lake is also an important source for commercial operations in fishing and water plant harvesting.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 57329,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_013": {
+  "spot_id": "spot_013",
+  "name": "Nishat Bagh",
+  "wikipedia": {
+   "title": "Nishat Bagh",
+   "url": "https://en.wikipedia.org/wiki/Nishat_Bagh",
+   "extract": "Nishat Bagh is a terraced Mughal garden built on the eastern bank of the Dal Lake, close to Srinagar in the Indian-administered union territory of Jammu and Kashmir in the disputed Kashmir region. It is the second-largest Mughal garden in the Kashmir Valley after Shalimar Bagh.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 17055,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_014": {
+  "spot_id": "spot_014",
+  "name": "Pahalgam Valley",
+  "wikipedia": {
+   "title": "Pahalgam",
+   "url": "https://en.wikipedia.org/wiki/Pahalgam",
+   "extract": "Pahalgam or Pahalgom is a town in Anantnag district of the Indian union territory of Jammu and Kashmir. It is located on the banks of Lidder River at an altitude of 2,200 m (7,200 ft) in the Vale of Kashmir. Pahalgam is the headquarters of the Pahalgam tehsil, one of the eleven tehsils in Anantnag district.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Pahalgam",
+   "url": "https://en.wikivoyage.org/wiki/Pahalgam",
+   "extract": "Pahalgam is a city in the Kashmir Valley. It's a small place of 2–3 km, but you can spend a week there without getting bored.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 58167,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_015": {
+  "spot_id": "spot_015",
+  "name": "Amber Fort",
+  "wikipedia": {
+   "title": "Amber Fort",
+   "url": "https://en.wikipedia.org/wiki/Amber_Fort",
+   "extract": "Amer Fort or Amber Fort is a fort located in Amer, Rajasthan, India. Amer is a town with an area of 4 square kilometres (1.5 sq mi) located 11 kilometres (6.8 mi) from Jaipur, the capital of Rajasthan. Located high on a hill, it is the principal tourist attraction in Jaipur. Amer Fort is known for its artistic style elements. With its large ramparts and series of gates and cobbled paths, the fort overlooks Maota Lake, which is the main source of water for the Amer Palace.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 166861,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_016": {
+  "spot_id": "spot_016",
+  "name": "Hawa Mahal",
+  "wikipedia": {
+   "title": "Hawa Mahal",
+   "url": "https://en.wikipedia.org/wiki/Hawa_Mahal",
+   "extract": "The Hawa Mahal is a palace in the city of Jaipur, Rajasthan, India. Built from red and pink sandstone, it is on the edge of the City Palace, Jaipur, and extends to the Zenana, or women's chambers.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 214290,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_017": {
+  "spot_id": "spot_017",
+  "name": "Jantar Mantar",
+  "wikipedia": {
+   "title": "Jantar Mantar, Varanasi",
+   "url": "https://en.wikipedia.org/wiki/Jantar_Mantar%2C_Varanasi",
+   "extract": "Jantar Mantar in Varanasi is an observatory designed to be used with the naked eye. It is one of the five Jantar Mantar in India and was built in 1737 by Maharaja Jai Singh II of the Kingdom of Amber.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 5629,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_018": {
+  "spot_id": "spot_018",
+  "name": "City Palace",
+  "wikipedia": {
+   "title": "City Palace, Jaipur",
+   "url": "https://en.wikipedia.org/wiki/City_Palace%2C_Jaipur",
+   "extract": "The City Palace, Jaipur is a royal residence and former administrative headquarters of the rulers of the Jaipur State in Jaipur, Rajasthan.\nConstruction started soon after the establishment of the city of Jaipur under the reign of Maharaja Sawai Jai Singh II, who moved his court to Jaipur from Amber, in 1727. Jaipur remained the capital of the kingdom until 1949—when it became the capital of the present-day Indian state of Rajasthan—with the City Palace functioning as the ceremonial and administrative seat of the Maharaja of Jaipur. The construction of the Palace was completed in 1732, and it was also the location of religious and cultural events, as well as a patron of arts, commerce, and industry. It was constructed according to the rules of vastushastra, combining elements of Mughal and Rajput architectural styles. It now houses the Maharaja Sawai Man Singh II Museum, and continues to be the home of the Jaipur royal family. The royal family has around 500 personal servants. The palace complex has several buildings, various courtyards, galleries, restaurants, and offices of the Museum Trust. The MSMS II Museum Trust is headed by chairperson Rajamata Padmini Devi of Jaipur. Princess Diya Kumari runs the Museum Trust, as its secretary and trustee. She also manages The Palace School and Maharaja Sawai Bhawani Singh School in Jaipur. She founded and runs the Princess Diya Kumari Foundation to empower underprivileged and underemployed women of Rajasthan, and is also an entrepreneur. In 2013, she was elected as Member of the Legislative Assembly of Rajasthan from the constituency of Sawai Madhopur.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 78525,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_019": {
+  "spot_id": "spot_019",
+  "name": "Lake Pichola",
+  "wikipedia": {
+   "title": "Lake Pichola",
+   "url": "https://en.wikipedia.org/wiki/Lake_Pichola",
+   "extract": "Lake Pichola, in Udaipur city in the Indian state of Rajasthan, is an artificial freshwater lake, created in the year 1362, named after the nearby Picholi village. It is one of the several contiguous lakes, and developed over the last few centuries in and around Udaipur city. The lakes around Udaipur were primarily created by building dams to meet the drinking water and irrigation needs of the city and its neighbourhood. Two islands, Jag Niwas and Jag Mandir are located within Pichola Lake, and have been developed with several palaces to provide views of the lake.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 35179,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_020": {
+  "spot_id": "spot_020",
+  "name": "Jagdish Temple",
+  "wikipedia": {
+   "title": "Jagdish Temple, Udaipur",
+   "url": "https://en.wikipedia.org/wiki/Jagdish_Temple%2C_Udaipur",
+   "extract": "Jagdish Temple is a large Hindu temple in the middle of Udaipur in Rajasthan, just outside the royal palace. It has been in continuous worship since 1651. A big tourist attraction, the temple was originally called the temple of Jagannath Rai but is now called Jagdish-ji. It is a major monument in Udaipur.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 25052,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_021": {
+  "spot_id": "spot_021",
+  "name": "Fort Kochi",
+  "wikipedia": {
+   "title": "Fort Kochi",
+   "url": "https://en.wikipedia.org/wiki/Fort_Kochi",
+   "extract": "Fort Kochi, formerly also known as Fort Cochin, is a region of Kochi city in Kerala, India. Fort Kochi takes its name from the Fort Manuel of Kochi, the first European fort on Indian soil, controlled by the Portuguese East Indies. This is part of a handful of water-bound islands and islets toward the south-west of the mainland Kochi, and collectively known as Old Kochi or West Kochi. Adjacent to this is the locality of Mattancherry. In 1967, these three municipalities along with a few adjoining areas, were amalgamated to form the Kochi Municipal Corporation.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Kochi",
+   "url": "https://en.wikivoyage.org/wiki/Kochi",
+   "extract": "Kochi (Malayalam: കൊച്ചി Kōcci), formerly Cochin, is a cosmopolitan city in Kerala (Keralam) with a bustling commercial port. Kochi is the financial and commercial capital of Kerala and, with a population of more than 2.1 million (2011), the biggest conurbation in the state.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 37882,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_022": {
+  "spot_id": "spot_022",
+  "name": "Alappuzha Backwaters",
+  "wikipedia": {
+   "title": "Alappuzha district",
+   "url": "https://en.wikipedia.org/wiki/Alappuzha_district",
+   "extract": "Alappuzha district, is one of the 14 districts in the Indian state of Kerala. It was formed as Alleppey district on 17 August 1957, the name of the district being changed to Alappuzha in 1990. Alappuzha is the smallest district of Kerala. Alleppey town, the district headquarters, was renamed Alappuzha in 2012.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Kerala Backwaters",
+   "url": "https://en.wikivoyage.org/wiki/Kerala_Backwaters",
+   "extract": "The Backwaters of Kerala, officially Keralam, is a network of 1,500 km (930 mi) of canals, both manmade and natural, 38 rivers and 5 big lakes extending from one end of the state to the other. The Backwaters is one of the major tourism product of Kerala, being unique to the state. Traditionally used as one of the main transport alleys, today backwaters offer a rejuvenating experience for tourists visiting the South Indian state. The Backwaters can be explored by hiring a boat for one or several days. If you go for more than a day, the boat usually comes with a navigator and a cook, which provide you with various facilities when exploring the Backwaters.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 31345,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_023": {
+  "spot_id": "spot_023",
+  "name": "Munnar Tea Country",
+  "wikipedia": {
+   "title": "Munnar",
+   "url": "https://en.wikipedia.org/wiki/Munnar",
+   "extract": "Munnar is a town located in the Idukki district of the southwestern Indian state of Kerala. Munnar is situated at around 1,600 metres (5,200 ft) above mean sea level, in the Western Ghats mountain range. This ancient plantation settlement, dominated by its tea industry, is also a growing modern hill station.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Munnar",
+   "url": "https://en.wikivoyage.org/wiki/Munnar",
+   "extract": "Munnar is a hill station in the Indian state of Kerala. Tourists come here to see the vast tea plantations of the area. This town and the surrounding region usually offer the most pleasant temperatures in Kerala. Munnar is also a popular place for Indian honeymooners.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 109692,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_024": {
+  "spot_id": "spot_024",
+  "name": "Leh Palace",
+  "wikipedia": {
+   "title": "Leh Palace",
+   "url": "https://en.wikipedia.org/wiki/Leh_Palace",
+   "extract": "Leh Palace, also known as Lachen Palkar Palace, is a former royal palace overlooking the city of Leh in Ladakh, India. It was constructed circa 1600 AD by Sengge Namgyal. The palace was abandoned when Dogra forces took control of Ladakh in the mid-19th century and forced the royal family to move to Stok Palace.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Leh",
+   "url": "https://en.wikivoyage.org/wiki/Leh",
+   "extract": "Leh (གླེ gle or སླེ sle), the main capital of Ladakh, India, is on the Indus River Valley, at a crossroads of the old trading routes from Xinjiang, Tibet and Kashmir.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 18931,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_025": {
+  "spot_id": "spot_025",
+  "name": "Nubra Valley",
+  "wikipedia": {
+   "title": "Nubra",
+   "url": "https://en.wikipedia.org/wiki/Nubra",
+   "extract": "Nubra, also called Dumra, is a historical region of Ladakh, India in the Nubra district. Its inhabited areas form a tri-armed valley cut by the Nubra and Shyok rivers. Its Tibetan name Dumra means \"valley of flowers\".",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Nubra Valley",
+   "url": "https://en.wikivoyage.org/wiki/Nubra_Valley",
+   "extract": "Nubra Valley is a vast region in Ladakh, India.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 35305,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_026": {
+  "spot_id": "spot_026",
+  "name": "Thiksey Monastery",
+  "wikipedia": {
+   "title": "Thikse Monastery",
+   "url": "https://en.wikipedia.org/wiki/Thikse_Monastery",
+   "extract": "Thiksey Monastery or Thiksey Gompa is a Buddhist monastery affiliated with the Gelug school of Tibetan Buddhism. It is located on top of a hill in Thiksey approximately 19 kilometres (12 mi) east of Leh, in the Ladakh region of northern India. It is noted for its resemblance to the Potala Palace in Lhasa, Tibet, and is the largest monastery in central Ladakh, notably containing a separate set of buildings for female renunciates that has been the source of significant recent building and reorganization.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 18056,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_027": {
+  "spot_id": "spot_027",
+  "name": "Living Root Bridges",
+  "wikipedia": {
+   "title": "Living root bridge",
+   "url": "https://en.wikipedia.org/wiki/Living_root_bridge",
+   "extract": "Living root bridges are a kind of tree shaping in which rivers are spanned by bridges formed out of the roots of ficus plants. Due to their being made from living, growing trees, they \"show a very wide variety of structural typologies, with various aspects of particular bridges resembling characteristics of suspension bridges, cable-stayed bridges, arches, trusses, and simply-supported beams.\" They are common in the Indian state of Meghalaya.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 56110,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_028": {
+  "spot_id": "spot_028",
+  "name": "Dawki River",
+  "wikipedia": {
+   "title": "Dawki",
+   "url": "https://en.wikipedia.org/wiki/Dawki",
+   "extract": "Dawki or Dauki is a town in West Jaintia Hills district, Meghalaya, India.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 14421,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_029": {
+  "spot_id": "spot_029",
+  "name": "Shillong",
+  "wikipedia": {
+   "title": "Shillong",
+   "url": "https://en.wikipedia.org/wiki/Shillong",
+   "extract": "Shillong, the capital of Meghalaya, India, is a hill station and the headquarters of the East Khasi Hills district. It is the 330th most populous city in India, with a population of 143,229 according to the 2011 census. The rolling hills around the town reminded the British of Scotland. Hence, they referred to it as the \"Scotland of the East\".",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Shillong",
+   "url": "https://en.wikivoyage.org/wiki/Shillong",
+   "extract": "Shillong (shih-LAWNG), the capital of Meghalaya, is often called the Scotland of the East because of its rolling hills.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 151146,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_030": {
+  "spot_id": "spot_030",
+  "name": "Ubud",
+  "wikipedia": {
+   "title": "Ubud",
+   "url": "https://en.wikipedia.org/wiki/Ubud",
+   "extract": "Ubud is a town in the Gianyar Regency of Bali, Indonesia. Ubud has no status; that is part of the eponymous Ubud District of Gianyar. Promoted as an arts and culture centre, Ubud has developed a large tourism industry. It forms a northern part of the Greater Denpasar metropolitan area.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Ubud",
+   "url": "https://en.wikivoyage.org/wiki/Ubud",
+   "extract": "Ubud, a town in central Bali of around 75,000 people (2020), is regarded as the cultural centre of Bali. It is famous as an arts and crafts hub, and much of the town and nearby villages seems to consist of artists' workshops and galleries. There are some remarkable architectural and cultural sights to be found, and a general feeling of well being to be enjoyed, thanks to the town's spirit and surroundings. At first glance, the horrible traffic, over-development, loud nightclubs and taco Tuesdays might hide all this, but the art, nature and beauty are still there. You just have to get off the main roads to find them.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 68183,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_031": {
+  "spot_id": "spot_031",
+  "name": "Tegallalang Rice Terraces",
+  "wikipedia": {
+   "title": "Tegallalang",
+   "url": "https://en.wikipedia.org/wiki/Tegallalang",
+   "extract": "Tegallalang is a district in the Gianyar Regency, Bali, Indonesia. As of the 2010 census, the area was 61.80 km2 and the population was 50,625; the latest official estimate is 53,760.\nLocated around 10 km north of Ubud, its terraced rice fields are a tourist attraction in the area.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 4051,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_032": {
+  "spot_id": "spot_032",
+  "name": "Uluwatu Temple",
+  "wikipedia": {
+   "title": "Uluwatu Temple",
+   "url": "https://en.wikipedia.org/wiki/Uluwatu_Temple",
+   "extract": "Uluwatu Temple is a Balinese Hindu temple located on the south-western tip of the Bukit Peninsula in Pecatu Village, Badung Regency, Bali, Indonesia. It is the only Balinese sea temple that is also one of the nine directional temples.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 29716,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_033": {
+  "spot_id": "spot_033",
+  "name": "Þingvellir National Park",
+  "wikipedia": {
+   "title": "Þingvellir",
+   "url": "https://en.wikipedia.org/wiki/%C3%9Eingvellir",
+   "extract": "Þingvellir was the site of the Alþing, the annual parliament of Iceland from the year 930 until the last session held at Þingvellir in 1798. Since 1881, the parliament has been located within Alþingishúsið in Iceland's capital, Reykjavík.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Þingvellir National Park",
+   "url": "https://en.wikivoyage.org/wiki/%C3%9Eingvellir_National_Park",
+   "extract": "Þingvellir National Park (pronounced Thingvetlir) is a world-heritage national park in South Iceland. The park is home to the world's longest-running Parliament, which was established in 930 AD. It has a dramatic landscape formed as a result of sitting along the border between the North American and European tectonic plates. Parts of the Game of Thrones TV series were shot in this park.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 78855,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_034": {
+  "spot_id": "spot_034",
+  "name": "Reynisfjara Coast",
+  "wikipedia": {
+   "title": "Reynisfjara",
+   "url": "https://en.wikipedia.org/wiki/Reynisfjara",
+   "extract": "Reynisfjara is a popular black sand beach in southern Iceland near the town of Vík í Mýrdal. It is part of the Katla UNESCO Global Geopark on privately owned land. In February 2026, following weeks of strong waves and easterly winds, part of the iconic basalt columns collapsed along with significant erosion of the beach. With the return of westerly winds in March, Reynisfjara is expected to return to its familiar appearance.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "pageviews_12m": 51326,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_035": {
+  "spot_id": "spot_035",
+  "name": "Reykjavík",
+  "wikipedia": {
+   "title": "Reykjavík",
+   "url": "https://en.wikipedia.org/wiki/Reykjav%C3%ADk",
+   "extract": "Reykjavík is the capital and largest city of Iceland. It is located on the southern shore of the Faxaflói bay in southwest Iceland and has a latitude of 64°08′ N, making it the world's northernmost capital of a sovereign state. Reykjavík has a population of around 140,000 as of 2026, and the surrounding Capital Region has a population of around 252,000, constituting approximately 64% of Iceland's population.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Reykjavík",
+   "url": "https://en.wikivoyage.org/wiki/Reykjav%C3%ADk",
+   "extract": "Reykjavík is the capital of and largest city in Iceland and with an urban area population of around 233,000 (2019), it is the home to two-thirds of Iceland's population. It is the centre of culture and life of the Icelandic people, and is one of the focal points of tourism in Iceland. The city is spread out, and has sprawling suburbs. The city centre, however, is a very small area characterised by eclectic and colourful houses, with good shopping, dining and drinking. Reykjavik has the distinction of being the world's northernmost capital city of a UN member state, though its winters are surprisingly mild for a city of its latitude.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 713749,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_036": {
+  "spot_id": "spot_036",
+  "name": "Amalfi Town",
+  "wikipedia": {
+   "title": "Amalfi",
+   "url": "https://en.wikipedia.org/wiki/Amalfi",
+   "extract": "Amalfi is a town and comune in the province of Salerno, in the region of Campania, Italy, on the Gulf of Salerno. It lies at the mouth of a deep ravine, at the foot of Monte Cerreto, surrounded by dramatic cliffs and coastal scenery. The town of Amalfi was the capital of the maritime republic known as the Duchy of Amalfi, an important trading power in the Mediterranean between 839 and around 1200. It has 4,611 inhabitants.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Amalfi",
+   "url": "https://en.wikivoyage.org/wiki/Amalfi",
+   "extract": "Amalfi is a town in Campania, Italy. Amalfi is the heart of this magnificent Italian coastline and a must-see town on your Amalfi Coast adventure. It lies at the mouth of a deep ravine, at the foot of Monte Cerreto, surrounded by dramatic cliffs and coastal scenery. Amalfi is a UNESCO World Heritage Site. In 2017, it was home to 5,100 people.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 100512,
+  "fetched_at": "2026-11-11"
+ },
+ "spot_037": {
+  "spot_id": "spot_037",
+  "name": "Path of the Gods",
+  "fetched_at": "2026-11-11",
+  "wikivoyage": {
+   "title": "Amalfi Coast",
+   "url": "https://en.wikivoyage.org/wiki/Amalfi_Coast",
+   "extract": "The Amalfi Coast lies in the southwestern region of Campania, Italy. For its extraordinary beauty and its iconic medieval cliffside Mediterranean fishing villages, it is recognized as a UNESCO World Heritage Site.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  }
+ },
+ "spot_038": {
+  "spot_id": "spot_038",
+  "name": "Ravello",
+  "wikipedia": {
+   "title": "Ravello",
+   "url": "https://en.wikipedia.org/wiki/Ravello",
+   "extract": "Ravello is a comune (municipality) situated above the Amalfi Coast, in the province of Salerno, Campania, Italy, with approximately 2,500 inhabitants. Its scenic location makes it a popular tourist destination, and earned it a listing as a UNESCO World Heritage Site in 1997.",
+   "licence": "CC BY-SA 4.0",
+   "credit": "Wikipedia contributors"
+  },
+  "wikivoyage": {
+   "title": "Ravello",
+   "url": "https://en.wikivoyage.org/wiki/Ravello",
+   "extract": "Ravello is a town and commune in Salerno, Italy. A peaceful area with a small population, Ravello offers stunning views of the Mediterranean. Visit their renowned gardens, Villa Cimbrone and Villa Rufolo, and their spectacular Duomo, the Cathedral of Ravello in Vescovado Square. During summer months the city hosts the annual Ravello Festival, an event started in 1953 in honor of Richard Wagner and continued as a celebration of local art and music.",
+   "licence": "CC BY-SA 3.0",
+   "credit": "Wikivoyage contributors"
+  },
+  "pageviews_12m": 35649,
+  "fetched_at": "2026-11-11"
+ }
+}

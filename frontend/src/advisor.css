@@ -1,0 +1,41 @@
+/* AI travel advisor. Scoped under .adv-* */
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.adv-shell{display:grid;gap:12px}
+.adv-chat{border:1px solid #e7e4dc;background:#fbfaf6;padding:20px;min-height:380px;max-height:68vh;overflow:auto;display:flex;flex-direction:column;gap:14px}
+.adv-empty{margin:auto;text-align:center;color:#6f7f88;font-size:12px;max-width:560px;display:grid;gap:12px;justify-items:center}
+.adv-empty svg{color:#98773b}
+.adv-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.adv-chips button{border:1px solid #d9dcd8;background:#fff;padding:8px 12px;font-size:11px;color:var(--navy);cursor:pointer}
+.adv-chips button:hover{background:#f2e5c9}
+.adv-msg{max-width:min(860px,100%);display:grid;gap:10px}
+.adv-msg>p{margin:0;font-size:12px;line-height:1.7;padding:11px 14px}
+.adv-user{align-self:flex-end}.adv-user>p{background:var(--navy);color:#fff}
+.adv-advisor>p{background:#f2e5c9;color:#3d3220}
+.adv-proposal{border:1px solid #e7e4dc;background:#fff;padding:16px}
+.adv-proposal h3{font:500 9px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#566676;margin:16px 0 6px}
+.adv-totals{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:6px}
+.adv-totals span{display:block;font:500 8px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:#718092;margin-bottom:4px}
+.adv-totals strong{font:20px var(--mono);letter-spacing:-.8px;color:var(--navy)}.adv-totals em{font:11px var(--mono);font-style:normal;color:#7a5d22}
+.adv-lines{list-style:none;margin:0;padding:0;border-top:1px solid #eeebe4}
+.adv-line{display:grid;grid-template-columns:78px 1fr auto;gap:12px;align-items:baseline;padding:10px 0;border-bottom:1px solid #eeebe4;font-size:11px}
+.adv-line-type{font:500 8px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#98773b}
+.adv-line-name{display:grid;gap:3px;min-width:0}.adv-line-name small{color:#8a969d;font-size:9px}
+.adv-line-price{font:11px var(--mono);color:var(--navy)}
+.adv-checks{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:6px}
+.adv-check{font-size:10px;line-height:1.6;padding:7px 10px;border-left:2px solid #d6ad62;background:#fbf6e8;color:#6f6247}
+.adv-check-warn{border-color:#b5543a;background:#fbefe9;color:#7a3a28}
+.adv-form{display:flex;gap:8px}
+.adv-form input{flex:1;min-width:0;height:44px;border:1px solid #d9dcd8;background:#fff;padding:0 12px;font-size:12px;color:var(--navy);border-radius:0}
+.adv-form input:focus-visible{outline:2px solid #b98939;outline-offset:1px}
+.adv-send{min-height:44px;padding:0 16px}.adv-send:disabled{opacity:.5;cursor:not-allowed}
+.adv-reset{min-height:44px;padding:0 14px;font-size:11px;gap:6px}
+@media(max-width:760px){.adv-line{grid-template-columns:1fr auto}.adv-line-type{grid-column:1/-1}.adv-chat{padding:14px}}
+
+/* Agent trace and approve-and-pay card */
+.adv-steps{font-size:10px;color:#566676}.adv-steps summary{cursor:pointer;font:500 9px var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.adv-steps ol{margin:8px 0 0;padding-left:18px;display:grid;gap:4px;line-height:1.5}.adv-step-skipped{color:#8a969d}
+.adv-pay{border:1px solid #d6ad62;background:#fffdf7;padding:16px;display:grid;gap:12px}
+.adv-pay-done{border-color:#9cb89f;background:#f3f8f3}.adv-pay-done h3{margin:6px 0 0;font:500 12px var(--mono);letter-spacing:.04em}.adv-pay-done p{margin:4px 0 0;font-size:11px;line-height:1.6}
+.adv-pay-note{margin:0;font-size:10px;line-height:1.6;color:#6f6247;display:flex;gap:6px;align-items:flex-start}.adv-pay-note svg{flex:none;margin-top:2px}
+.adv-pay-buttons{max-width:420px;min-height:48px}
+.adv-pay-error{margin:0;font-size:11px;line-height:1.6;padding:8px 10px;border-left:2px solid #b5543a;background:#fbefe9;color:#7a3a28}

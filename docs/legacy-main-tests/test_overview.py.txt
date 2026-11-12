@@ -1,0 +1,103 @@
+"""The Overview must be computed from the same services as the rest of the site, never hand-written."""
+from dataclasses import replace
+
+import pytest
+from fastapi.testclient import TestClient
+
+from app import db
+from app.main import app
+from app.services import anomalies, inventory, overview, packages, profitability
+
+client = TestClient(app)
+
+
+@pytest.fixture(autouse=True)
+def _offline(monkeypatch, tmp_path):
+    monkeypatch.setattr(db, "db_settings", replace(db.db_settings, url="", packages_db=str(tmp_path / "packages.sqlite3")))
+    inventory.reset()
+
+
+def _metric(body, key):
+    return next(m for m in body["metrics"] if m["key"] == key)
+
+
+def _payload(**over):
+    items = inventory.state()["items"]
+    stay = next(x for x in items if x["type"] == "stay" and x["unit"] == "per_room_night")
+    p = {"title": "Overview test trip", "destination": stay["destination"], "start_date": "2027-03-01", "nights": 3, "travellers": 2,
+         "stays": [{"item_id": stay["id"], "name": stay["name"], "check_in_night": 1, "nights": 3}], "days": []}
+    p.update(over)
+    return p
+
+
+def test_money_cards_equal_the_profitability_summary():
+    body = client.get("/api/overview").json()
+    summary = client.get("/api/analytics/profitability/summary").json()
+    assert _metric(body, "gbv")["value"] == f"${summary['gross_sales']:,.0f}"
+    assert _metric(body, "margin")["value"] == f"{summary['gross_margin']:.1f}%"
+
+
+def test_no_hardcoded_seed_numbers_remain():
+    body = client.get("/api/overview").json()
+    assert _metric(body, "gbv")["value"] != "$284,650"
+    assert _metric(body, "margin")["value"] != "18.4%"
+    assert all(m["change"] == "" for m in body["metrics"])  # no invented period-over-period claims
+    assert not any(j["place"] == "Kyoto & the Inland Sea" for j in body["journeys"])
+
+
+def test_empty_workspace_has_no_journeys_and_zero_itineraries():
+    body = client.get("/api/overview").json()
+    assert body["journeys"] == [] and body["journeys_total"] == 0
+    assert _metric(body, "itineraries")["value"] == "0"
+
+
+def test_saved_packages_drive_itineraries_and_journeys():
+    from datetime import date
+    saved = client.post("/api/packages", json=_payload()).json()
+    client.post("/api/packages", json=_payload(title="Second trip", start_date="2027-01-10"))
+    body = client.get("/api/overview").json()
+    assert _metric(body, "itineraries")["value"] == "2"
+    assert body["journeys_total"] == 2
+    # fixed "today" so ordering and offsets do not depend on when the suite runs
+    fixed = overview.build(today=date(2026, 11, 12))
+    assert [j["place"] for j in fixed["journeys"]] == ["Second trip", "Overview test trip"]  # soonest departure first
+    j = next(x for x in fixed["journeys"] if x["id"] == saved["package_id"])
+    assert j["travellers"] == 2 and j["region"].endswith("3 nights") and j["departure_date"] == "2027-03-01"
+    assert j["departure_offset_days"] == (date(2027, 3, 1) - date(2026, 11, 12)).days
+    assert j["status"] in {"Quoted", "Draft"}
+    client.delete(f"/api/packages/{saved['package_id']}")
+    assert _metric(client.get("/api/overview").json(), "itineraries")["value"] == "1"
+
+
+def test_supplier_card_and_anomaly_row_match_other_pages():
+    body = client.get("/api/overview").json()
+    assert _metric(body, "suppliers")["value"] == str(len(inventory.state()["suppliers"]))
+    bell = client.get("/api/anomalies/summary").json()
+    assert body["anomalies"]["open"] == bell["open"] and body["anomalies"]["high"] == bell["high"]
+
+
+def test_trend_is_the_mean_committed_forecast():
+    from app.services import demand_forecast
+    t = client.get("/api/overview").json()["trend"]
+    dests = demand_forecast._seed()["destinations"]
+    expected = round(sum(d["forecast"][0]["predicted"] for d in dests) / len(dests), 1)
+    assert t["values"][0] == expected and len(t["values"]) == len(t["labels"]) == 6
+
+
+def test_responsible_note_reflects_registry_counts():
+    from app.services import responsible
+    o = responsible.overview()
+    note = client.get("/api/overview").json()["responsible_note"]
+    assert f"of {o['total_suppliers']}" in note and note.startswith(str(o["scored_suppliers"]))
+
+
+def test_one_broken_section_does_not_break_the_page(monkeypatch):
+    def boom(*a, **k):
+        raise RuntimeError("down")
+    monkeypatch.setattr(profitability, "get_profitability_summary", boom)
+    monkeypatch.setattr(anomalies, "summary", boom)
+    r = client.get("/api/overview")
+    assert r.status_code == 200
+    body = r.json()
+    assert _metric(body, "gbv")["value"] == "—" and body["anomalies"] is None
+    assert _metric(body, "suppliers")["value"] == str(len(inventory.state()["suppliers"]))

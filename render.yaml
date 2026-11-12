@@ -1,0 +1,43 @@
+services:
+  - type: web
+    name: backend-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    # Render terminates TLS in front of the app; trust its X-Forwarded-For so the per-client
+    # rate limits see the visitor's IP instead of the proxy's.
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT --proxy-headers --forwarded-allow-ips='*'
+    healthCheckPath: /api/health
+    autoDeploy: true
+    # Only redeploy when backend code changes
+    buildFilter:
+      paths:
+        - backend/**
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      # Set this in the Render dashboard to your Vercel URL,
+      # e.g. https://your-app.vercel.app
+      - key: FRONTEND_URL
+        sync: false
+      # PayPal sandbox app credentials (set in the Render dashboard)
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
+      # Aiven PostgreSQL Service URI (set in the Render dashboard; never commit it)
+      - key: DATABASE_URL
+        sync: false
+      - key: DEPOSIT_PCT
+        value: "30"
+      # Gemini (optional; the advisor falls back to rules without it)
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-2.5-flash
+      # Advisor spend and abuse limits (defaults shown; see README)
+      - key: LLM_MONTHLY_CAP
+        value: "5"
+      - key: ADVISOR_SESSION_LIMIT
+        value: "20"

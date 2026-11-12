@@ -1,0 +1,444 @@
+[
+  {
+    "slug": "dolomites-italy",
+    "name": "The Dolomites",
+    "country": "Italy",
+    "cardTitle": "Dolomites, Italy",
+    "type": "ALPINE ESCAPES",
+    "detail": "A quieter side of the Italian Alps",
+    "bestTime": "June to September",
+    "duration": "5–8 days",
+    "highlights": [
+      "Alpine trails and rifugi",
+      "Ladin and Tyrolean culture",
+      "Quiet lakeside mornings"
+    ],
+    "related": [
+      "kyoto-japan",
+      "marrakech-morocco"
+    ],
+    "attractions": [
+      {
+        "name": "Lago di Braies",
+        "category": "LANDSCAPE",
+        "location": "Pragser Tal"
+      },
+      {
+        "name": "Tre Cime di Lavaredo",
+        "category": "HIKING",
+        "location": "Sexten Dolomites"
+      },
+      {
+        "name": "Alpe di Siusi",
+        "category": "OUTDOORS",
+        "location": "South Tyrol"
+      }
+    ]
+  },
+  {
+    "slug": "kyoto-japan",
+    "name": "Kyoto",
+    "country": "Japan",
+    "cardTitle": "Kyoto, Japan",
+    "type": "CULTURE & CRAFT",
+    "detail": "Tradition, revealed one lane at a time",
+    "bestTime": "March to May · October to November",
+    "duration": "4–6 days",
+    "highlights": [
+      "Temple gardens and hillside shrines",
+      "Seasonal kaiseki and market food",
+      "Craft studios in historic lanes"
+    ],
+    "related": [
+      "dolomites-italy",
+      "marrakech-morocco"
+    ],
+    "attractions": [
+      {
+        "name": "Fushimi Inari Shrine",
+        "category": "SHRINE",
+        "location": "Fushimi"
+      },
+      {
+        "name": "Arashiyama Bamboo Grove",
+        "category": "LANDSCAPE",
+        "location": "Arashiyama"
+      },
+      {
+        "name": "Kinkaku-ji",
+        "category": "TEMPLE",
+        "location": "Kita Ward"
+      },
+      {
+        "name": "Gion District",
+        "category": "NEIGHBOURHOOD",
+        "location": "Higashiyama"
+      },
+      {
+        "name": "Nishiki Market",
+        "category": "FOOD",
+        "location": "Central Kyoto"
+      }
+    ]
+  },
+  {
+    "slug": "marrakech-morocco",
+    "name": "Marrakech",
+    "country": "Morocco",
+    "cardTitle": "Marrakech, Morocco",
+    "type": "DESERT & DESIGN",
+    "detail": "A sensory journey through the medina",
+    "bestTime": "March to May · September to November",
+    "duration": "3–5 days",
+    "highlights": [
+      "Historic medina and gardens",
+      "Independent artisans and design",
+      "Shared meals and spice markets"
+    ],
+    "related": [
+      "dolomites-italy",
+      "kyoto-japan"
+    ],
+    "attractions": [
+      {
+        "name": "Jemaa el-Fnaa",
+        "category": "SQUARE",
+        "location": "Medina"
+      },
+      {
+        "name": "Bahia Palace",
+        "category": "ARCHITECTURE",
+        "location": "Mellah"
+      },
+      {
+        "name": "Jardin Majorelle",
+        "category": "GARDEN",
+        "location": "Guéliz"
+      }
+    ]
+  },
+  {
+    "slug": "kashmir-india",
+    "name": "Kashmir",
+    "country": "India",
+    "cardTitle": "Kashmir, India",
+    "type": "MOUNTAINS & LAKES",
+    "detail": "Mountain mornings, shikara evenings",
+    "bestTime": "March to October",
+    "duration": "5–8 days",
+    "highlights": [
+      "Dal Lake and its houseboats",
+      "Mughal-era gardens",
+      "Pahalgam's pine valleys"
+    ],
+    "related": [
+      "ladakh-india",
+      "udaipur-india"
+    ],
+    "attractions": [
+      {
+        "name": "Dal Lake",
+        "category": "LAKE",
+        "location": "Srinagar"
+      },
+      {
+        "name": "Nishat Bagh",
+        "category": "GARDEN",
+        "location": "Srinagar"
+      },
+      {
+        "name": "Pahalgam Valley",
+        "category": "OUTDOORS",
+        "location": "Anantnag district"
+      }
+    ]
+  },
+  {
+    "slug": "jaipur-india",
+    "name": "Jaipur",
+    "country": "India",
+    "cardTitle": "Jaipur, India",
+    "type": "CRAFT & HERITAGE",
+    "detail": "A pink city made for looking closer",
+    "bestTime": "October to March",
+    "duration": "3–4 days",
+    "highlights": [
+      "Amber Fort and hilltop views",
+      "City Palace courtyards",
+      "Block printing and blue pottery"
+    ],
+    "related": [
+      "udaipur-india",
+      "kashmir-india"
+    ],
+    "attractions": [
+      {
+        "name": "Amber Fort",
+        "category": "FORT",
+        "location": "Amer"
+      },
+      {
+        "name": "Hawa Mahal",
+        "category": "ARCHITECTURE",
+        "location": "Badi Chaupar"
+      },
+      {
+        "name": "Jantar Mantar",
+        "category": "HERITAGE",
+        "location": "Old City"
+      }
+    ]
+  },
+  {
+    "slug": "udaipur-india",
+    "name": "Udaipur",
+    "country": "India",
+    "cardTitle": "Udaipur, India",
+    "type": "LAKESIDE HERITAGE",
+    "detail": "Courtyards and lake light in Rajasthan",
+    "bestTime": "October to March",
+    "duration": "3–4 days",
+    "highlights": [
+      "City Palace and its galleries",
+      "Lake Pichola at dusk",
+      "Hand-painted miniature art"
+    ],
+    "related": [
+      "jaipur-india",
+      "kerala-india"
+    ],
+    "attractions": [
+      {
+        "name": "City Palace",
+        "category": "PALACE",
+        "location": "City Palace Road"
+      },
+      {
+        "name": "Lake Pichola",
+        "category": "LAKE",
+        "location": "Old City"
+      },
+      {
+        "name": "Jagdish Temple",
+        "category": "TEMPLE",
+        "location": "Jagdish Chowk"
+      }
+    ]
+  },
+  {
+    "slug": "kerala-india",
+    "name": "Kerala",
+    "country": "India",
+    "cardTitle": "Kerala, India",
+    "type": "BACKWATERS & SPICE",
+    "detail": "A softer rhythm along India's southwest coast",
+    "bestTime": "October to March",
+    "duration": "6–9 days",
+    "highlights": [
+      "Kochi's port-side heritage",
+      "Alappuzha backwaters",
+      "Munnar's highland tea country"
+    ],
+    "related": [
+      "meghalaya-india",
+      "udaipur-india"
+    ],
+    "attractions": [
+      {
+        "name": "Fort Kochi",
+        "category": "NEIGHBOURHOOD",
+        "location": "Kochi"
+      },
+      {
+        "name": "Alappuzha Backwaters",
+        "category": "WATERWAYS",
+        "location": "Alappuzha"
+      },
+      {
+        "name": "Munnar Tea Country",
+        "category": "HIGHLANDS",
+        "location": "Idukki district"
+      }
+    ]
+  },
+  {
+    "slug": "ladakh-india",
+    "name": "Ladakh",
+    "country": "India",
+    "cardTitle": "Ladakh, India",
+    "type": "HIGH HIMALAYA",
+    "detail": "High passes and a slower mountain pace",
+    "bestTime": "May to September",
+    "duration": "6–9 days",
+    "highlights": [
+      "Leh's old town and palace",
+      "Nubra Valley's high desert",
+      "Monastery and village visits"
+    ],
+    "related": [
+      "kashmir-india",
+      "dolomites-italy"
+    ],
+    "attractions": [
+      {
+        "name": "Leh Palace",
+        "category": "HERITAGE",
+        "location": "Leh"
+      },
+      {
+        "name": "Nubra Valley",
+        "category": "VALLEY",
+        "location": "Nubra"
+      },
+      {
+        "name": "Thiksey Monastery",
+        "category": "MONASTERY",
+        "location": "Thiksey"
+      }
+    ]
+  },
+  {
+    "slug": "meghalaya-india",
+    "name": "Meghalaya",
+    "country": "India",
+    "cardTitle": "Meghalaya, India",
+    "type": "FOREST & WATERFALLS",
+    "detail": "Rainforest paths and living root bridges",
+    "bestTime": "October to April",
+    "duration": "5–7 days",
+    "highlights": [
+      "Living root bridges",
+      "Shillong's music and food",
+      "Waterfalls and limestone caves"
+    ],
+    "related": [
+      "kerala-india",
+      "ladakh-india"
+    ],
+    "attractions": [
+      {
+        "name": "Living Root Bridges",
+        "category": "COMMUNITY HERITAGE",
+        "location": "Khasi Hills"
+      },
+      {
+        "name": "Dawki River",
+        "category": "RIVER",
+        "location": "West Jaintia Hills"
+      },
+      {
+        "name": "Shillong",
+        "category": "CITY",
+        "location": "East Khasi Hills"
+      }
+    ]
+  },
+  {
+    "slug": "bali-indonesia",
+    "name": "Bali",
+    "country": "Indonesia",
+    "cardTitle": "Bali, Indonesia",
+    "type": "ISLAND CULTURE",
+    "detail": "Island days shaped by ritual and craft",
+    "bestTime": "April to October",
+    "duration": "5–8 days",
+    "highlights": [
+      "Ubud's craft and food culture",
+      "Village temples and water landscapes",
+      "Quiet stretches of coast"
+    ],
+    "related": [
+      "kerala-india",
+      "amalfi-coast-italy"
+    ],
+    "attractions": [
+      {
+        "name": "Ubud",
+        "category": "TOWN",
+        "location": "Gianyar Regency"
+      },
+      {
+        "name": "Tegallalang Rice Terraces",
+        "category": "LANDSCAPE",
+        "location": "North of Ubud"
+      },
+      {
+        "name": "Uluwatu Temple",
+        "category": "TEMPLE",
+        "location": "Bukit Peninsula"
+      }
+    ]
+  },
+  {
+    "slug": "iceland",
+    "name": "Iceland",
+    "country": "Iceland",
+    "cardTitle": "Iceland",
+    "type": "NORTH ATLANTIC",
+    "detail": "Open horizons and volcanic landscapes",
+    "bestTime": "June to September · winter for aurora",
+    "duration": "6–10 days",
+    "highlights": [
+      "Reykjavík's design and food",
+      "Geothermal landscapes",
+      "Coastal and highland scenery"
+    ],
+    "related": [
+      "dolomites-italy",
+      "ladakh-india"
+    ],
+    "attractions": [
+      {
+        "name": "Þingvellir National Park",
+        "category": "NATIONAL PARK",
+        "location": "Southwest Iceland"
+      },
+      {
+        "name": "Reynisfjara Coast",
+        "category": "COAST",
+        "location": "South Coast"
+      },
+      {
+        "name": "Reykjavík",
+        "category": "CITY",
+        "location": "Capital Region"
+      }
+    ]
+  },
+  {
+    "slug": "amalfi-coast-italy",
+    "name": "Amalfi Coast",
+    "country": "Italy",
+    "cardTitle": "Amalfi Coast, Italy",
+    "type": "COASTAL ITALY",
+    "detail": "A coast best explored between the famous turns",
+    "bestTime": "April to June · September to October",
+    "duration": "4–6 days",
+    "highlights": [
+      "Amalfi's cathedral and lanes",
+      "The Path of the Gods",
+      "Local citrus and seafood"
+    ],
+    "related": [
+      "dolomites-italy",
+      "marrakech-morocco"
+    ],
+    "attractions": [
+      {
+        "name": "Amalfi Town",
+        "category": "TOWN",
+        "location": "Amalfi"
+      },
+      {
+        "name": "Path of the Gods",
+        "category": "HIKING",
+        "location": "Agerola to Nocelle"
+      },
+      {
+        "name": "Ravello",
+        "category": "HILLSIDE TOWN",
+        "location": "Ravello"
+      }
+    ]
+  }
+]

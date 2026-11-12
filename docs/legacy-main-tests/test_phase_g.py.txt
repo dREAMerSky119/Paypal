@@ -1,0 +1,287 @@
+"""Phase G: tool schemas, optimiser, spend cap, session limit, streaming and the builder handoff.
+Offline: Gemini is scripted (see test_agent.ScriptedGemini), nothing touches the network."""
+import json
+from dataclasses import replace
+
+import pytest
+from fastapi.testclient import TestClient
+
+from app.api.routes import advisor as route
+from app.core import config
+from app.main import app
+from app.services import advisor, advisor_tools, agent, inventory as inv, llm, llm_budget, optimiser
+from tests.test_agent import call, gemini, say  # noqa: F401  (gemini is a fixture)
+
+client = TestClient(app)
+TRIP = {"destination": "kyoto-japan", "nights": 3, "travellers": 2}
+
+
+@pytest.fixture(autouse=True)
+def _fast(monkeypatch):
+    monkeypatch.setattr(route, "TOKEN_DELAY_S", 0)
+    route._hits.clear(); route._agent_hits.clear()
+
+
+class Ctx:
+    def __init__(self, constraints=None, message="plan"):
+        self.constraints, self.rule_hints, self.message = dict(constraints or {}), {}, message
+        self.proposal = self.checkout = None
+        self.known_amounts, self.steps, self.tool_calls = [], [], 0
+
+
+# ------------------------------------------------------------------ schemas
+
+def test_every_tool_has_a_strict_schema_and_an_implementation():
+    s = advisor_tools.schemas()
+    assert set(s) == set(advisor_tools.IMPLEMENTATIONS) == {
+        "search_inventory", "get_rates", "optimise_package", "quote_package",
+        "related_spots", "responsible_score", "forecast", "anomalies"}
+    for spec in s.values():
+        assert spec["parameters"]["additionalProperties"] is False
+
+
+def test_gemini_declarations_use_the_gemini_subset():
+    for d in advisor_tools.declarations():
+        blob = json.dumps(d)
+        assert "additionalProperties" not in blob and '"object"' not in blob
+        assert d["parameters"]["type"] == "OBJECT"
+
+
+@pytest.mark.parametrize("name,args,fragment", [
+    ("search_inventory", {}, "Missing required argument: destination"),
+    ("search_inventory", {"destination": "kyoto-japan", "price": 1}, "Unknown argument"),
+    ("search_inventory", {"destination": "kyoto-japan", "limit": 99}, "between"),
+    ("search_inventory", {"destination": "kyoto-japan", "limit": True}, "whole number"),
+    ("optimise_package", {"nights": 0}, "between"),
+    ("optimise_package", {"budget_amount": -5, "budget_currency": "USD"}, "out of range"),
+    ("optimise_package", {"interests": ["skydiving"]}, "one of"),
+    ("get_rates", {"item_id": "../etc/passwd"}, "wrong format"),
+    ("quote_package", {"start_date": "tomorrow"}, "wrong format"),
+    ("forecast", {"destination": "kyoto-japan", "horizon": 30}, "between"),
+])
+def test_bad_arguments_are_rejected_before_any_tool_runs(name, args, fragment):
+    ctx = Ctx()
+    out = advisor_tools.run_tool(ctx, name, args)
+    assert fragment in out["error"] and ctx.steps[-1]["ok"] is False
+
+
+def test_search_inventory_and_get_rates_agree_and_hide_cost():
+    ctx = Ctx()
+    res = advisor_tools.run_tool(ctx, "search_inventory", {"destination": "kyoto-japan", "type": "stay", "limit": 2})
+    assert res["items"] and all("net" not in k and "supplier" not in k for i in res["items"] for k in i)
+    first = res["items"][0]
+    rates = advisor_tools.run_tool(ctx, "get_rates", {"item_id": first["item_id"], "months": 3})
+    assert rates["base_price_usd"] == first["price_usd"] and 0 < len(rates["monthly"]) <= 3
+    assert advisor_tools.run_tool(ctx, "get_rates", {"item_id": "item_9999"})["error"].startswith("No such item_id")
+
+
+def test_flagged_items_are_not_offered_or_rated(monkeypatch):
+    usable, _ = advisor._trusted_items("kyoto-japan")
+    bad = usable[0]["id"]
+    monkeypatch.setattr(optimiser, "flagged_item_ids", lambda: {bad})
+    ctx = Ctx()
+    res = advisor_tools.run_tool(ctx, "search_inventory", {"destination": "kyoto-japan", "limit": 8})
+    assert bad not in {i["item_id"] for i in res["items"]}
+    assert "anomaly flag" in advisor_tools.run_tool(ctx, "get_rates", {"item_id": bad})["error"]
+
+
+def test_optimise_requires_hard_constraints_then_builds_and_quotes():
+    ctx = Ctx()
+    out = advisor_tools.run_tool(ctx, "optimise_package", {"destination": "kyoto-japan"})
+    assert "Still need: nights" in out["error"] and ctx.proposal is None
+    assert "no proposal" in advisor_tools.run_tool(ctx, "quote_package", {})["error"]
+    facts = advisor_tools.run_tool(ctx, "optimise_package", {"nights": 3, "travellers": 2})
+    assert facts["prices_trace_to_inventory"] is True and "margin" not in json.dumps(facts)
+    q = advisor_tools.run_tool(ctx, "quote_package", {"start_date": "2026-12-01"})
+    assert q["total_usd"] > 0 and "responsible" in q and "net_usd" not in q
+    assert ctx.proposal["impact"]["dated_sell_usd"] > 0
+
+
+def test_context_tools_return_data_not_instructions():
+    ctx = Ctx(TRIP)
+    assert advisor_tools.run_tool(ctx, "forecast", {"destination": "kyoto-japan", "horizon": 3})["months"]
+    assert "open_count" in advisor_tools.run_tool(ctx, "anomalies", {"limit": 2})
+    assert advisor_tools.run_tool(ctx, "responsible_score", {})["scope"] == "destination"
+    r = advisor_tools.run_tool(ctx, "related_spots", {"destination": "kyoto-japan", "mode": "near", "limit": 3})
+    assert "error" in r or all("reason" in s for s in r["spots"])
+    advisor_tools.run_tool(ctx, "optimise_package", {})
+    assert advisor_tools.run_tool(ctx, "responsible_score", {})["scope"] == "proposal"
+
+
+# ------------------------------------------------------------------ optimiser
+
+@pytest.mark.parametrize("dest", ["kyoto-japan", "kerala-india", "iceland", "bali-indonesia", "jaipur-india"])
+def test_optimiser_is_deterministic_and_every_price_traces(dest):
+    c = {"destination": dest, "nights": 4, "travellers": 3, "budget_input": {"amount": 4000, "currency": "USD"}}
+    a, b = optimiser.optimise(dict(c)), optimiser.optimise(dict(c))
+    assert a == b
+    assert optimiser.trace_prices(a) == []
+    assert a["within_budget"] and a["totals"]["sell_usd"] <= a["budget_usd"]
+    assert len({l["item_id"] for l in a["lines"]}) == len(a["lines"])
+
+
+def test_knapsack_never_loses_to_greedy_and_never_overspends():
+    items = [{"id": f"i{n}", "type": "experience"} for n in range(6)]
+    cands = [(3.0, 60.0, items[0]), (2.0, 40.0, items[1]), (2.0, 40.0, items[2]),
+             (1.0, 30.0, items[3]), (0.9, 25.0, items[4]), (0.5, 10.0, items[5])]
+    picked = optimiser._knapsack(cands, slots=3, budget_left=80.0, max_guides=1)
+    cost = sum(c for _, c, i in cands if i in picked)
+    value = sum(s for s, _, i in cands if i in picked)
+    assert cost <= 80.0 and len(picked) <= 3 and value >= 4.0   # items 1+2 beat item 0 alone
+
+
+def test_infeasible_budget_is_reported_not_broken():
+    p = optimiser.optimise({**TRIP, "budget_input": {"amount": 50, "currency": "USD"}})
+    assert p["within_budget"] is False and p["optimiser"]["min_total_usd"] > 50
+    assert any("Over budget" in c["message"] for c in p["checks"])
+
+
+def test_flagged_rates_are_excluded_and_reported(monkeypatch):
+    base = optimiser.optimise(dict(TRIP))
+    flagged = {l["item_id"] for l in base["lines"] if l["day"]}
+    monkeypatch.setattr(optimiser, "flagged_item_ids", lambda: flagged)
+    p = optimiser.optimise(dict(TRIP))
+    assert not flagged & {l["item_id"] for l in p["lines"]}
+    assert p["optimiser"]["excluded_flagged"] >= len(flagged)
+
+
+def test_responsible_weighting_only_uses_verified_scores(monkeypatch):
+    plain = optimiser.optimise(dict(TRIP))
+    weighted = optimiser.optimise({**TRIP, "prefer_responsible": True})
+    assert weighted["optimiser"]["responsible_weighted"] and not plain["optimiser"]["responsible_weighted"]
+
+    def avg(p):
+        s = [optimiser._verified_score(next(i for i in inv.state()["items"] if i["id"] == l["item_id"])) for l in p["lines"]]
+        return sum(s) / len(s)
+    assert avg(weighted) >= avg(plain)
+    monkeypatch.setattr("app.services.responsible.supplier_summary", lambda sid: {"score": None})
+    assert optimiser._verified_score({"supplier_id": "x"}) == 0.0   # no verified claim, no boost
+
+
+def test_missing_hard_constraints_raise():
+    assert optimiser.missing_hard({"destination": "iceland"}) == ["nights"]
+    with pytest.raises(advisor.AdvisorError):
+        optimiser.optimise({"destination": "iceland"})
+
+
+def test_proposal_converts_to_a_package_the_quote_engine_accepts():
+    from app.services import quote
+    p = optimiser.optimise({**TRIP})
+    pk = advisor_tools.proposal_to_package(p, "2026-12-01")
+    assert pk["stays"][0]["nights"] == 3 and "totals" not in pk
+    for d in pk["days"]:
+        slots = [s["slot"] for s in d["stops"]]
+        assert len(slots) == len(set(slots))
+    q = quote.quote_package(pk)
+    assert q["totals"]["sell_usd"] > 0
+    assert advisor_tools.default_start_date(__import__("datetime").date(2026, 12, 15)) == "2027-01-01"
+
+
+# ------------------------------------------------------------------ cap + limits
+
+def test_monthly_cap_stops_gemini_and_serves_rules_with_a_notice(gemini, monkeypatch):
+    g = gemini(say("never reached"))
+    monkeypatch.setattr(llm_budget.config, "llm_limits", replace(config.llm_limits, monthly_cap_usd=0.0,
+                                                                  usage_db=config.llm_limits.usage_db))
+    out = agent.run("3 nights in Kyoto for 2")
+    assert g.requests == []                       # not one call reached Gemini
+    assert out["ai"]["notice"] == agent.NOTICE_CAP and out["proposal"]["destination"] == "kyoto-japan"
+
+
+def test_usage_is_recorded_and_trips_the_cap(gemini, monkeypatch):
+    lim = replace(config.llm_limits, monthly_cap_usd=0.01, price_in_per_m_usd=10.0, price_out_per_m_usd=10.0,
+                  usage_db=config.llm_limits.usage_db)
+    monkeypatch.setattr(llm_budget.config, "llm_limits", lim)
+    assert not llm_budget.exceeded()
+    llm_budget.record(500, 600)                    # 1100 tokens * $10/M = $0.011
+    u = llm_budget.usage()
+    assert u["calls"] == 1 and u["estimated_cost_usd"] == pytest.approx(0.011) and llm_budget.exceeded()
+    gemini(say("x"))
+    with pytest.raises(llm.LLMError, match="budget"):
+        llm._post({"contents": []})
+
+
+def test_gemini_token_usage_is_counted(gemini):
+    import httpx
+    gemini(say("hi"))
+    llm._transport = httpx.MockTransport(lambda r: httpx.Response(200, json={
+        "candidates": [{"finishReason": "STOP", "content": say("hi")}],
+        "usageMetadata": {"promptTokenCount": 120, "candidatesTokenCount": 30, "thoughtsTokenCount": 10}}))
+    llm._post({"contents": []})
+    u = llm_budget.usage()
+    assert (u["input_tokens"], u["output_tokens"], u["calls"]) == (120, 40, 1)
+
+
+def test_session_limit_returns_429_with_retry_after(monkeypatch):
+    monkeypatch.setattr(llm_budget.config, "llm_limits", replace(config.llm_limits, session_limit=2,
+                                                                  usage_db=config.llm_limits.usage_db))
+    h = {"X-Session-Id": "session-abc12345"}
+    body = {"message": "3 nights in Kyoto"}
+    assert client.post("/api/advisor/agent", json=body, headers=h).status_code == 200
+    assert client.post("/api/advisor/agent", json=body, headers=h).status_code == 200
+    r = client.post("/api/advisor/agent", json=body, headers=h)
+    assert r.status_code == 429 and int(r.headers["retry-after"]) > 0 and "session" in r.json()["detail"]
+    other = client.post("/api/advisor/agent", json=body, headers={"X-Session-Id": "session-other999"})
+    assert other.status_code == 200
+
+
+def test_usage_endpoint_has_no_secrets():
+    r = client.get("/api/advisor/usage").json()
+    assert set(r) >= {"month", "estimated_cost_usd", "cap_usd", "blocked"} and "key" not in json.dumps(r).lower()
+
+
+# ------------------------------------------------------------------ streaming
+
+def parse_sse(text):
+    out = []
+    for block in text.strip().split("\n\n"):
+        ev, data = block.split("\n", 1)
+        out.append((ev.removeprefix("event: "), json.loads(data.removeprefix("data: "))))
+    return out
+
+
+def test_stream_emits_steps_then_tokens_then_done(gemini):
+    g = gemini(call("optimise_package", destination="kyoto-japan", nights=3, travellers=2), say("A lovely Kyoto plan for you."))
+    r = client.post("/api/advisor/stream", json={"message": "3 nights in Kyoto for 2"})
+    assert r.headers["content-type"].startswith("text/event-stream")
+    ev = parse_sse(r.text)
+    names = [e for e, _ in ev]
+    assert names[0] == "status" and "step" in names and names[-1] == "done"
+    assert names.index("step") < names.index("token") < names.index("done")
+    done = ev[-1][1]
+    assert "".join(d["text"] for e, d in ev if e == "token") == done["reply"] == "A lovely Kyoto plan for you."
+    assert done["proposal"]["destination"] == "kyoto-japan" and done["agent"]["steps"][0]["tool"] == "optimise_package"
+
+
+def test_stream_without_a_key_still_streams_the_rule_based_reply():
+    ev = parse_sse(client.post("/api/advisor/stream", json={"message": "4 nights in Kerala for 3"}).text)
+    assert ev[-1][0] == "done" and ev[-1][1]["agent"]["mode"] == "rules" and any(e == "token" for e, _ in ev)
+
+
+def test_stream_validation_error_is_a_plain_422():
+    assert client.post("/api/advisor/stream", json={"message": "   "}).status_code == 422
+
+
+def test_stream_survives_gemini_down_with_a_notice(gemini):
+    gemini("HTTP_ERROR")
+    ev = parse_sse(client.post("/api/advisor/stream", json={"message": "3 nights in Kyoto"}).text)
+    done = ev[-1][1]
+    assert ev[-1][0] == "done" and done["ai"]["notice"] == agent.NOTICE_DOWN and done["proposal"]
+
+
+# ------------------------------------------------------------------ open in builder
+
+def test_open_in_builder_saves_a_server_priced_package(tmp_path, monkeypatch):
+    from app import db
+    monkeypatch.setattr(db, "db_settings", replace(db.db_settings, url="", packages_db=str(tmp_path / "packages.sqlite3")))
+    r = client.post("/api/advisor/open-in-builder", json={"constraints": TRIP, "start_date": "2026-12-01"})
+    assert r.status_code == 201, r.text
+    pid = r.json()["package_id"]
+    saved = client.get(f"/api/packages/{pid}").json()
+    assert saved["payload"]["destination"] == "kyoto-japan" and saved["payload"]["stays"] and saved["payload"]["days"]
+    assert saved["quote"]["totals"]["sell_usd"] > 0
+
+
+def test_open_in_builder_rejects_an_incomplete_trip():
+    assert client.post("/api/advisor/open-in-builder", json={"constraints": {"destination": "iceland"}}).status_code == 422
+    assert client.post("/api/advisor/open-in-builder", json={"constraints": TRIP, "start_date": "soon"}).status_code == 422

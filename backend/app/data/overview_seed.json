@@ -1,0 +1,55 @@
+{
+  "metrics": [
+    {
+      "key": "gbv",
+      "label": "Gross booking value",
+      "value": "$284,650",
+      "amount_usd": 284650,
+      "change": "12.8%",
+      "detail": "vs. previous period"
+    },
+    {
+      "key": "itineraries",
+      "label": "Active itineraries",
+      "value": "38",
+      "change": "6.2%",
+      "detail": "across 12 destinations"
+    },
+    {
+      "key": "margin",
+      "label": "Avg. gross margin",
+      "value": "18.4%",
+      "change": "2.1%",
+      "detail": "vs. previous period"
+    },
+    {
+      "key": "suppliers",
+      "label": "Supplier partners",
+      "value": "126",
+      "change": "8 new",
+      "detail": "this quarter"
+    }
+  ],
+  "trend": {
+    "labels": [
+      "APR",
+      "MAY",
+      "JUN",
+      "JUL",
+      "AUG",
+      "SEP"
+    ],
+    "values": [
+      14,
+      17,
+      22,
+      21,
+      28,
+      33
+    ],
+    "summary_value": "+14.6%",
+    "summary_text": "Interest in shoulder-season departures",
+    "footnote": ""
+  },
+  "responsible_note": "Community-led stays and low-carbon options"
+}

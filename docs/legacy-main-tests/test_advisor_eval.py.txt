@@ -1,0 +1,18 @@
+"""Runs the 20-request advisor eval offline (scripted Gemini). CI fails if the pass rate drops below
+ADVISOR_EVAL_THRESHOLD (default 0.9); today every case is expected to pass."""
+import pytest
+
+from evals import advisor_eval as ev
+
+
+def test_eval_set_has_twenty_cases_in_four_groups():
+    assert len(ev.CASES) == 20
+    assert {c.group for c in ev.CASES} == {"constraints", "grounding", "clarifying", "tools", "injection"}
+    assert len({c.id for c in ev.CASES}) == 20
+
+
+def test_advisor_eval_passes(monkeypatch):
+    results = ev.run_all(monkeypatch)
+    failed = [f"{r.id}: {r.reason}" for r in results if not r.passed]
+    assert ev.pass_rate(results) >= ev.threshold(), "\n".join(failed)
+    assert not failed, "\n".join(failed)   # no known failures are tolerated while the set is this small

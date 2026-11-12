@@ -1,0 +1,9 @@
+# Only needed to regenerate seed data offline (backend/scripts/). Not deployed.
+pandas>=2.2
+numpy>=2.0
+holidays>=0.50
+scikit-learn>=1.5
+# enrich_overture.py (optional, needs network access to Overture's S3 bucket)
+duckdb>=1.0
+# load_to_sql.py (loads the seed into Aiven; same psycopg driver as the app)
+psycopg[binary]>=3.2
